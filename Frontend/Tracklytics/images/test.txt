@@ -2,4 +2,8 @@ I wanted to try out the github feature.
 
 1. Clone Repo
 2. Created Branch (Will not need to create another one until Release 2, then so on.
-3.
+3. Selected the commit tab under the Project folder on the left side.
+4. select changes
+5. enter my comment
+6. select commit and push.
+7.
