@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trackalytics: Add Inventory</title>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <!-- Google Fonts Inter&Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+    <aside>
+        <div class="menu">
+            <div class="logo"><img src="logo.png" height="862" width="1400"/>
+                <img src="./images/logo.png" alt="logo">
+                <h2>Trackalytics</h2>
+            </div>
+            <div class="close" id="close-btn">
+                <span class="material-symbols-outlined">close</span>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <h3>Navigation</h3>
+            <a href="#">
+                <span class="material-symbols-outlined">space_dashboard</span>
+                <h3>Dashboard</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <h3>Products</h3>
+            </a>
+            <h3>Inventory</h3>
+            <a id="addInventoryLink" href="#">
+                <span class="material-symbols-outlined">add</span>
+                <h3>Add Inventory</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">remove</span>
+                <h3>Remove Inventory</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">visibility</span>
+                <h3>View Inventory</h3>
+            </a>
+            <h3>Admin</h3>
+            <a href="#">
+                <span class="material-symbols-outlined">groups</span>
+                <h3>User Management</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">folder</span>
+                <h3>Reports & Exports</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">tune</span>
+                <h3>Settings</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+    </aside>
+
+    <main>
+        <div id="contentArea"></div>
+    </main>
+</div>
+
+<script src="js/addinventory.js"></script>
+<script src="js/addFormSubmitHandler.js"></script>
+<script src="js/renderAddInventoryForm.js"></script>
+</body>
+</html>

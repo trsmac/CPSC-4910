@@ -234,3 +234,111 @@ aside .sidebar a:hover {
 aside .sidebar a:hover span {
     margin-left: 1rem;
 }
+/* ===== Add Inventory Form Styles ===== */
+.inventory-form {
+    background: var(--card-background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    padding: var(--card-padding);
+    margin: 20px;
+    max-width: 800px; /* Adjust width as needed */
+}
+
+.inventory-form h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Horizontal layout for form fields */
+.form-row {
+    display: flex;
+    gap: 15px; /* Space between fields */
+    align-items: flex-end; /* Align fields at the bottom */
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1; /* Each field takes equal space */
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--tertiary-color);
+    border-radius: var(--border-radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-color);
+    background: var(--background-color);
+    transition: border-color 0.3s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px; /* Adjust height as needed */
+}
+
+/* Button styling */
+.btn-primary {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--card-background-color);
+    background: var(--success-color);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background: #24b15f; /* Slightly darker shade for hover */
+}
+
+/* ===== Add Inventory Form Styles ===== */
+.inventory-form {
+    background: var(--card-background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    padding: var(--card-padding);
+    margin: 20px 0; /* Remove left/right margins to span full width */
+    width: 100%; /* Take full width of the parent container */
+    min-height: 100px;
+    max-width: none; /* Override any max-width restrictions */
+}
+
+/* Ensure the form content spans the full width */
+.form-row {
+    width: 100%;
+    min-height: 100px;
+}
+
+/* Adjust input/textarea fields to fill the space */
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    min-height: 100px;
+}
