@@ -241,7 +241,7 @@ aside .sidebar a:hover span {
     box-shadow: var(--card-box-shadow);
     padding: var(--card-padding);
     margin: 20px;
-    max-width: 800px; /* Adjust width as needed */
+    max-width: 800px;
 }
 
 .inventory-form h2 {
@@ -256,13 +256,13 @@ aside .sidebar a:hover span {
 /* Horizontal layout for form fields */
 .form-row {
     display: flex;
-    gap: 15px; /* Space between fields */
-    align-items: flex-end; /* Align fields at the bottom */
+    gap: 15px;
+    align-items: flex-end;
     margin-bottom: 15px;
 }
 
 .form-group {
-    flex: 1; /* Each field takes equal space */
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
@@ -296,7 +296,7 @@ aside .sidebar a:hover span {
 
 .form-group textarea {
     resize: vertical;
-    min-height: 100px; /* Adjust height as needed */
+    min-height: 100px;
 }
 
 /* Button styling */
@@ -315,7 +315,7 @@ aside .sidebar a:hover span {
 }
 
 .btn-primary:hover {
-    background: #24b15f; /* Slightly darker shade for hover */
+    background: #24b15f;
 }
 
 /* ===== Add Inventory Form Styles ===== */
@@ -324,19 +324,19 @@ aside .sidebar a:hover span {
     border-radius: var(--border-radius);
     box-shadow: var(--card-box-shadow);
     padding: var(--card-padding);
-    margin: 20px 0; /* Remove left/right margins to span full width */
-    width: 100%; /* Take full width of the parent container */
+    margin: 20px 0;
+    width: 100%;
     min-height: 100px;
-    max-width: none; /* Override any max-width restrictions */
+    max-width: none;
 }
 
-/* Ensure the form content spans the full width */
+
 .form-row {
     width: 100%;
     min-height: 100px;
 }
 
-/* Adjust input/textarea fields to fill the space */
+
 .form-group input,
 .form-group textarea {
     width: 100%;
