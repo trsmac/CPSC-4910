@@ -9,3 +9,7 @@ I wanted to try out the github feature.
 7a. You may have to enter name and email. (I entered Tiara and my utc email).
 7b. Select Push again.
 8. Check github to see if it was updated.
+9. Create a Pull Request
+10. Merge the pull request **I perfer Squash and merge**
+- DO NOT DELETE THE BRANCH
+11. View Changes.
