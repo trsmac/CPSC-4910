@@ -11,10 +11,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
 
     <!-- Style -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
     <div class="container">
+        <div class="dashboard-main-cards">
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Total Inventory</p>
+                    <span class="material-symbols-outlined text-blue">inventory_2</span>
+                </div>
+                <span class="text-primary font weight-bold">100</span>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Low Stock Items</p>
+                    <span class="material-symbols-outlined text-red">e911_emergency</span>
+                </div>
+                <span class="text-primary font weight-bold">13</span>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Zero Stock Items</p>
+                    <span class="material-symbols-outlined text-yello">block</span>
+                </div>
+                <span class="text-primary font weight-bold">6</span>
+            </div>
+
+        </div>
         <aside>
             <div class="menu">
                 <div class="logo">
@@ -69,6 +96,6 @@
             </div>
         </aside>
     </div>
-    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>
