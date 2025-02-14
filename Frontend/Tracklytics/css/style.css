@@ -1,3 +1,11 @@
+/*
+This sheet contains the CSS shell for the coding.
+(1) Use this as the base line.
+(2) When creating a new html file where we need to create the CSS style.
+ - We'll need to copy and paste this coding to a new sheet and use that.
+    - This came after the css file grew larger and was hard to keep up with.
+ */
+
 /* ------CSS Root------ */
 :root {
     --primary-color: #1E1E2D;
@@ -27,7 +35,7 @@
 
     --sidebar-width: 250px;
 }
-
+/*=============MAIN=============*/
 .menu {
     display: flex;
     justify-content: space-between; /* Ensures the close button and logo are spaced properly */
@@ -76,6 +84,7 @@ body{
     overflow-x: hidden;
 }
 
+/*sidebar*/
 .sidebar h2 {
     font-size: 12px;
     margin-top: -25px;
@@ -233,112 +242,4 @@ aside .sidebar a:hover {
 
 aside .sidebar a:hover span {
     margin-left: 1rem;
-}
-/* ===== Add Inventory Form Styles ===== */
-.inventory-form {
-    background: var(--card-background-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-box-shadow);
-    padding: var(--card-padding);
-    margin: 20px;
-    max-width: 800px;
-}
-
-.inventory-form h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Horizontal layout for form fields */
-.form-row {
-    display: flex;
-    gap: 15px;
-    align-items: flex-end;
-    margin-bottom: 15px;
-}
-
-.form-group {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-color);
-    margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--tertiary-color);
-    border-radius: var(--border-radius);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: var(--text-color);
-    background: var(--background-color);
-    transition: border-color 0.3s ease-in-out;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-/* Button styling */
-.btn-primary {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--card-background-color);
-    background: var(--success-color);
-    border: none;
-    border-radius: var(--border-radius);
-    padding: 12px;
-    width: 100%;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-}
-
-.btn-primary:hover {
-    background: #24b15f;
-}
-
-/* ===== Add Inventory Form Styles ===== */
-.inventory-form {
-    background: var(--card-background-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-box-shadow);
-    padding: var(--card-padding);
-    margin: 20px 0;
-    width: 100%;
-    min-height: 100px;
-    max-width: none;
-}
-
-
-.form-row {
-    width: 100%;
-    min-height: 100px;
-}
-
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    min-height: 100px;
 }
