@@ -1,11 +1,3 @@
-/*
-This sheet contains the CSS shell for the coding.
-(1) Use this as the base line.
-(2) When creating a new html file where we need to create the CSS style.
- - We'll need to copy and paste this coding to a new sheet and use that.
-    - This came after the css file grew larger and was hard to keep up with.
- */
-
 /* ------CSS Root------ */
 :root {
     --primary-color: #1E1E2D;
@@ -155,15 +147,16 @@ body{
 
 /* Container Layout */
 .container {
-    display: grid;
-    width: 99%;
-    margin: 0 auto;
+    display: flex;
+    width: 98%;
+    margin: auto;
     background: var(--background-color);
-    gap: 20px;
-    grid-template-columns: var(--sidebar-width) 1fr;
+    gap: 6px;
+    grid-template-columns: var(--sidebar-width) 6fr;
 }
 
 aside {
+    position: fixed;
     height: 100vh;
     background: var(--card-background-color); /* White for a clean, modern look */
     border-right: 1px solid var(--tertiary-color); /* Subtle separation */
@@ -249,8 +242,15 @@ aside .sidebar a:hover span {
 .dashboard-container {
     grid-area: main;
     overflow: auto;
-    padding: 20px 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers everything inside */
+    justify-content: flex-start; /* Keeps content properly structured */
+    width: calc(100% - var(--sidebar-width)); /* Adjusts width to prevent sidebar overlap */
+    margin-left: var(--sidebar-width); /* Prevents shifting due to fixed sidebar */
 }
+
 
 .dashboard-title {
     display: flex;
@@ -262,10 +262,13 @@ aside .sidebar a:hover span {
 }
 
 .dashboard-main-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center; /* Fully centers metric cards */
+    align-items: center;
+    max-width: 1500px; /* Keeps it from stretching too wide */
+    width: 100%;
 }
 
 .dashboard-card {
@@ -277,18 +280,21 @@ aside .sidebar a:hover span {
     box-sizing: border-box;
     border-radius: var(--border-radius);
     box-shadow: var(--card-box-shadow);
+    width: 350px;
+    height: 120px;
+    font-size: 25px;
 }
 /* Each Card Styling*/
 .dashboard-card:first-child {
-    border-left: 7px solid #246dec;
+    border-left: 15px solid #246dec;
 }
 
 .dashboard-card:nth-child(2) {
-    border-left: 7px solid #cc3c43;
+    border-left: 15px solid #cc3c43;
 }
 
 .dashboard-card:nth-child(3) {
-    border-left: 7px solid #f5b74f;
+    border-left: 15px solid #f5b74f;
 }
 
 .card > span {
@@ -303,8 +309,8 @@ aside .sidebar a:hover span {
 }
 
 .card-inner > p {
-    font-size: 18px;
+    font-size: 20px;
 }
 .card-inner > span {
-    font-size: 35px;
+    font-size: 32px;
 }
