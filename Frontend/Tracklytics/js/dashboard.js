@@ -1,11 +1,10 @@
-
 var barChartOptions = {
     series: [{
         data: [10, 8, 6, 4, 2]
     }],
     chart: {
         type: 'bar',
-        height: 350
+        height: 500,
         toolbar: {
             show: false
         }
@@ -24,10 +23,10 @@ var barChartOptions = {
     },
     legend: {
         show: false
-    }
+    },
     xaxis: {
-        categories: ['Product1', 'Product2', 'Product3', 'Product4', 'Product5'],
-    }
+        categories: ['1', '2', '3', '4', '5'],
+    },
     yaxis: {
         title: {
             text: "Count"
