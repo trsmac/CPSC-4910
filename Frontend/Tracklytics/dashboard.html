@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Trackalytics: Add Inventory</title>
+    <title>Trackalytics: Dashboard</title>
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
@@ -11,10 +11,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
 
     <!-- Style -->
-    <link rel="stylesheet" href="css/inventory.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 <div class="container">
+    <!-- Sidebar -->
     <aside>
         <div class="menu">
             <div class="logo">
@@ -28,7 +29,7 @@
 
         <div class="sidebar">
             <h3>Navigation</h3>
-            <a href="dashboard.html">
+            <a href="dashbord.html">
                 <span class="material-symbols-outlined">space_dashboard</span>
                 <h3>Dashboard</h3>
             </a>
@@ -37,7 +38,7 @@
                 <h3>Products</h3>
             </a>
             <h3>Inventory</h3>
-            <a id="addInventoryLink" href="#">
+            <a href="inventory.html">
                 <span class="material-symbols-outlined">add</span>
                 <h3>Add Inventory</h3>
             </a>
@@ -69,19 +70,52 @@
         </div>
     </aside>
 
+    <!-- Dashboard Cards -->
+    <main class="dashboard-container">
+        <div class="dashboard-main-cards">
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Total Inventory</p>
+                    <span class="material-symbols-outlined text-blue">inventory_2</span>
+                </div>
+                <span class="text-primary font-weight-bold">100</span>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Low Stock Items</p>
+                    <span class="material-symbols-outlined text-red">e911_emergency</span>
+                </div>
+                <span class="text-primary font-weight-bold">13</span>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Zero Stock Items</p>
+                    <span class="material-symbols-outlined text-yellow">block</span>
+                </div>
+                <span class="text-primary font-weight-bold">6</span>
+            </div>
+        </div>
+        <div class="charts">
+
+            <div class="chart-card">
+                <p class="chart-title">Top 5 Products</p>
+                <div id="bar-chart"></div>
+            </div>
+
+        </div>
+    </main>
     <main>
         <div id="contentArea"></div>
     </main>
 </div>
 
-<script src="addinventory.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        renderAddInventoryForm();
-    });
-</script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- Charts -->
 
-<script src="js/attachFormSubmitHandler.js"></script>
-<script src="js/renderAddInventoryForm.js"></script>
+<!-- JS -->
+<script src="js/dashboard.js"></script>
 </body>
 </html>
