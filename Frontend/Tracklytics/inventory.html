@@ -74,8 +74,14 @@
     </main>
 </div>
 
-<script src="js/addinventory.js"></script>
-<script src="js/addFormSubmitHandler.js"></script>
+<script src="addinventory.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        renderAddInventoryForm();
+    });
+</script>
+
+<script src="js/attachFormSubmitHandler.js"></script>
 <script src="js/renderAddInventoryForm.js"></script>
 </body>
 </html>
