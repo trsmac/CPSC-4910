@@ -281,7 +281,7 @@ aside .sidebar a:hover span {
 }
 
 .dashboard-main-cards {
-    margin-top: 60px;
+    margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
     gap: 100px;
