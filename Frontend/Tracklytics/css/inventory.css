@@ -280,15 +280,15 @@ aside .sidebar a:hover span {
 .form-group input,
 .form-group textarea {
     width: 100%;
+    height: 50px;
     padding: 10px;
+    font-size: 14px; /* Adjust the text size if desired */
     border: 1px solid var(--tertiary-color);
     border-radius: var(--border-radius);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: var(--text-color);
     background: var(--background-color);
     transition: border-color 0.3s ease-in-out;
 }
+
 
 .form-group input:focus,
 .form-group textarea:focus {
@@ -298,7 +298,7 @@ aside .sidebar a:hover span {
 
 .form-group textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 50px;
 }
 
 /* Button styling */
@@ -335,12 +335,5 @@ aside .sidebar a:hover span {
 
 .form-row {
     width: 100%;
-    min-height: 100px;
-}
-
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    min-height: 100px;
+    min-height: 60px;
 }
