@@ -148,7 +148,7 @@ body{
 /* Container Layout */
 .container {
     display: grid;
-    width: 99%;
+    width: 100%;
     margin: 0 auto;
     background: var(--background-color);
     gap: 20px;
@@ -203,7 +203,7 @@ aside .sidebar a span {
 
 aside .sidebar a:last-child {
     position: absolute;
-    bottom: 2rem;
+    bottom: 3.5rem;
     width: 100%;
 }
 
