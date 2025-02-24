@@ -244,6 +244,7 @@ aside .sidebar a:hover span {
     margin-left: 1rem;
 }
 
+/* Roles Container */
 .roles-container {
     padding: 20px;
 }
@@ -325,11 +326,18 @@ aside .sidebar a:hover span {
     cursor: pointer;
 }
 
+/* Permissions Styling */
 .permissions {
     display: flex;
     flex-direction: column;
     gap: 10px;
     text-align: left;
+}
+
+.permissions label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* Save Button */
