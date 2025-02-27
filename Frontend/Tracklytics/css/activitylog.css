@@ -1,0 +1,57 @@
+.activity-log-box {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    width: 100%;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.activity-log-box h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.user-selection {
+    margin-bottom: 20px;
+}
+
+.user-selection label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.activity-log table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.activity-log th, .activity-log td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold; /* Bold Text */
+}
+
+.activity-log th {
+    background: #f4f4f4;
+}
+
+.activity-log tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

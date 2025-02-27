@@ -2,19 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Trackalytics: Add Inventory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackalytics: Activity Log</title>
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
-    <!-- Google Fonts Inter&Poppins -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
 
-    <!-- Style -->
-    <link rel="stylesheet" href="css/inventory.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Activity Log CSS -->
+    <link rel="stylesheet" href="css/activitylog.css">
 </head>
 <body>
 <div class="container">
+    <!-- Sidebar -->
     <aside>
         <div class="menu">
             <div class="logo">
@@ -37,7 +42,7 @@
                 <h3>Products</h3>
             </a>
             <h3>Inventory</h3>
-            <a id="addInventoryLink" href="#">
+            <a href="inventory.html">
                 <span class="material-symbols-outlined">add</span>
                 <h3>Add Inventory</h3>
             </a>
@@ -73,19 +78,41 @@
         </div>
     </aside>
 
-    <main>
-        <div id="contentArea"></div>
+    <!-- Main Content -->
+    <main class="dashboard-container">
+        <div class="activity-log-box">
+            <h2>Activity Log</h2>
+
+            <!-- User Dropdown -->
+            <div class="user-selection">
+                <label for="userSelect">Select User:</label>
+                <select id="userSelect">
+                    <option value="" disabled selected>Select User</option>
+                    <option value="JohnDoe">John Doe</option>
+                    <option value="JaneSmith">Jane Smith</option>
+                    <option value="ChrisBrown">Chris Brown</option>
+                </select>
+            </div>
+
+            <div class="activity-log">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="activityLogBody">
+                    <!-- Logs will display here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
 </div>
 
-<script src="addinventory.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        renderAddInventoryForm();
-    });
-</script>
-
-<script src="js/attachFormSubmitHandler.js"></script>
-<script src="js/renderAddInventoryForm.js"></script>
+<!-- Link the JavaScript file -->
+<script src="js/activitylog.js"></script>
 </body>
 </html>
