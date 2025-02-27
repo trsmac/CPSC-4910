@@ -1,3 +1,11 @@
+/*
+This sheet contains the CSS shell for the coding.
+(1) Use this as the base line.
+(2) When creating a new html file where we need to create the CSS style.
+ - We'll need to copy and paste this coding to a new sheet and use that.
+    - This came after the css file grew larger and was hard to keep up with.
+ */
+
 /* ------CSS Root------ */
 :root {
     --primary-color: #1E1E2D;
@@ -147,16 +155,15 @@ body{
 
 /* Container Layout */
 .container {
-    display: flex;
-    width: 98%;
-    margin: auto;
+    display: grid;
+    width: 100%;
+    margin: 0 auto;
     background: var(--background-color);
-    gap: 6px;
-    grid-template-columns: var(--sidebar-width) 6fr;
+    gap: 20px;
+    grid-template-columns: var(--sidebar-width) 1fr;
 }
 
 aside {
-    position: fixed;
     height: 100vh;
     background: var(--card-background-color); /* White for a clean, modern look */
     border-right: 1px solid var(--tertiary-color); /* Subtle separation */
@@ -204,7 +211,7 @@ aside .sidebar a span {
 
 aside .sidebar a:last-child {
     position: absolute;
-    bottom: 2rem;
+    bottom: 3.5rem;
     width: 100%;
 }
 
@@ -239,18 +246,30 @@ aside .sidebar a:hover span {
 
 /*(2)============= DASHBOARD STYLES =============*/
 
+.dashboard-title {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px; /* Space between title and metrics */
+}
+
+.dashboard-title-text {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
 .dashboard-container {
-    grid-area: main;
     overflow: auto;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centers everything inside */
-    justify-content: flex-start; /* Keeps content properly structured */
-    width: calc(100% - var(--sidebar-width)); /* Adjusts width to prevent sidebar overlap */
-    margin-left: var(--sidebar-width); /* Prevents shifting due to fixed sidebar */
+    align-items: start;
+    justify-content: flex-start;
+    width: 100%;
 }
-
 
 .dashboard-title {
     display: flex;
@@ -262,12 +281,13 @@ aside .sidebar a:hover span {
 }
 
 .dashboard-main-cards {
+    margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 100px;
     justify-content: center; /* Fully centers metric cards */
     align-items: center;
-    max-width: 1500px; /* Keeps it from stretching too wide */
+    max-width: 1500px; /* Keeps it from stretching too wide - will auto move the card to the next line */
     width: 100%;
 }
 
@@ -278,10 +298,10 @@ aside .sidebar a:hover span {
     padding: 25px;
     background: var(--card-background-color);
     box-sizing: border-box;
-    border-radius: var(--border-radius);
+    border-radius: 5px;
     box-shadow: var(--card-box-shadow);
-    width: 300px;
-    height: 100px;
+    width: 350px; /* width of the cards */
+    height: 150px;
     font-size: 25px;
 }
 /* Each Card Styling*/
@@ -309,19 +329,25 @@ aside .sidebar a:hover span {
 }
 
 .card-inner > p {
-    font-size: 20px;
+    font-size: 25px; /* Metric Titles */
 }
 .card-inner > span {
-    font-size: 32px;
+    font-size: 40px;  /* Icons */
 }
+
 
 /* =====Charts===== */
 
 .charts {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centers the charts horizontally */
+    gap: 40px; /* Space between the charts */
+    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
+    align-items: center;
 }
+
 
 .charts-card {
     background-color: #FFFFFF;
@@ -338,6 +364,7 @@ aside .sidebar a:hover span {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 500;
+    margin-bottom: 15px;
 }
