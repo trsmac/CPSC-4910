@@ -78,6 +78,8 @@
         <h3>Select Role</h3>
         <ul>
           <li class="role-item active" data-role="admin">Admin</li>
+          <li class="role-item active" data-role="editor">Editor</li>
+          <li class="role-item active" data-role="viewer">Viewer</li>
         </ul>
       </div>
       <div class="roles-content">
@@ -85,7 +87,9 @@
           <h3>Admin Role</h3>
           <button id="editPermissionsBtn">Edit Permissions</button>
         </div>
-        <p>Manage what permissions this role has access to.</p>
+        <p class="role-description">
+          Has access to all organization resources, including dashboards, users, and teams.
+        </p>
 
         <!-- Modal Popup for Editing Permissions -->
         <div id="permissionsModal" class="modal">
