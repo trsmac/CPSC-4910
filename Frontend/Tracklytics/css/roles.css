@@ -344,15 +344,39 @@ aside .sidebar a:hover span {
     font-size: 14px;
 }
 
+/* Updated Lighter Green for "What this role can access" */
 .granted {
-    background: var(--success-color);
-    color: white;
+    background: #D4EDDA; /* Light green */
+    color: #155724; /* Darker green for contrast */
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    border-left: 5px solid #28A745; /* Adds a slight border for emphasis */
 }
 
+/* Updated Lighter Red for "What this role can't access" */
 .denied {
-    background: var(--failure-color);
-    color: white;
+    background: #F8D7DA; /* Light red */
+    color: #721C24; /* Darker red for contrast */
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    border-left: 5px solid #DC3545; /* Adds a slight border for emphasis */
 }
+/* Style the granted and denied permission lists */
+.granted ul, .denied ul {
+    list-style-type: none; /* Removes default bullets */
+    padding-left: 0;
+}
+
+.granted ul li::before,
+.denied ul li::before {
+    content: "- "; /* Adds dash before each item */
+    font-weight: bold;
+    color: inherit; /* Keeps the text color consistent */
+    margin-right: 5px;
+}
+
 
 /* Modal Styling */
 .modal {
