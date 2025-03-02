@@ -1,6 +1,7 @@
 //////////////////////////////////////////////////////
 // REQUIRE MODULES
 //////////////////////////////////////////////////////
+const mysql = require("mysql2"); // Directly use mysql2
 const pool = require("../services/db");
 
 //////////////////////////////////////////////////////
@@ -9,46 +10,45 @@ const pool = require("../services/db");
 const database = pool.config.connectionConfig.database;
 
 //////////////////////////////////////////////////////
-// SET DATABASE NAME TO NULL IN POOL CONFIG
-// 
-// This is necessary because the database must be created
+// CREATE A TEMPORARY CONNECTION WITHOUT A DATABASE
 //////////////////////////////////////////////////////
-pool.config.connectionConfig.database = null; // set database to null to create the database
+const tempConnection = mysql.createConnection({
+  host: pool.config.connectionConfig.host,
+  user: pool.config.connectionConfig.user,
+  password: pool.config.connectionConfig.password,
+});
 
 //////////////////////////////////////////////////////
 // DEFINE SQL STATEMENTS
 //////////////////////////////////////////////////////
-const CHECK_DB_SQL = `SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '${database}'`;
-const CREATE_DB_SQL = `CREATE DATABASE IF NOT EXISTS ${database}`;
+const CHECK_DB_SQL = `SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?`;
+const CREATE_DB_SQL = `CREATE DATABASE IF NOT EXISTS \`${database}\``;
 
 //////////////////////////////////////////////////////
 // RUN SQL STATEMENTS
-//
-// Check if database exists
 //////////////////////////////////////////////////////
-pool.query(CHECK_DB_SQL, (error, results) => {
+// Check if the database exists
+tempConnection.query(CHECK_DB_SQL, [database], (error, results) => {
   if (error) {
-    console.error('Error checking database:', error);
-    connection.release();
+    console.error("Error checking database:", error);
+    tempConnection.end(); // Close connection properly
     return;
   }
-  console.log('results:', results);
+
   if (results.length === 0) {
-    // If database does not exist, create it
-    console.log(`Database "${database}" does not exists`);
-    // Execute the SQL query to create the database
-    pool.query(CREATE_DB_SQL, (error, results) => {
+    console.log(`Database "${database}" does not exist. Creating...`);
+    tempConnection.query(CREATE_DB_SQL, (error) => {
       if (error) {
         console.error("Error creating database:", error);
       } else {
         console.log(`Database "${database}" has been created successfully`);
       }
+      tempConnection.end(); // Close connection after operation
       process.exit();
     });
-  }
-  else {
-    // Database already exists
+  } else {
     console.log(`Database "${database}" already exists`);
+    tempConnection.end(); // Close connection
     process.exit();
   }
 });
