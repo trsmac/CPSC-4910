@@ -6,10 +6,10 @@ This guide explains the process of setting up the MySQL database, connecting to 
 
 ## 1. **Navigate to the Backend Directory**
 
-Make sure you're in the `backend` directory of the project to execute the necessary commands:
+Make sure you're in the `Backend` directory of the project to execute the necessary commands:
 
 ```bash
-cd backend
+cd Backend
 ```
 
 ---
