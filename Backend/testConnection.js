@@ -1,4 +1,4 @@
-const pool = require('./src/configs/db.js');
+const pool = require('./src/services/db.js');
 
 pool.getConnection((err, connection) => {
   if (err) {
