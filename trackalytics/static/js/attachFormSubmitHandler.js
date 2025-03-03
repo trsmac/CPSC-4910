@@ -1,30 +1,30 @@
 function attachFormSubmitHandler() {
     const inventoryForm = document.getElementById("inventoryForm");
-    const inventoryTableBody = document.getElementById("inventoryTableBody");
-
-    // Prevent reattaching multiple event listeners
-    if (inventoryForm.dataset.listenerAttached) return;
-    inventoryForm.dataset.listenerAttached = "true";
+    const inventoryDisplay = document.getElementById("inventoryDisplay");
+    const inventoryData = [];
 
     inventoryForm.addEventListener("submit", (event) => {
         event.preventDefault();
 
         const productName = document.getElementById("productName").value;
         const productQuantity = document.getElementById("productQuantity").value;
-        const productDescription = document.getElementById("productDescription").value || "N/A";
+        const productDescription = document.getElementById("productDescription").value;
 
-        // Create a new row for the table
-        const newRow = document.createElement("tr");
-        newRow.innerHTML = `
-            <td style="padding: 10px;">${productName}</td>
-            <td style="padding: 10px;">${productQuantity}</td>
-            <td style="padding: 10px;">${productDescription}</td>
-        `;
+        // Add the product to the inventory array
+        inventoryData.push({ name: productName, quantity: productQuantity, description: productDescription });
 
-        // Append the new row to the table
-        inventoryTableBody.appendChild(newRow);
+        // Display the updated inventory
+        inventoryDisplay.innerHTML = "<h3>Current Inventory:</h3>";
+        inventoryData.forEach((item, index) => {
+            inventoryDisplay.innerHTML += `
+                <p>
+                    <strong>${item.name}</strong> - Quantity: ${item.quantity} <br> 
+                    Description: ${item.description}
+                </p>
+            `;
+        });
 
-        // Reset the form fields
+        // Reset the form
         inventoryForm.reset();
     });
 }
