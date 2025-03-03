@@ -47,4 +47,8 @@ except Exception as e:
     print(f"❌ Error: {e}")
 EOF
 
+# Step 5: Run the Django development server
+echo "🚀 Starting Django development server..."
+python manage.py runserver
+
 echo "✅ Setup complete! 🎉"
