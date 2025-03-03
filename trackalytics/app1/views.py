@@ -1,5 +1,7 @@
+# app1/views.py
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import ActivityLog, Product, Inventory, InventoryHistory
+from django.db.models import Q  # For combining queries
 
 # Root index view
 def index(request):
@@ -79,3 +81,15 @@ def view_inventory(request, inventory_id):
     # Fetch the inventory item or return a 404 if not found
     inventory_item = get_object_or_404(Inventory, id=inventory_id)
     return render(request, 'view_inventory.html', {'inventory_item': inventory_item})
+
+# Add this search functionality
+def search_inventory(request):
+    query = request.GET.get('q', '')  # Get the search term from the query string
+    results = []
+
+    if query:
+        results = Inventory.objects.filter(
+            Q(serial_number__icontains=query) | Q(batch_number__icontains=query)
+        ).distinct()  # Search for matching serial_number or batch_number
+
+    return render(request, 'search_inventory.html', {'results': results, 'query': query})

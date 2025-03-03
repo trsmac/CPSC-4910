@@ -1,5 +1,4 @@
-# trackalytics/app1/models.py
-
+# app1/models.py
 from django.db import models
 
 # Products Table
@@ -13,8 +12,8 @@ class Product(models.Model):
 # Inventory Table
 class Inventory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    batch_number = models.CharField(max_length=100, blank=True, null=True)
-    serial_number = models.CharField(max_length=100, unique=True)
+    batch_number = models.CharField(max_length=100, blank=True, null=True, db_index=True)
+    serial_number = models.CharField(max_length=100, unique=True, db_index=True)
     quantity = models.IntegerField(default=0)
     location = models.CharField(max_length=255, blank=True, null=True)
     last_updated = models.DateTimeField(auto_now=True)

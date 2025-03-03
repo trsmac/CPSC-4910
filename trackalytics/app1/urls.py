@@ -14,4 +14,5 @@ urlpatterns = [
     path('activitylog/', views.activitylog, name='activitylog'),  # Change from activitylog.html to activitylog
     path('product_list/', views.product_list, name='product_list'),  # Change from product_list.html to product_list
     path('inventory_history/', views.inventory_history, name='inventory_history'),  # Change from inventory_history.html to inventory_history
+    path('search/', views.search_inventory, name='search_inventory'),
 ]
