@@ -33,7 +33,7 @@
 
         <div class="sidebar">
             <h3>Navigation</h3>
-            <a href="dashboard.html">
+            <a href="{% url 'dashboard' %}">
                 <span class="material-symbols-outlined">space_dashboard</span>
                 <h3>Dashboard</h3>
             </a>
@@ -42,10 +42,10 @@
                 <h3>Products</h3>
             </a>
             <h3>Inventory</h3>
-            <a href="inventory.html">
+            <a href="#addInventoryLink" id="addInventoryLink">
                 <span class="material-symbols-outlined">add</span>
                 <h3>Add Inventory</h3>
-            </a>
+            </a>       
             <a href="#">
                 <span class="material-symbols-outlined">remove</span>
                 <h3>Remove Inventory</h3>
@@ -77,5 +77,6 @@
 
 <!-- Scripts -->
 <script src="{% static 'js/dashboard.js' %}"></script>
+<script src="{% static 'js/addinventory.js' %}"></script>
 </body>
 </html>

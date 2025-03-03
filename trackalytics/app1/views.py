@@ -1,5 +1,3 @@
-# app1/views.py
-
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import ActivityLog, Product, Inventory, InventoryHistory
 
@@ -45,6 +43,12 @@ def add_inventory(request):
         # Create a new inventory item
         Inventory.objects.create(product_name=product_name, quantity=quantity)
 
+        # Log the action
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f'Added inventory: {product_name} - Quantity: {quantity}'
+        )
+
         # Redirect to the inventory page after adding
         return redirect('inventory')
 
@@ -57,6 +61,12 @@ def remove_inventory(request, inventory_id):
         # Find the inventory item by its ID and delete it
         inventory_item = Inventory.objects.get(id=inventory_id)
         inventory_item.delete()
+
+        # Log the action
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f'Removed inventory: {inventory_item.product_name}'
+        )
 
         # Redirect to the inventory page after removal
         return redirect('inventory')
