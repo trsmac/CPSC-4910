@@ -1,4 +1,5 @@
 # app1/models.py
+
 from django.db import models
 
 # Products Table
@@ -51,9 +52,12 @@ class User(models.Model):
 
 # Activity Logs Table
 class ActivityLog(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Set default to a specific user (ID 1)
     action = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.action} on {self.timestamp}"
 
 # Report Exports Table
 class ReportExport(models.Model):
