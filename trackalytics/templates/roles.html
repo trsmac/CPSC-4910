@@ -33,7 +33,7 @@
 
     <div class="sidebar">
       <h3>Navigation</h3>
-      <a href="dashboard.html">
+      <a href="{% url 'dashboard' %}">Dashboard</a>
         <span class="material-symbols-outlined">space_dashboard</span>
         <h3>Dashboard</h3>
       </a>
@@ -42,7 +42,7 @@
         <h3>Products</h3>
       </a>
       <h3>Inventory</h3>
-      <a href="inventory.html">
+      <a href="{% url 'inventory' %}">Inventory</a>
         <span class="material-symbols-outlined">add</span>
         <h3>Add Inventory</h3>
       </a>
@@ -63,7 +63,7 @@
         <span class="material-symbols-outlined">folder</span>
         <h3>Reports & Exports</h3>
       </a>
-      <a href="activitylog.html">
+      <a href="{% url 'activitylog' %}">
         <span class="material-symbols-outlined">history</span>
         <h3>Activity Log</h3>
       </a>
