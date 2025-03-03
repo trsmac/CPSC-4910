@@ -7,6 +7,7 @@ from io import BytesIO
 from io import StringIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from datetime import datetime
 import csv
 
 # Root index view
@@ -53,14 +54,11 @@ def add_inventory(request):
         product_name = request.POST.get('product_name')
         quantity = request.POST.get('quantity')
 
-        # Create a new inventory item
-        Inventory.objects.create(product_name=product_name, quantity=quantity)
+        # Create new inventory item
+        inventory_item = Inventory.objects.create(product_name=product_name, quantity=quantity)
 
-        # Log the action
-        ActivityLog.objects.create(
-            user=request.user,
-            action=f'Added inventory: {product_name} - Quantity: {quantity}'
-        )
+        # Log the action using the helper function
+        log_user_action(request.user, f"Added new inventory item: {product_name} (Quantity: {quantity})")
 
         # Redirect to the inventory page after adding
         return redirect('inventory')
@@ -71,25 +69,23 @@ def add_inventory(request):
 # Remove Inventory view
 def remove_inventory(request, inventory_id):
     try:
-        # Find the inventory item by its ID and delete it
+        
         inventory_item = Inventory.objects.get(id=inventory_id)
         inventory_item.delete()
-
-        # Log the action
+        
         ActivityLog.objects.create(
             user=request.user,
             action=f'Removed inventory: {inventory_item.product_name}'
         )
 
-        # Redirect to the inventory page after removal
         return redirect('inventory')
+
     except Inventory.DoesNotExist:
-        # If the item does not exist, render the inventory page with an error message
+
         return render(request, 'inventory.html', {'error': 'Inventory item not found.'})
 
 # View Inventory details
 def view_inventory(request, inventory_id):
-    # Fetch the inventory item or return a 404 if not found
     inventory_item = get_object_or_404(Inventory, id=inventory_id)
     return render(request, 'view_inventory.html', {'inventory_item': inventory_item})
 
@@ -176,3 +172,11 @@ def export_traceability_report_pdf(request, product_id):
     response['Content-Disposition'] = f'attachment; filename="{product.product_name}_traceability_report.pdf"'
 
     return response
+
+# Helper function to log user actions
+def log_user_action(user, action):
+    ActivityLog.objects.create(
+        user=user,
+        action=action,
+        timestamp=datetime.now()  # The timestamp will automatically be set
+    )
