@@ -21,5 +21,8 @@
     git commit -m "Describe the changes"
 
     # Push Changes
-    git push origin <branch-name>
+    git push origin main
+
+    # Pull Chnages
+    git push origin main
     ```
