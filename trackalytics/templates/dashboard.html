@@ -1,0 +1,134 @@
+<!-- templates/dashboard.html  -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trackalytics: Dashboard</title>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <!-- Google Fonts Inter & Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+<div class="container">
+    <!-- Sidebar -->
+    <aside>
+        <div class="menu">
+            <div class="logo">
+                <img src="{% static 'images/logo.png' %}" alt="logo">
+                <h2>Trackalytics</h2>
+            </div>
+            <div class="close" id="close-btn">
+                <span class="material-symbols-outlined">close</span>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <h3>Navigation</h3>
+            <a href="{% url 'dashboard' %}">
+                <span class="material-symbols-outlined">space_dashboard</span>
+                <h3>Dashboard</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <h3>Products</h3>
+            </a>
+            <h3>Inventory</h3>
+            <a href="{% url 'inventory' %}">
+                <span class="material-symbols-outlined">add</span>
+                <h3>Add Inventory</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">remove</span>
+                <h3>Remove Inventory</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">visibility</span>
+                <h3>View Inventory</h3>
+            </a>
+            <h3>Admin</h3>
+            <a href="roles.html">
+                <span class="material-symbols-outlined">groups</span>
+                <h3>User Management</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">folder</span>
+                <h3>Reports & Exports</h3>
+            </a>
+            <a href="{% url 'activitylog' %}">
+                <span class="material-symbols-outlined">history</span>
+                <h3>Activity Log</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">tune</span>
+                <h3>Settings</h3>
+            </a>
+            <a href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Dashboard Cards -->
+    <main class="dashboard-container">
+        <div class="dashboard-title">
+            <h1 class="dashboard-title-text">Dashboard Overview</h1>
+        </div>
+
+        <div class="dashboard-main-cards">
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Total Inventory</p>
+                    <span class="material-symbols-outlined text-blue">inventory_2</span>
+                </div>
+                <span class="text-primary font-weight-bold">100</span>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Low Stock Items</p>
+                    <span class="material-symbols-outlined text-red">e911_emergency</span>
+                </div>
+                <span class="text-primary font-weight-bold">13</span>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Zero Stock Items</p>
+                    <span class="material-symbols-outlined text-yellow">block</span>
+                </div>
+                <span class="text-primary font-weight-bold">6</span>
+            </div>
+        </div>
+        <div class="charts">
+            <div class="chart-card">
+                <p class="chart-title">Top 5 Products</p>
+                <div id="bar-chart"></div>
+            </div>
+
+            <div class="chart-card">
+                <p class="chart-title">Overall Inventory</p>
+                <div id="area-chart"></div>
+            </div>
+        </div>
+    </main>
+    <main>
+        <div id="contentArea"></div>
+    </main>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<!-- JS -->
+<script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

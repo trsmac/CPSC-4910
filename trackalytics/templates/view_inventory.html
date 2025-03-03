@@ -1,0 +1,13 @@
+<!-- trackalytics/templates/view_inventory.html -->
+
+<h2>Inventory Details</h2>
+
+<div>
+    <p><strong>Product Name:</strong> {{ inventory_item.product_name }}</p>
+    <p><strong>Quantity:</strong> {{ inventory_item.quantity }}</p>
+    <p><strong>Price:</strong> {{ inventory_item.price }}</p>
+    <p><strong>Description:</strong> {{ inventory_item.description }}</p>
+    <!-- Add any other fields you want to display -->
+</div>
+
+<a href="{% url 'inventory' %}">Back to Inventory List</a>

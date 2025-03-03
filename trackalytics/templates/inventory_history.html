@@ -1,0 +1,45 @@
+<!-- templates/inventory_history.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory History</title>
+</head>
+<body>
+    <h1>Inventory History</h1>
+    <p>Here you can view the history of inventory actions (received, sold, damaged, adjustments).</p>
+    
+    <!-- Add link to traceability report -->
+    <a href="{% url 'traceability_report' product.id %}">View Traceability Report for {{ product.product_name }}</a>
+    
+    <!-- Option to export the history report -->
+    <br>
+    <a href="{% url 'export_traceability_report_csv' product.id %}">Export to CSV</a>
+    <br>
+    <a href="{% url 'export_traceability_report_pdf' product.id %}">Export to PDF</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Quantity</th>
+                <th>Transaction Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for history in inventory_history %}
+                <tr>
+                    <td>{{ history.get_action_display }}</td>
+                    <td>{{ history.quantity }}</td>
+                    <td>{{ history.transaction_date }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No history found for this product.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

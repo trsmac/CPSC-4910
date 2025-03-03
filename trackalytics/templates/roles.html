@@ -1,0 +1,138 @@
+<!-- templates/roles.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trackalytics: Dashboard</title>
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <!-- Google Fonts Inter&Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Style -->
+  <link rel="stylesheet" href="{% static 'css/roles.css' %}">
+</head>
+<body>
+<div class="container">
+  <!-- Sidebar -->
+  <aside>
+    <div class="menu">
+      <div class="logo">
+        <img src="{% static 'images/logo.png' %}" alt="logo">
+        <h2>Trackalytics</h2>
+      </div>
+      <div class="close" id="close-btn">
+        <span class="material-symbols-outlined">close</span>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <h3>Navigation</h3>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+        <span class="material-symbols-outlined">space_dashboard</span>
+        <h3>Dashboard</h3>
+      </a>
+      <a href="#">
+        <span class="material-symbols-outlined">inventory_2</span>
+        <h3>Products</h3>
+      </a>
+      <h3>Inventory</h3>
+      <a href="{% url 'inventory' %}">Inventory</a>
+        <span class="material-symbols-outlined">add</span>
+        <h3>Add Inventory</h3>
+      </a>
+      <a href="#">
+        <span class="material-symbols-outlined">remove</span>
+        <h3>Remove Inventory</h3>
+      </a>
+      <a href="#">
+        <span class="material-symbols-outlined">visibility</span>
+        <h3>View Inventory</h3>
+      </a>
+      <h3>Admin</h3>
+      <a href="#">
+        <span class="material-symbols-outlined">groups</span>
+        <h3>User Management</h3>
+      </a>
+      <a href="#">
+        <span class="material-symbols-outlined">folder</span>
+        <h3>Reports & Exports</h3>
+      </a>
+      <a href="{% url 'activitylog' %}">
+        <span class="material-symbols-outlined">history</span>
+        <h3>Activity Log</h3>
+      </a>
+      <a href="#">
+        <span class="material-symbols-outlined">tune</span>
+        <h3>Settings</h3>
+      </a>
+      <a href="#">
+        <span class="material-symbols-outlined">logout</span>
+        <h3>Logout</h3>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Roles & Permissions Content -->
+  <main class="roles-container">
+    <h1 class="roles-title">Roles & Permissions</h1>
+    <div class="roles-card">
+      <div class="roles-list">
+        <h3>Select Role</h3>
+        <ul>
+          <li class="role-item active" data-role="admin">Admin</li>
+          <li class="role-item active" data-role="editor">Editor</li>
+          <li class="role-item active" data-role="viewer">Viewer</li>
+        </ul>
+      </div>
+      <div class="roles-content">
+        <div class="role-header">
+          <h3>Admin Role</h3>
+          <button id="editPermissionsBtn">Edit Permissions</button>
+        </div>
+        <p class="role-description">
+          Has access to all organization resources, including dashboards, users, and teams.
+        </p>
+
+        <!-- Modal Popup for Editing Permissions -->
+        <div id="permissionsModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Edit Permissions</h3>
+            <div class="permissions">
+              <label><input type="checkbox" class="perm" value="dashboard1"> View Dashboard 1</label>
+              <label><input type="checkbox" class="perm" value="dashboard2"> View Dashboard 2</label>
+              <label><input type="checkbox" class="perm" value="dashboard3"> View Dashboard 3</label>
+              <label><input type="checkbox" class="perm" value="edit_inventory"> Add & Edit Inventory</label>
+              <label><input type="checkbox" class="perm" value="delete_inventory"> Delete Inventory</label>
+              <label><input type="checkbox" class="perm" value="edit_roles"> Edit Roles</label>
+              <label><input type="checkbox" class="perm" value="export_import"> Export & Import Reports</label>
+            </div>
+            <button id="savePermissions">Save</button>
+          </div>
+        </div>
+
+        <div class="access-lists">
+          <div class="granted">
+            <h4>What this role can access</h4>
+            <ul id="granted-list"></ul>
+          </div>
+          <div class="denied">
+            <h4>What this role can't access</h4>
+            <ul id="denied-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Script -->
+<script src="{% static 'js/role.js' %}"></script>
+</body>
+</html>
