@@ -1,188 +1,60 @@
-# Trackalytics - Django Web Application
+# Trackalytics - Django Web Application 
 
-Trackalytics is a Django-based web application that helps you manage inventory, track activities, and view products. This guide provides instructions on how to set up and run the project on Windows, macOS, and Ubuntu Linux.
+Trackalytics is a Django-based web application designed to manage inventory, track activities, and view products. This guide will show you how to set up and run the project using **GitHub Codespaces** (Ubuntu environment).
 
-## Prerequisites
+**Table of Contents**
 
-Before you can run this project, make sure you have the following installed:
+1. [Installation and Setup Steps](#installation-and-setup-steps-using-github-codespaces-ubuntu)
+2. [Project Structure](#project-structure)
+3. [Testing](#testing)
 
-- **Python** (>= 3.8)
-- **pip** (Python package manager)
-- **Django** (>= 3.x)
-- **SQLite** (pre-installed with Python)
+## Installation and Setup Steps using GitHub Codespaces (Ubuntu)
 
-You will also need a code editor (e.g., Visual Studio Code, PyCharm) and access to a terminal or command prompt.
+### Step 1: Open GitHub Codespace
 
-## Installation Steps
+1. Navigate to your GitHub repository where **Trackalytics** is hosted.
+2. Click the green "Code" button, then select "Open with Codespaces" to open a new or existing Codespace.
 
-Follow these steps depending on your operating system.
+### Step 2: Run the Setup Script
 
----
+Once your Codespace is up and running, execute the following commands in the terminal within the Codespace environment to set up your project:
 
-### Windows
+**Make the setup script executable**
 
-1. **Install Python**
-   - Download the latest Python version from the official Python website.
-   - During installation, make sure to check the option **"Add Python to PATH"**.
+   ```bash
+   chmod +x setup_project.sh
+   ```
 
-2. **Install pip**
-   - `pip` should come with Python. To verify, open Command Prompt and run:
-     ```bash
-     pip --version
-     ```
+**Run the setup script**
 
-3. **Clone the Project Repository**
-   - Open Command Prompt and run the following command to clone the project from GitHub:
-     ```bash
-     git clone <repository-url>
-     ```
+   ```bash
+   ./setup_project.sh
+   ```
 
-4. **Navigate to the Project Directory**
-   - Change to the project folder:
-     ```bash
-     cd trackalytics
-     ```
+### Step 3: Access the Application
 
-5. **Install Dependencies**
-   - Install the required Python packages:
-     ```bash
-     pip install -r requirements.txt
-     ```
+Once the setup script finishes running, you can access the Trackalytics web application by visiting:
+```
+http://127.0.0.1:8000/
+```
 
-6. **Run the Development Server**
-   - After installing the dependencies, you can run the Django development server:
-     ```bash
-     python manage.py runserver
-     ```
+## Project Structure
 
-7. **Access the App**
-   - Open your browser and go to `http://localhost:8000` to view the app.
+Here is an overview of the key files and directories in the project:
 
-8. **View the Database**
-   - To view your SQLite database, you can use the `sqlite3` command-line tool. Open Command Prompt and run:
-     ```bash
-     sqlite3 db.sqlite3
-     ```
-   - Once inside the SQLite shell, you can execute SQL commands to view your data. For example, to view all tables, run:
-     ```sql
-     .tables
-     ```
+- `trackalytics/` - Main project directory containing settings and configurations.
+- `trackalytics/app1/` - Django app where the core business logic resides (models, views, etc.).
+- `trackalytics/static/` - Static files (CSS, JavaScript, and images) used throughout the application.
+- `trackalytics/templates/` - HTML templates for rendering web pages.
+- `trackalytics/db.sqlite3` - SQLite database file (default).
+- `trackalytics/setup_project.sh` - A shell script that automates the setup process, including making the necessary files executable, installing dependencies, and running the setup steps to prepare the project for use.
 
----
+## Testing
 
-### macOS
+To run the tests for this project:
 
-1. **Install Python**
-   - macOS usually comes with Python pre-installed. To verify, open Terminal and run:
-     ```bash
-     python3 --version
-     ```
+Run tests using Django's test framework:
 
-2. **Install pip**
-   - If pip is not installed, you can install it using:
-     ```bash
-     sudo easy_install pip
-     ```
-
-3. **Clone the Project Repository**
-   - Open Terminal and run the following command to clone the project from GitHub:
-     ```bash
-     git clone <repository-url>
-     ```
-
-4. **Navigate to the Project Directory**
-   - Change to the project folder:
-     ```bash
-     cd trackalytics
-     ```
-
-5. **Install Dependencies**
-   - Install the required Python packages:
-     ```bash
-     pip3 install -r requirements.txt
-     ```
-
-6. **Run the Development Server**
-   - After installing the dependencies, you can run the Django development server:
-     ```bash
-     python3 manage.py runserver
-     ```
-
-7. **Access the App**
-   - Open your browser and go to `http://localhost:8000` to view the app.
-
-8. **View the Database**
-   - To view your SQLite database, you can use the `sqlite3` command-line tool. Open Terminal and run:
-     ```bash
-     sqlite3 db.sqlite3
-     ```
-   - Once inside the SQLite shell, you can execute SQL commands to view your data. For example, to view all tables, run:
-     ```sql
-     .tables
-     ```
-
----
-
-### Ubuntu Linux
-
-1. **Install Python**
-   - Ubuntu should come with Python pre-installed. Verify it by running:
-     ```bash
-     python3 --version
-     ```
-
-2. **Install pip**
-   - If pip is not installed, you can install it by running:
-     ```bash
-     sudo apt update
-     sudo apt install python3-pip
-     ```
-
-3. **Clone the Project Repository**
-   - Open a terminal and run the following command to clone the project from GitHub:
-     ```bash
-     git clone <repository-url>
-     ```
-
-4. **Navigate to the Project Directory**
-   - Change to the project folder:
-     ```bash
-     cd trackalytics
-     ```
-
-5. **Install Dependencies**
-   - Install the required Python packages:
-     ```bash
-     pip3 install -r requirements.txt
-     ```
-
-6. **Run the Development Server**
-   - After installing the dependencies, you can run the Django development server:
-     ```bash
-     python3 manage.py runserver
-     ```
-
-7. **Access the App**
-   - Open your browser and go to `http://localhost:8000` to view the app.
-
-8. **View the Database**
-   - To view your SQLite database, you can use the `sqlite3` command-line tool. Open Terminal and run:
-     ```bash
-     sqlite3 db.sqlite3
-     ```
-   - Once inside the SQLite shell, you can execute SQL commands to view your data. For example, to view all tables, run:
-     ```sql
-     .tables
-     ```
-
----
-
-## Additional Information
-
-### Database Setup
-
-This project uses SQLite by default, which comes pre-configured with Django. However, if you need to change the database or set up another one (e.g., MySQL), you can modify the settings in the `settings.py` file.
-
-To create the necessary database tables and migrate the models, run:
 ```bash
-python manage.py migrate
+python manage.py test
+```
