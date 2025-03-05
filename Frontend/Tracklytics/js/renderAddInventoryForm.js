@@ -2,37 +2,51 @@ function renderAddInventoryForm() {
     const contentArea = document.getElementById("contentArea");
 
     contentArea.innerHTML = `
-        <div class="inventory-form card" style="width: 80%; margin: auto; padding: 20px;">
-            <h2 style="text-align: center;">Add New Product to Inventory</h2>
-            <form id="inventoryForm">
-                <div class="form-row" style="display: flex; gap: 10px;">
-                    <div class="form-group" style="flex: 1;">
-                        <label for="productName">Product Name:</label>
-                        <input type="text" id="productName" required style="height: 30px; padding: 5px;">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label for="productQuantity">Quantity:</label>
-                        <input type="number" id="productQuantity" min="1" required style="height: 30px; padding: 5px;">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label for="productDescription">Description:</label>
-                        <input type="text" id="productDescription" placeholder="Optional" style="height: 30px; padding: 5px;">
-                    </div>
-                </div>
-                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Add Product</button>
-            </form>
+        <div class="inventory-form card">
+            <h2 style="text-align: center;">Add New Item to Inventory</h2>
 
-            <h3 style="margin-top: 20px;">Current Inventory:</h3>
-            <table id="inventoryTable" border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <table id="inventoryTable" border="1">
                 <thead>
                     <tr>
-                        <th style="padding: 10px;">Item</th>
-                        <th style="padding: 10px;">Quantity</th>
-                        <th style="padding: 10px;">Description</th>
+                        <th></th> <!-- Blank Space -->
+                        <th>Item</th>
+                        <th>Item No.</th>
+                        <th>Batch No.</th>
+                        <th>Batch Name</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                        <th></th> <!-- Blank Space -->
                     </tr>
                 </thead>
-                <tbody id="inventoryTableBody"></tbody>
+                <tbody>
+                    <!-- Row 1: Entry Fields -->
+                    <tr class="entry-row">
+                        <td></td> <!-- Blank Space -->
+                        <td><input type="text" id="itemName" placeholder="Item"></td>
+                        <td><input type="text" id="itemNo" placeholder="Item No."></td>
+                        <td><input type="text" id="batchNo" placeholder="Batch No."></td>
+                        <td><input type="text" id="batchName" placeholder="Batch Name"></td>
+                        <td><input type="number" id="quantity" placeholder="Quantity"></td>
+                        <td><input type="text" id="description" placeholder="Description"></td>
+                        <td>
+                            <button id="addItemButton" class="save-icon">
+                                <span class="material-symbols-outlined">save</span>
+                            </button>
+                        </td>
+                        <td></td> <!-- Blank Space -->
+                    </tr>
+                </tbody>
+                <tbody id="inventoryTableBody">
+                    <!-- Inventory rows will be added here dynamically -->
+                </tbody>
             </table>
+
+            <!-- Buttons Row -->
+            <div class="form-buttons">
+                <button type="button" id="searchButton">Search</button>
+                <button type="button" id="clearButton" class="btn-danger">Clear</button>
+            </div>
         </div>
     `;
 

@@ -236,104 +236,67 @@ aside .sidebar a:hover span {
     margin-left: 1rem;
 }
 
-/* ===== Add Inventory Form Styles ===== */
+/* ===== Inventory Form Table ===== */
 .inventory-form {
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
     background: var(--card-background-color);
+    padding: var(--card-padding);
     border-radius: var(--border-radius);
     box-shadow: var(--card-box-shadow);
-    padding: var(--card-padding);
-    margin: 20px;
-    max-width: 800px;
 }
 
 .inventory-form h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 20px;
     text-align: center;
-}
-
-/* Horizontal layout for form fields */
-.form-row {
-    display: flex;
-    gap: 15px;
-    align-items: flex-end;
+    font-size: 20px;
     margin-bottom: 15px;
 }
 
-.form-group {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-color);
-    margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group textarea {
+/* ===== Table Styles ===== */
+#inventoryTable {
     width: 100%;
-    height: 50px;
-    padding: 10px;
-    font-size: 14px; /* Adjust the text size if desired */
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background: #f4f4f4;
+}
+
+/* ===== Entry Fields Inside Table ===== */
+.entry-row input {
+    width: 100%;
+    padding: 8px;
     border: 1px solid var(--tertiary-color);
     border-radius: var(--border-radius);
     background: var(--background-color);
-    transition: border-color 0.3s ease-in-out;
 }
 
-
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 50px;
-}
-
-/* Button styling */
-.btn-primary {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--card-background-color);
+/* ===== Save Icon Styling ===== */
+.save-icon {
     background: var(--success-color);
+    color: white;
     border: none;
+    padding: 6px 10px;
     border-radius: var(--border-radius);
-    padding: 12px;
-    width: 100%;
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-primary:hover {
+.save-icon:hover {
     background: #24b15f;
 }
 
-/* ===== Add Inventory Form Styles ===== */
-.inventory-form {
-    background: var(--card-background-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-box-shadow);
-    padding: var(--card-padding);
-    margin: 20px 0;
-    width: 100%;
-    min-height: 100px;
-    max-width: none;
-}
-
-
-.form-row {
-    width: 100%;
-    min-height: 60px;
+.material-icons {
+    font-size: 20px;
+    color: white;
 }

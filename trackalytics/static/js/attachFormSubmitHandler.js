@@ -1,55 +1,30 @@
 function attachFormSubmitHandler() {
     const inventoryForm = document.getElementById("inventoryForm");
     const inventoryTableBody = document.getElementById("inventoryTableBody");
-    const clearButton = document.getElementById("clearButton");
 
-    if (!inventoryForm || !inventoryTableBody) {
-        console.error("Form or Table not found!");
-        return;
-    }
-
-    let itemNumberSet = new Set();
+    // Prevent reattaching multiple event listeners
+    if (inventoryForm.dataset.listenerAttached) return;
+    inventoryForm.dataset.listenerAttached = "true";
 
     inventoryForm.addEventListener("submit", (event) => {
         event.preventDefault();
 
-        const itemName = document.getElementById("itemName").value;
-        const itemNo = document.getElementById("itemNo").value;
-        const batchNo = document.getElementById("batchNo").value || "N/A";
-        const batchName = document.getElementById("batchName").value || "N/A";
-        const quantity = document.getElementById("quantity").value;
-        const description = document.getElementById("description").value || "N/A";
+        const productName = document.getElementById("productName").value;
+        const productQuantity = document.getElementById("productQuantity").value;
+        const productDescription = document.getElementById("productDescription").value || "N/A";
 
-        if (!itemName || !itemNo || !quantity) {
-            alert("Item, Item No., and Quantity are required.");
-            return;
-        }
-
-        // Check for duplicate Item No.
-        if (itemNumberSet.has(itemNo)) {
-            alert("Error: Item No. already exists in the inventory.");
-            return;
-        }
-        itemNumberSet.add(itemNo);
-
-        const rowCount = inventoryTableBody.rows.length + 1;
-
+        // Create a new row for the table
         const newRow = document.createElement("tr");
         newRow.innerHTML = `
-            <td>${rowCount}</td>
-            <td>${itemName}</td>
-            <td>${itemNo}</td>
-            <td>${batchNo}</td>
-            <td>${batchName}</td>
-            <td>${quantity}</td>
-            <td>${description}</td>
+            <td style="padding: 10px;">${productName}</td>
+            <td style="padding: 10px;">${productQuantity}</td>
+            <td style="padding: 10px;">${productDescription}</td>
         `;
 
+        // Append the new row to the table
         inventoryTableBody.appendChild(newRow);
-        inventoryForm.reset();
-    });
 
-    clearButton.addEventListener("click", () => {
+        // Reset the form fields
         inventoryForm.reset();
     });
 }
