@@ -1,30 +1,56 @@
 function attachFormSubmitHandler() {
-    const inventoryForm = document.getElementById("inventoryForm");
+    const addItemButton = document.getElementById("addItemButton");
+    const clearButton = document.getElementById("clearButton");
     const inventoryTableBody = document.getElementById("inventoryTableBody");
 
-    // Prevent reattaching multiple event listeners
-    if (inventoryForm.dataset.listenerAttached) return;
-    inventoryForm.dataset.listenerAttached = "true";
+    if (addItemButton) {
+        addItemButton.addEventListener("click", () => {
+            const itemName = document.getElementById("itemName").value;
+            const itemNo = document.getElementById("itemNo").value;
+            const batchNo = document.getElementById("batchNo").value;
+            const batchName = document.getElementById("batchName").value;
+            const quantity = document.getElementById("quantity").value;
+            const description = document.getElementById("description").value;
 
-    inventoryForm.addEventListener("submit", (event) => {
-        event.preventDefault();
+            // Create a new row for the table
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td></td> <!-- Blank Space -->
+                <td>${itemName}</td>
+                <td>${itemNo}</td>
+                <td>${batchNo}</td>
+                <td>${batchName}</td>
+                <td>${quantity}</td>
+                <td>${description}</td>
+                <td>
+                    <button class="edit-icon">
+                        <span class="material-symbols-outlined">edit</span>
+                    </button>
+                </td>
+                <td></td> <!-- Blank Space -->
+            `;
 
-        const productName = document.getElementById("productName").value;
-        const productQuantity = document.getElementById("productQuantity").value;
-        const productDescription = document.getElementById("productDescription").value || "N/A";
+            // Append the new row to the table
+            inventoryTableBody.appendChild(newRow);
 
-        // Create a new row for the table
-        const newRow = document.createElement("tr");
-        newRow.innerHTML = `
-            <td style="padding: 10px;">${productName}</td>
-            <td style="padding: 10px;">${productQuantity}</td>
-            <td style="padding: 10px;">${productDescription}</td>
-        `;
+            // Clear the input fields
+            document.getElementById("itemName").value = "";
+            document.getElementById("itemNo").value = "";
+            document.getElementById("batchNo").value = "";
+            document.getElementById("batchName").value = "";
+            document.getElementById("quantity").value = "";
+            document.getElementById("description").value = "";
+        });
+    }
 
-        // Append the new row to the table
-        inventoryTableBody.appendChild(newRow);
-
-        // Reset the form fields
-        inventoryForm.reset();
-    });
+    if (clearButton) {
+        clearButton.addEventListener("click", () => {
+            document.getElementById("itemName").value = "";
+            document.getElementById("itemNo").value = "";
+            document.getElementById("batchNo").value = "";
+            document.getElementById("batchName").value = "";
+            document.getElementById("quantity").value = "";
+            document.getElementById("description").value = "";
+        });
+    }
 }

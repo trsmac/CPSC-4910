@@ -237,6 +237,14 @@ aside .sidebar a:hover span {
 }
 
 /* ===== Inventory Form Table ===== */
+/* Fixed Header Column */
+#inventoryTable th:first-child,
+#inventoryTable td:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--card-background-color);
+    z-index: 1;
+}
 .inventory-form {
     width: 95%;
     max-width: 1200px;
@@ -279,12 +287,11 @@ th {
     background: var(--background-color);
 }
 
-/* ===== Save Icon Styling ===== */
-.save-icon {
-    background: var(--success-color);
-    color: white;
+/* Button Styles */
+.save-icon, .clear-icon, .search-icon {
+    color: black;
     border: none;
-    padding: 6px 10px;
+    padding: 8px 12px;
     border-radius: var(--border-radius);
     cursor: pointer;
     display: flex;
@@ -292,11 +299,85 @@ th {
     justify-content: center;
 }
 
-.save-icon:hover {
+.clear-icon {
+    background: white;
+}
+
+.save-icon {
+    background: white;
+}
+/* Sort Button Background */
+.sort-icon {
+    background: transparent; /* Blend with the table background */
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sort-icon:hover {
+    background: rgba(0, 0, 0, 0.1); /* Slight hover effect */
+}
+/* Input Styles */
+.entry-row input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--tertiary-color);
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+}
+/* Sort Dropdown */
+.sort-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: var(--card-background-color);
+    border: 1px solid var(--tertiary-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    z-index: 1;
+    right: 0;
+    top: 100%;
+    min-width: 200px;
+    box-shadow: var(--card-box-shadow);
+}
+
+.dropdown-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.dropdown-content select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid var(--tertiary-color);
+    border-radius: var(--border-radius);
+}
+
+.dropdown-content button {
+    width: 100%;
+    padding: 8px;
+    background: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.dropdown-content button:hover {
     background: #24b15f;
 }
 
-.material-icons {
-    font-size: 20px;
-    color: white;
+.sort-dropdown:hover .dropdown-content {
+    display: block;
 }

@@ -5,7 +5,7 @@ function renderAddInventoryForm() {
         <div class="inventory-form card">
             <h2 style="text-align: center;">Add New Item to Inventory</h2>
 
-            <table id="inventoryTable" border="1">
+            <table id="inventoryTable">
                 <thead>
                     <tr>
                         <th></th> <!-- Blank Space -->
@@ -20,9 +20,13 @@ function renderAddInventoryForm() {
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Row 1: Entry Fields -->
+                    <!-- Row 2: Entry Fields and Buttons -->
                     <tr class="entry-row">
-                        <td></td> <!-- Blank Space -->
+                        <td>
+                            <button id="saveButton" class="save-icon">
+                                <span class="material-symbols-outlined">save</span>
+                            </button>
+                        </td>
                         <td><input type="text" id="itemName" placeholder="Item"></td>
                         <td><input type="text" id="itemNo" placeholder="Item No."></td>
                         <td><input type="text" id="batchNo" placeholder="Batch No."></td>
@@ -30,25 +34,21 @@ function renderAddInventoryForm() {
                         <td><input type="number" id="quantity" placeholder="Quantity"></td>
                         <td><input type="text" id="description" placeholder="Description"></td>
                         <td>
-                            <button id="addItemButton" class="save-icon">
-                                <span class="material-symbols-outlined">save</span>
+                            <button id="searchButton" class="search-icon">
+                                <span class="material-symbols-outlined">search</span>
                             </button>
                         </td>
-                        <td></td> <!-- Blank Space -->
+                        <td>
+                            <button id="clearButton" class="clear-icon">
+                                <span class="material-symbols-outlined">clear_all</span>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
                 <tbody id="inventoryTableBody">
                     <!-- Inventory rows will be added here dynamically -->
                 </tbody>
             </table>
-
-            <!-- Buttons Row -->
-            <div class="form-buttons">
-                <button type="button" id="searchButton">Search</button>
-                <button type="button" id="clearButton" class="btn-danger">Clear</button>
-            </div>
         </div>
     `;
-
-    attachFormSubmitHandler();
 }

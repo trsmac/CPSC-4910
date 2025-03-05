@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const addInventoryLink = document.getElementById("addInventoryLink");
     const contentArea = document.getElementById("contentArea");
+    attachSearchHandler();
+    attachSortDropdownHandler(); // Add this line
 
     function renderAddInventoryForm() {
         contentArea.innerHTML = `
