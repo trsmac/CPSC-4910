@@ -3,7 +3,7 @@ function renderAddInventoryForm() {
 
     contentArea.innerHTML = `
         <div class="inventory-form card">
-            <h2 style="text-align: center;">Add New Item to Inventory</h2>
+            <h2 style="text-align: center;">Inventory</h2>
 
             <table id="inventoryTable">
                 <thead>
@@ -15,7 +15,7 @@ function renderAddInventoryForm() {
                         <th>Batch Name</th>
                         <th>Quantity</th>
                         <th>Description</th>
-                        <th>Actions</th>
+                        <th></th> <!-- Blank Space -->
                         <th></th> <!-- Blank Space -->
                     </tr>
                 </thead>
@@ -43,6 +43,7 @@ function renderAddInventoryForm() {
                                 <span class="material-symbols-outlined">clear_all</span>
                             </button>
                         </td>
+                        
                     </tr>
                 </tbody>
                 <tbody id="inventoryTableBody">
@@ -51,4 +52,115 @@ function renderAddInventoryForm() {
             </table>
         </div>
     `;
+
+    let inventory = [];
+
+    
+    document.getElementById("searchButton").addEventListener("click", function() {
+        const itemName = document.getElementById("itemName").value;
+        const itemNo = document.getElementById("itemNo").value;
+        const batchNo = document.getElementById("batchNo").value;
+        const batchName = document.getElementById("batchName").value;
+        const quantity = document.getElementById("quantity").value;
+        const description = document.getElementById("description").value;
+
+        console.log("Searching for:", {
+            itemName,
+            itemNo,
+            batchNo,
+            batchName,
+            quantity,
+            description,
+        });
+
+        
+    });
+
+    
+    document.getElementById("clearButton").addEventListener("click", function() {
+        document.getElementById("itemName").value = "";
+        document.getElementById("itemNo").value = "";
+        document.getElementById("batchNo").value = "";
+        document.getElementById("batchName").value = "";
+        document.getElementById("quantity").value = "";
+        document.getElementById("description").value = "";
+    });
+
+    
+    document.getElementById("saveButton").addEventListener("click", function() {
+        const itemName = document.getElementById("itemName").value;
+        const itemNo = document.getElementById("itemNo").value;
+        const batchNo = document.getElementById("batchNo").value;
+        const batchName = document.getElementById("batchName").value;
+        const quantity = document.getElementById("quantity").value;
+        const description = document.getElementById("description").value;
+
+        
+        if (!itemName || !itemNo || !batchNo || !batchName || !quantity || !description) {
+            alert("All Fields Required!");
+            return;
+        }
+
+        
+        const newItem = {
+            itemName,
+            itemNo,
+            batchNo,
+            batchName,
+            quantity: parseInt(quantity), 
+            description
+        };
+
+        
+        inventory.push(newItem);
+
+        
+        console.log("Saved Inventory:", inventory);
+
+        
+        document.getElementById("itemName").value = "";
+        document.getElementById("itemNo").value = "";
+        document.getElementById("batchNo").value = "";
+        document.getElementById("batchName").value = "";
+        document.getElementById("quantity").value = "";
+        document.getElementById("description").value = "";
+
+        
+        updateInventoryTable();
+    });
+
+    
+    function updateInventoryTable() {
+        const tableBody = document.getElementById("inventoryTableBody");
+        tableBody.innerHTML = ""; 
+
+        
+        inventory.forEach((item, index) => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td></td>
+                <td>${item.itemName}</td>
+                <td>${item.itemNo}</td>
+                <td>${item.batchNo}</td>
+                <td>${item.batchName}</td>
+                <td>${item.quantity}</td>
+                <td>${item.description}</td>
+                <td>
+                    <button class= "deleteButton" data-index="${index}">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                <td>
+                <td></td>
+            `;
+            const deleteButton = row.querySelector(".deleteButton");
+            deleteButton.addEventListener("click", function() {
+                const indexToDelete = parseInt(deleteButton.getAttribute("data-index"));
+                inventory.splice(indexToDelete, 1);  
+                updateInventoryTable();  
+            });
+
+            tableBody.appendChild(row);
+        });
+    }
 }
