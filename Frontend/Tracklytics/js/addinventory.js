@@ -2,12 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const addInventoryLink = document.getElementById("addInventoryLink");
     const contentArea = document.getElementById("contentArea");
     attachSearchHandler();
-    attachSortDropdownHandler(); // Add this line
+    attachSortDropdownHandler();
 
     function renderAddInventoryForm() {
         contentArea.innerHTML = `
             <div class="inventory-form card">
-                <h2>Add New Item to Inventory</h2>
+                <h2>Inventory</h2>
 
                 <table id="inventoryTable" border="1">
                     <thead>
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <th>Batch Name</th>
                             <th>Quantity</th>
                             <th>Description</th>
-                            <th>Actions</th>
+                            <th></th> <!-- Blank Space -->
                             <th></th> <!-- Blank Space -->
                         </tr>
                     </thead>
@@ -55,6 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault();
             renderAddInventoryForm();
         });
+    } else {
+        console.error("Add Inventory link not found!");
+    }
+});
     } else {
         console.error("Add Inventory link not found!");
     }
