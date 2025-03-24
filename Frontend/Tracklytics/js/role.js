@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        // Update permissions based on selected role
+        // Update permissions.py based on selected role
         checkboxes.forEach(checkbox => {
             checkbox.checked = roleData[role].permissions.includes(checkbox.value);
         });
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Save permissions and update lists
+    // Save permissions.py and update lists
     saveButton.addEventListener("click", function() {
         let updatedPermissions = [];
         checkboxes.forEach(checkbox => {

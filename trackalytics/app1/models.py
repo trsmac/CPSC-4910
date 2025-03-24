@@ -32,23 +32,70 @@ class InventoryHistory(models.Model):
     quantity = models.IntegerField()
     transaction_date = models.DateTimeField(auto_now_add=True)
 
-# Roles Table
-class Role(models.Model):
-    role_name = models.CharField(max_length=50, unique=True)
-
-# Permissions Table
 class Permission(models.Model):
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
-    permission_name = models.CharField(max_length=100)
+    """Defines individual permissions in the system"""
+    name = models.CharField(max_length=100, unique=True)
+    codename = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
 
-# Users Table
-class User(models.Model):
-    username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(unique=True)
-    password_hash = models.TextField()
-    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return self.name
+
+class Role(models.Model):
+    """Defines user roles with associated permissions"""
+    ROLE_TYPES = [
+        ('system', 'System Role'),
+        ('custom', 'Custom Role')
+    ]
+
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+    type = models.CharField(max_length=20, choices=ROLE_TYPES, default='custom')
+    permissions = models.ManyToManyField(Permission, related_name='roles')
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+class UserProfile(models.Model):
+    """Extended user profile with role management"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    roles = models.ManyToManyField(Role, related_name='user_profiles')
+    last_role_change = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    department = models.CharField(max_length=100, blank=True, null=True)
+
+    def assign_role(self, role):
+        """Assign a role to the user"""
+        self.roles.add(role)
+        self.last_role_change = timezone.now()
+        self.save()
+
+    def remove_role(self, role):
+        """Remove a role from the user"""
+        self.roles.remove(role)
+        self.last_role_change = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return f"{self.user.username} Profile"
+
+class RoleChangeLog(models.Model):
+    """Logs changes to user roles"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    action = models.CharField(max_length=20, choices=[
+        ('assigned', 'Role Assigned'),
+        ('removed', 'Role Removed')
+    ])
+    performed_by = models.ForeignKey(User, on_delete=models.SET_NULL,
+                                     null=True, related_name='role_changes')
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.action} - {self.role.name}"
 
 # Activity Logs Table
 class ActivityLog(models.Model):

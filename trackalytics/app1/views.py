@@ -1,182 +1,226 @@
-# app1/views.py
-from django.shortcuts import get_object_or_404, redirect, render
-from .models import ActivityLog, Product, Inventory, InventoryHistory
-from django.db.models import Q
-from django.http import HttpResponse
-from io import BytesIO
-from io import StringIO
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from datetime import datetime
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+from .models import Product, Inventory, InventoryHistory, ReportExport, ActivityLog
+from .forms import AddInventoryForm, RemoveInventoryForm, ExportForm, ProductForm, RegistrationForm
+from django.utils import timezone
 import csv
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
-# Root index view
-def index(request):
-    return render(request, 'index.html')
-
-# Dashboard view
+# Dashboard View (No login required)
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    total_inventory = Inventory.objects.count()
+    low_stock_items = Inventory.objects.filter(quantity__lte=10).count()
+    zero_stock_items = Inventory.objects.filter(quantity=0).count()
+    # Log action only if user is authenticated
+    if request.user.is_authenticated:
+        ActivityLog.objects.create(user=request.user, action='Viewed dashboard')
 
-# Inventory view
+    context = {
+        'total_inventory': total_inventory,
+        'low_stock_items': low_stock_items,
+        'zero_stock_items': zero_stock_items,
+    }
+    return render(request, 'dashboard.html', context)
+
+# Inventory View (No login required)
 def inventory(request):
-    inventory_items = Inventory.objects.all()
-    return render(request, 'inventory.html', {'inventory_items': inventory_items})
+    add_form = AddInventoryForm(request.POST or None)
+    remove_form = RemoveInventoryForm(request.POST or None)
+    products = Product.objects.all()
 
-# Roles view
-def roles(request):
-    return render(request, 'roles.html')
+    if request.method == 'POST':
+        if 'add_inventory' in request.POST and add_form.is_valid():
+            instance = add_form.save()
+            InventoryHistory.objects.create(inventory=instance, action='received', quantity=instance.quantity)
+            if request.user.is_authenticated:
+                ActivityLog.objects.create(user=request.user, action='Added inventory')
+            messages.success(request, 'Inventory item added successfully!')
+            return redirect('app1:inventory')
 
-# Activity Log view
-def activitylog(request):
-    logs = ActivityLog.objects.all()
-    return render(request, 'activitylog.html', {'logs': logs})
+        if 'remove_inventory' in request.POST and remove_form.is_valid():
+            product = remove_form.cleaned_data['product']
+            quantity = remove_form.cleaned_data['quantity']
+            inventory_item = Inventory.objects.filter(product=product).first()
+            if inventory_item:
+                inventory_item.quantity -= quantity
+                inventory_item.save()
+                InventoryHistory.objects.create(inventory=inventory_item, action='sold', quantity=quantity)
+                if request.user.is_authenticated:
+                    ActivityLog.objects.create(user=request.user, action='Removed inventory')
+                return JsonResponse({
+                    'success': True,
+                    'inventory': list(Inventory.objects.values('product__product_name', 'quantity'))
+                })
+            else:
+                return JsonResponse({'success': False, 'error': 'Inventory item not found'})
 
-# Product List view
+    if request.method == 'GET' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'inventory': list(Inventory.objects.values('problem__product_name', 'quantity'))
+        })
+
+    import json
+    products_json = json.dumps([{'id': p.id, 'product_name': p.product_name} for p in products])
+    context = {
+        'add_form': add_form,
+        'remove_form': remove_form,
+        'inventory': Inventory.objects.all(),
+        'products_json': products_json,
+    }
+    return render(request, 'inventory.html', context)
+
+# Product List View (No login required)
 def product_list(request):
     products = Product.objects.all()
-    return render(request, 'product_list.html', {'products': products})
+    return render(request, 'products.html', {'products': products})
 
-# Inventory History view
-def inventory_history(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    inventory_history = InventoryHistory.objects.filter(inventory__product=product).order_by('transaction_date')
-    
-    return render(request, 'inventory_history.html', {
-        'product': product,
-        'inventory_history': inventory_history
-    })
-
-# Add Inventory view
-def add_inventory(request):
+# Product Create View (No login required)
+def product_create(request):
     if request.method == 'POST':
-        # Get data from POST request
-        product_name = request.POST.get('product_name')
-        quantity = request.POST.get('quantity')
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            if request.user.is_authenticated:
+                ActivityLog.objects.create(user=request.user, action='Created product')
+            messages.success(request, 'Product added successfully!')
+            return redirect('app1:product_list')
+    else:
+        form = ProductForm()
+    return render(request, 'product_form.html', {'form': form})
 
-        # Create new inventory item
-        inventory_item = Inventory.objects.create(product_name=product_name, quantity=quantity)
+# Inventory History View (No login required)
+def inventory_history(request):
+    history = InventoryHistory.objects.all().order_by('-transaction_date')
+    return render(request, 'inventory_history.html', {'history': history})
 
-        # Log the action using the helper function
-        log_user_action(request.user, f"Added new inventory item: {product_name} (Quantity: {quantity})")
+# Reports & Exports View (No login required)
+def reports_exports(request):
+    if request.method == 'POST':
+        form = ExportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            if request.user.is_authenticated:
+                report.user = request.user
+                ActivityLog.objects.create(user=request.user, action='Requested report export')
+            report.save()
+            messages.success(request, 'Export request saved successfully!')
+            return redirect('app1:reports_exports')
+    else:
+        form = ExportForm()
 
-        # Redirect to the inventory page after adding
-        return redirect('inventory')
+    context = {
+        'form': form,
+        # Show all reports if unauthenticated, filter by user if authenticated
+        'reports': ReportExport.objects.filter(user=request.user) if request.user.is_authenticated else ReportExport.objects.all(),
+    }
+    return render(request, 'reports_exports.html', context)
 
-    # Render the add inventory form for GET requests
-    return render(request, 'add_inventory.html')
+# Generate Inventory Report (No login required)
+def generate_inventory_report(request):
+    if request.method == 'POST':
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        inventory_items = Inventory.objects.all()
+        if start_date and end_date:
+            inventory_items = inventory_items.filter(last_updated__range=[start_date, end_date])
 
-# Remove Inventory view
-def remove_inventory(request, inventory_id):
-    try:
-        
-        inventory_item = Inventory.objects.get(id=inventory_id)
-        inventory_item.delete()
-        
-        ActivityLog.objects.create(
-            user=request.user,
-            action=f'Removed inventory: {inventory_item.product_name}'
-        )
+        if request.user.is_authenticated:
+            ActivityLog.objects.create(user=request.user, action='Generated inventory report')
+        return JsonResponse({
+            'success': True,
+            'message': 'Report generated successfully!',
+            'data': list(inventory_items.values('product__product_name', 'quantity', 'location'))
+        })
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
-        return redirect('inventory')
+# Export Data (No login required)
+def export_data(request):
+    if request.method == 'POST':
+        export_format = request.POST.get('export_format')
 
-    except Inventory.DoesNotExist:
+        if export_format == 'CSV':
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="inventory_export.csv"'
+            writer = csv.writer(response)
+            writer.writerow(['Product', 'Batch Number', 'Serial Number', 'Quantity', 'Location'])
+            for item in Inventory.objects.all():
+                writer.writerow([item.product.product_name, item.batch_number, item.serial_number, item.quantity, item.location])
+            if request.user.is_authenticated:
+                ActivityLog.objects.create(user=request.user, action='Exported inventory as CSV')
+            return response
 
-        return render(request, 'inventory.html', {'error': 'Inventory item not found.'})
+        elif export_format == 'PDF':
+            template = get_template('reports/inventory_pdf.html')
+            context = {'inventory': Inventory.objects.all()}
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="inventory_export.pdf"'
+            pisa_status = pisa.CreatePDF(html, dest=response)
+            if pisa_status.err:
+                return HttpResponse('Error generating PDF', status=500)
+            if request.user.is_authenticated:
+                ActivityLog.objects.create(user=request.user, action='Exported inventory as PDF')
+            return response
 
-# View Inventory details
-def view_inventory(request, inventory_id):
-    inventory_item = get_object_or_404(Inventory, id=inventory_id)
-    return render(request, 'view_inventory.html', {'inventory_item': inventory_item})
+        elif export_format == 'Excel':
+            if request.user.is_authenticated:
+                ActivityLog.objects.create(user=request.user, action='Attempted Excel export (not implemented)')
+            return HttpResponse('Excel export not implemented yet', status=501)
 
-# Add this search functionality
-def search_inventory(request):
-    query = request.GET.get('q', '')  # Get the search term from the query string
-    results = []
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
-    if query:
-        results = Inventory.objects.filter(
-            Q(serial_number__icontains=query) | Q(batch_number__icontains=query)
-        ).distinct()  # Search for matching serial_number or batch_number
+# Activity Log View (No login required)
+def activity_log(request):
+    # Show user-specific logs if authenticated, all logs if not
+    logs = ActivityLog.objects.filter(user=request.user) if request.user.is_authenticated else ActivityLog.objects.all()
+    logs = logs.order_by('-timestamp')
+    return render(request, 'activity_log.html', {'logs': logs})
 
-    return render(request, 'search_inventory.html', {'results': results, 'query': query})
+# Registration View (No login required)
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            ActivityLog.objects.create(user=user, action='Registered new user')
+            messages.success(request, 'Registration successful! Welcome!')
+            return redirect('app1:dashboard')
+    else:
+        form = RegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
 
-# Traceability Report view
-def traceability_report(request, product_id):
-    # Get the product from the database
-    product = get_object_or_404(Product, id=product_id)
-    
-    # Fetch the inventory history for this product, ordered by transaction date
-    inventory_history = InventoryHistory.objects.filter(inventory__product=product).order_by('transaction_date')
+# Custom Login View
+class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'
 
-    return render(request, 'traceability_report.html', {
-        'product': product,
-        'inventory_history': inventory_history
-    })
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
 
-# CSV Export Functionality
-def export_traceability_report_csv(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    inventory_history = InventoryHistory.objects.filter(inventory__product=product).order_by('transaction_date')
-    
-    # Create a CSV in-memory buffer
-    output = StringIO()
-    writer = csv.writer(output)
-    
-    # Write headers to CSV
-    writer.writerow(['Action', 'Quantity', 'Transaction Date', 'Product Name'])
-    
-    # Write inventory history records
-    for history in inventory_history:
-        writer.writerow([history.action, history.quantity, history.transaction_date, product.product_name])
+        # If no username or password provided, skip authentication and proceed
+        if not username and not password:
+            # Log as guest if not authenticated, or as current user if already logged in
+            if request.user.is_authenticated:
+                ActivityLog.objects.create(user=request.user, action='Skipped login as authenticated user')
+            else:
+                ActivityLog.objects.create(user=None, action='Skipped login as guest')
+            return redirect(self.get_success_url())
 
-    # Create the HTTP response with the CSV content
-    response = HttpResponse(output.getvalue(), content_type='text/csv')
-    response['Content-Disposition'] = f'attachment; filename="{product.product_name}_traceability_report.csv"'
-    
-    return response
+        # Otherwise, proceed with normal authentication
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            ActivityLog.objects.create(user=user, action='Logged in')
+            return redirect(self.get_success_url())
+        else:
+            # Handle invalid login
+            return self.form_invalid(self.get_form())
 
-from io import BytesIO
-from django.http import HttpResponse
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-
-# PDF Export Functionality
-def export_traceability_report_pdf(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    inventory_history = InventoryHistory.objects.filter(inventory__product=product).order_by('transaction_date')
-    
-    # Create a PDF in memory
-    buffer = BytesIO()
-    p = canvas.Canvas(buffer, pagesize=letter)
-    
-    # Write the content to the PDF
-    p.drawString(100, 750, f"Traceability Report for Product: {product.product_name}")
-    p.drawString(100, 730, f"Product ID: {product.id}")
-    
-    # Define a position for the table rows
-    y_position = 700
-    for history in inventory_history:
-        p.drawString(100, y_position, f"Action: {history.action}")
-        p.drawString(250, y_position, f"Quantity: {history.quantity}")
-        p.drawString(400, y_position, f"Date: {history.transaction_date}")
-        y_position -= 20  # Move down the page for the next row
-    
-    # Finalize the PDF
-    p.showPage()
-    p.save()
-
-    # Send the PDF as response
-    buffer.seek(0)
-    response = HttpResponse(buffer, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="{product.product_name}_traceability_report.pdf"'
-
-    return response
-
-# Helper function to log user actions
-def log_user_action(user, action):
-    ActivityLog.objects.create(
-        user=user,
-        action=action,
-        timestamp=datetime.now()  # The timestamp will automatically be set
-    )
+    def get_success_url(self):
+        return reverse_lazy('app1:dashboard')
