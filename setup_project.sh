@@ -9,6 +9,7 @@ echo ""
 # Step 1: Install dependencies
 echo -e "\033[1;34m📦 Installing Django and ReportLab... 🛠\033[0m"
 pip install django reportlab
+pip install xhtml2pdf
 echo "========================================="  # Divider
 
 # Step 2: Navigate to the project directory
