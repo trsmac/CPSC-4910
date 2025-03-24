@@ -297,15 +297,9 @@ th {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.clear-icon {
     background: white;
 }
 
-.save-icon {
-    background: white;
-}
 /* Sort Button Background */
 .sort-icon {
     background: transparent; /* Blend with the table background */
@@ -329,6 +323,68 @@ th {
     border-radius: var(--border-radius);
     background: var(--background-color);
 }
+
+/* Additional Button Styles */
+.custom-toast {
+    position: fixed;
+    top: 20px;
+    right: -400px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.5s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.custom-toast.show {
+    right: 20px;
+    opacity: 1;
+}
+
+.custom-toast.success {
+    background-color: #28C76F;
+}
+
+.custom-toast.error {
+    background-color: #EA5455;
+}
+
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background-color: var(--tertiary-color);
+    color: #fff;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+
+    position: absolute;
+    z-index: 10;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.25s ease, bottom 0.25s ease;
+    pointer-events: none;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    bottom: 150%;
+}
+
+
 /* Sort Dropdown */
 .sort-dropdown {
     position: relative;
