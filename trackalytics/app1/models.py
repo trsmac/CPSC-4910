@@ -1,6 +1,7 @@
 # app1/models.py
 
 from django.db import models
+from django.contrib.auth.models import User, Permission, Group  
 
 # Products Table
 class Product(models.Model):
@@ -10,6 +11,9 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.product_name
+
 # Inventory Table
 class Inventory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -18,6 +22,9 @@ class Inventory(models.Model):
     quantity = models.IntegerField(default=0)
     location = models.CharField(max_length=255, blank=True, null=True)
     last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.product.product_name} - {self.serial_number}"
 
 # Inventory History Table
 class InventoryHistory(models.Model):
@@ -32,32 +39,32 @@ class InventoryHistory(models.Model):
     quantity = models.IntegerField()
     transaction_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.inventory.product.product_name} - {self.action}"
+
 # Roles Table
 class Role(models.Model):
     role_name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.role_name
 
 # Permissions Table
 class Permission(models.Model):
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
     permission_name = models.CharField(max_length=100)
 
-# Users Table
-class User(models.Model):
-    username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(unique=True)
-    password_hash = models.TextField()
-    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return f"{self.role.role_name} - {self.permission_name}"
 
 # Activity Logs Table
 class ActivityLog(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Set default to a specific user (ID 1)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)  # Allow null
     action = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
-        return f"{self.user.username} - {self.action} on {self.timestamp}"
+        return f"{self.user.username if self.user else 'Guest'} - {self.action} on {self.timestamp}"
 
 # Report Exports Table
 class ReportExport(models.Model):
@@ -66,7 +73,10 @@ class ReportExport(models.Model):
         ('PDF', 'PDF'),
         ('Excel', 'Excel'),
     ]
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)  # Use Django's built-in User model
     file_format = models.CharField(max_length=10, choices=FILE_FORMAT_CHOICES)
     file_name = models.CharField(max_length=255)
     generated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.file_name} ({self.file_format})"

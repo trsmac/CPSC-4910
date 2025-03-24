@@ -1,0 +1,63 @@
+<!-- trackalytics/templates/settings.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Settings - Trackalytics{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h2>System Settings</h2>
+    
+    <div class="settings-tabs">
+        <button class="tab-link active" data-tab="general">General Settings</button>
+        <button class="tab-link" data-tab="notifications">Notifications</button>
+        <button class="tab-link" data-tab="security">Security</button>
+    </div>
+
+    <div class="settings-content">
+        <div id="general" class="tab-content active">
+            <form method="post" class="settings-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="company_name">Company Name</label>
+                    {{ form.company_name }}
+                </div>
+                <div class="form-group">
+                    <label for="timezone">Timezone</label>
+                    {{ form.timezone }}
+                </div>
+                <button type="submit" class="btn btn-save">
+                    <span class="material-symbols-outlined">save</span>
+                    Save Changes
+                </button>
+            </form>
+        </div>
+
+        <div id="notifications" class="tab-content">
+            <h3>Notification Preferences</h3>
+            <form method="post" class="settings-form">
+                {% csrf_token %}
+                {{ notification_form.as_p }}
+                <button type="submit" class="btn btn-save">Save Preferences</button>
+            </form>
+        </div>
+
+        <div id="security" class="tab-content">
+            <h3>Security Settings</h3>
+            <form method="post" class="settings-form">
+                {% csrf_token %}
+                {{ security_form.as_p }}
+                <button type="submit" class="btn btn-save">Update Security</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/settings.js' %}"></script>
+{% endblock %}
