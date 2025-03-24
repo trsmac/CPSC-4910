@@ -1,92 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Trackalytics: Add Inventory</title>
+<!-- trackalytics/templates/inventory.html -->
+{% extends 'base.html' %}
+{% load static %}
 
-    <!-- Material Icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+{% endblock %}
 
-    <!-- Google Fonts Inter&Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+{% block content %}
+<div class="inventory-container">
+    <h2>Inventory Management</h2>
+    <div class="inventory-nav">
+        <button id="addInventoryBtn">Add Inventory</button>
+        <button id="removeInventoryBtn">Remove Inventory</button>
+        <button id="viewInventoryBtn">View Inventory</button>
+    </div>
 
-    <!-- Style -->
-    <link rel="stylesheet" href="css/inventory.css">
-</head>
-<body>
-<div class="container">
-    <aside>
-        <div class="menu">
-            <div class="logo">
-                <img src="./images/logo.png" alt="logo">
-                <h2>Trackalytics</h2>
-            </div>
-            <div class="close" id="close-btn">
-                <span class="material-symbols-outlined">close</span>
-            </div>
-        </div>
+    <div id="contentArea">
+        <!-- Initial content will be populated by JS -->
+    </div>
 
-        <div class="sidebar">
-            <h3>Navigation</h3>
-            <a href="dashboard.html">
-                <span class="material-symbols-outlined">space_dashboard</span>
-                <h3>Dashboard</h3>
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">inventory_2</span>
-                <h3>Products</h3>
-            </a>
-            <h3>Inventory</h3>
-            <a id="addInventoryLink" href="#">
-                <span class="material-symbols-outlined">add</span>
-                <h3>Add Inventory</h3>
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">remove</span>
-                <h3>Remove Inventory</h3>
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">visibility</span>
-                <h3>View Inventory</h3>
-            </a>
-            <h3>Admin</h3>
-            <a href="roles.html">
-                <span class="material-symbols-outlined">groups</span>
-                <h3>User Management</h3>
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">folder</span>
-                <h3>Reports & Exports</h3>
-            </a>
-            <a href="activitylog.html">
-                <span class="material-symbols-outlined">history</span>
-                <h3>Activity Log</h3>
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">tune</span>
-                <h3>Settings</h3>
-            </a>
-            <a href="#">
-                <span class="material-symbols-outlined">logout</span>
-                <h3>Logout</h3>
-            </a>
-        </div>
-    </aside>
-
-    <main>
-        <div id="contentArea"></div>
-    </main>
+    <div id="viewInventorySection" class="inventory-section" style="display: none;">
+        <h3>View Inventory</h3>
+        <table id="inventoryTable" class="inventory-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in inventory %}
+                <tr>
+                    <td>{{ item.product.product_name }}</td>
+                    <td>{{ item.quantity }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No inventory items available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<script src="js/addinventory.js"></script>
+{% block extra_js %}
+<script src="{% static 'js/addinventory.js' %}"></script>
+<script src="{% static 'js/removeinventory.js' %}"></script>
+<script src="{% static 'js/viewinventory.js' %}"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        renderAddInventoryForm();
+    // Log the raw products_json to debug
+    console.log("Raw products_json:", "{{ products_json|safe }}");
+
+    // Assign products with a fallback
+    const products = {{ products_json|default:'[]'|safe }};
+    console.log("Parsed products:", products);
+
+    const csrfToken = "{{ csrf_token|default:'' }}";
+
+    document.getElementById('addInventoryBtn').addEventListener('click', function() {
+        renderAddInventoryForm(products);
+        document.getElementById('contentArea').style.display = 'block';
+        document.getElementById('viewInventorySection').style.display = 'none';
+    });
+
+    document.getElementById('removeInventoryBtn').addEventListener('click', function() {
+        document.getElementById('contentArea').innerHTML = `
+            <div class="inventory-form card">
+                <h2>Remove Inventory Item</h2>
+                <form id="removeInventoryForm" method="POST" action="/inventory/">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+                    <input type="hidden" name="remove_inventory" value="true">
+                    <div class="form-group">
+                        <label for="product">Product</label>
+                        <select id="product" name="product" required>
+                            ${products.map(p => `<option value="${p.id}">${p.product_name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Remove Item</button>
+                </form>
+            </div>
+        `;
+        document.getElementById('contentArea').style.display = 'block';
+        document.getElementById('viewInventorySection').style.display = 'none';
+    });
+
+    document.getElementById('viewInventoryBtn').addEventListener('click', function() {
+        document.getElementById('contentArea').style.display = 'none';
+        document.getElementById('viewInventorySection').style.display = 'block';
+        updateInventoryTable();
     });
 </script>
-
-<script src="js/attachFormSubmitHandler.js"></script>
-<script src="js/renderAddInventoryForm.js"></script>
-
-</body>
-</html>
+{% endblock %}
+{% endblock %}

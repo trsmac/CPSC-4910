@@ -1,59 +1,70 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const addInventoryLink = document.getElementById("addInventoryLink");
+// trackalytics/static/js/addinventory.js
+function renderAddInventoryForm(products) {
     const contentArea = document.getElementById("contentArea");
+    if (!contentArea) return;
 
-    function renderAddInventoryForm() {
-        contentArea.innerHTML = `
-            <div class="inventory-form card">
-                <h2>Add New Item to Inventory</h2>
-
-                <table id="inventoryTable" border="1">
-                    <thead>
-                        <tr>
-                            <th></th> <!-- Blank Space -->
-                            <th>Item</th>
-                            <th>Item No.</th>
-                            <th>Batch No.</th>
-                            <th>Batch Name</th>
-                            <th>Quantity</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                            <th></th> <!-- Blank Space -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="entry-row">
-                            <td></td> <!-- Blank Space -->
-                            <td><input type="text" id="itemName" placeholder="Item"></td>
-                            <td><input type="text" id="itemNo" placeholder="Item No."></td>
-                            <td><input type="text" id="batchNo" placeholder="Batch No."></td>
-                            <td><input type="text" id="batchName" placeholder="Batch Name"></td>
-                            <td><input type="number" id="quantity" placeholder="Quantity"></td>
-                            <td><input type="text" id="description" placeholder="Description"></td>
-                            <td>
-                                <button id="addItemButton" class="save-icon">
-                                    <span class="material-symbols-outlined">save</span>
-                                </button>
-                            </td>
-                            <td></td> <!-- Blank Space -->
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="form-buttons">
-                    <button type="button" id="searchButton">Search</button>
-                    <button type="button" id="clearButton" class="btn-danger">Clear</button>
+    contentArea.innerHTML = `
+        <div class="inventory-form card">
+            <h2>Add New Inventory Item</h2>
+            <form id="addInventoryForm" method="POST" action="/inventory/">
+                <input type="hidden" name="csrfmiddlewaretoken" value="${getCsrfToken()}">
+                <input type="hidden" name="add_inventory" value="true">
+                <div class="form-group">
+                    <label for="product">Product</label>
+                    <select id="product" name="product" required>
+                        ${products.map(product => `
+                            <option value="${product.id}">${product.product_name}</option>
+                        `).join('')}
+                    </select>
                 </div>
-            </div>
-        `;
-    }
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" required>
+                </div>
+                <button type="submit" class="btn-primary">Add Item</button>
+            </form>
+        </div>
+    `;
+    
+    document.getElementById('addInventoryForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const quantity = document.getElementById('quantity').value;
+        if (quantity <= 0) {
+            alert('Please enter a valid quantity');
+            return;
+        }
 
-    if (addInventoryLink) {
-        addInventoryLink.addEventListener("click", (event) => {
-            event.preventDefault();
-            renderAddInventoryForm();
-        });
-    } else {
-        console.error("Add Inventory link not found!");
+        const formData = new FormData(this);
+        fetch('/inventory/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.redirected) {  // Handle redirect as success
+                updateInventoryTable();
+                alert('Inventory item added successfully!');
+            }
+        })
+        .catch(error => console.error('Error adding inventory:', error));
+    });
+}
+
+function getCsrfToken() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    return csrfToken || getCookie('csrftoken');
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-});
+    return cookieValue;
+}

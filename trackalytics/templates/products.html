@@ -1,0 +1,43 @@
+<!-- trackalytics/templates/products.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/products.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="products-container">
+    <h2>Product Management</h2>
+    
+    <div class="product-actions">
+        <a href="{% url 'app1:product_create' %}" class="btn btn-primary">
+            <span class="material-symbols-outlined">add</span>
+            Add New Product
+        </a>
+    </div>
+
+    <div class="product-table-container">
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <!-- Add other headers as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.product_name }}</td>
+                    <!-- Add other columns as needed -->
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="1">No products available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
