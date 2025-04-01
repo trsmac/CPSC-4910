@@ -1,199 +1,110 @@
 /* trackalytics/static/css/inventory.css */
 
-/* Inventory Container */
-.inventory-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 1rem;
-}
-
-.inventory-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+/* Inventory Form Container */
+.inventory-form {
+    width: 95%;
+    max-width: 1200px;
+    margin: 20px auto;
 }
 
 /* Table Styles */
-.inventory-table {
-    margin-top: 1.5rem;
-}
-
-.table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.table-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.table-responsive {
-    overflow-x: auto;
-}
-
 #inventoryTable {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 15px;
 }
 
 #inventoryTable th, 
 #inventoryTable td {
-    padding: 0.75rem;
+    border: 1px solid var(--tertiary-color);
+    padding: 12px;
     text-align: left;
-    border-bottom: 1px solid var(--border-color);
 }
 
 #inventoryTable th {
-    background-color: var(--table-header-bg);
-    font-weight: 600;
+    background: var(--background-color);
 }
 
-#inventoryTable tr:hover {
-    background-color: var(--table-row-hover);
-}
-
-#inventoryTable tr.low-stock {
-    background-color: var(--warning-light);
-}
-
-#inventoryTable tr.low-stock:hover {
-    background-color: var(--warning-light-hover);
-}
-
-#inventoryTable tr.out-of-stock {
-    background-color: var(--danger-light);
-}
-
-#inventoryTable tr.out-of-stock:hover {
-    background-color: var(--danger-light-hover);
-}
-
-.quantity-cell {
-    font-weight: 600;
-}
-
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
+/* Sticky first column */
+#inventoryTable th:first-child,
+#inventoryTable td:first-child {
+    position: sticky;
     left: 0;
-    top: 0;
+    background: var(--card-background-color);
+    z-index: 1;
+}
+
+/* Input Styles */
+.entry-row input {
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-    background-color: var(--card-bg);
-    margin: 10% auto;
-    padding: 2rem;
-    width: 90%;
-    max-width: 500px;
+    padding: 8px;
+    border: 1px solid var(--tertiary-color);
     border-radius: var(--border-radius);
-    position: relative;
-}
-
-.close-modal {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-/* Toast Notifications */
-.toast {
-    position: fixed;
-    top: 1rem;
-    right: -100%;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--border-radius);
-    color: white;
-    z-index: 1001;
-    transition: right 0.3s ease-in-out;
-}
-
-.toast.show {
-    right: 1rem;
-}
-
-.toast.success {
-    background-color: var(--success-color);
-}
-
-.toast.error {
-    background-color: var(--danger-color);
-}
-
-.toast.warning {
-    background-color: var(--warning-color);
-}
-
-.toast.info {
-    background-color: var(--info-color);
-}
-
-/* Form Styles */
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    background: var(--background-color);
 }
 
 /* Button Styles */
-.btn {
-    padding: 0.5rem 1rem;
+.save-icon, 
+.clear-icon, 
+.search-icon {
+    color: var(--text-color);
+    border: none;
+    padding: 8px 12px;
     border-radius: var(--border-radius);
     cursor: pointer;
-    border: none;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.btn-secondary {
-    background-color: var(--secondary-color);
-    color: white;
-}
-
-.btn-danger {
-    background-color: var(--danger-color);
-    color: white;
-}
-
-.btn-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.25rem;
-    border-radius: 50%;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
+    background: transparent;
 }
 
-.btn-icon:hover {
-    background-color: var(--hover-bg);
+/* Sort Dropdown */
+.sort-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: var(--card-background-color);
+    border: 1px solid var(--tertiary-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    z-index: 1;
+    right: 0;
+    top: 100%;
+    min-width: 200px;
+    box-shadow: var(--card-box-shadow);
+}
+
+/* Tooltip Styles */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background-color: var(--tertiary-color);
+    color: #fff;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 10;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.25s ease, bottom 0.25s ease;
+    pointer-events: none;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    bottom: 150%;
 }

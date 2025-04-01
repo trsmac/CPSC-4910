@@ -1,126 +1,28 @@
-# trackalytics/templates/inventory.html
-
+<!-- trackalytics/templates/inventory.html -->
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Trackalytics: Inventory Management{% endblock %}
+{% block title %}Trackalytics: Add Inventory{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+    <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="inventory-container">
-    <div class="inventory-actions">
-        <div class="card">
-            <h3>Add Inventory</h3>
-            <form id="addInventoryForm" method="post" action="{% url 'app1:inventory' %}">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="add">
-                {{ add_form.as_p }}
-                <button type="submit" class="btn-primary">Add Item</button>
-            </form>
-        </div>
-        
-        <div class="card">
-            <h3>Remove Inventory</h3>
-            <form id="removeInventoryForm" method="post" action="{% url 'app1:inventory' %}">
-                {% csrf_token %}
-                <input type="hidden" name="action" value="remove">
-                {{ remove_form.as_p }}
-                <button type="submit" class="btn-danger">Remove Item</button>
-            </form>
-        </div>
+    <div id="contentArea">
+        <!-- Form will be rendered here by JavaScript -->
     </div>
-
-    <div class="inventory-table card">
-        <div class="table-header">
-            <h3>Current Inventory</h3>
-            <div class="table-actions">
-                <button id="exportCsv" class="btn-secondary">Export CSV</button>
-                <button id="refreshInventory" class="btn-secondary">
-                    <span class="material-symbols-outlined">refresh</span>
-                </button>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table id="inventoryTable">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Batch #</th>
-                        <th>Serial #</th>
-                        <th>Quantity</th>
-                        <th>Location</th>
-                        <th>Last Updated</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="inventoryTableBody">
-                    {% for item in inventory %}
-                    <tr data-id="{{ item.id }}">
-                        <td>{{ item.product.product_name }}</td>
-                        <td>{{ item.batch_number|default:"-" }}</td>
-                        <td>{{ item.serial_number }}</td>
-                        <td class="quantity-cell">{{ item.quantity }}</td>
-                        <td>{{ item.location|default:"-" }}</td>
-                        <td>{{ item.last_updated|date:"Y-m-d H:i" }}</td>
-                        <td>
-                            <button class="btn-icon edit-item" data-id="{{ item.id }}">
-                                <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button class="btn-icon delete-item" data-id="{{ item.id }}">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div id="editModal" class="modal">
-    <div class="modal-content card">
-        <span class="close-modal">&times;</span>
-        <h3>Edit Inventory Item</h3>
-        <form id="editInventoryForm">
-            {% csrf_token %}
-            <input type="hidden" id="editItemId" name="id">
-            <div class="form-group">
-                <label for="editQuantity">Quantity</label>
-                <input type="number" id="editQuantity" name="quantity" min="0" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="editLocation">Location</label>
-                <input type="text" id="editLocation" name="location" class="form-control">
-            </div>
-            <button type="submit" class="btn-primary">Save Changes</button>
-        </form>
-    </div>
-</div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/inventory.js' %}"></script>
-<script>
-    const inventoryApiUrl = "{% url 'app1:inventory' %}";
-    const exportUrl = "{% url 'app1:export_data' %}";
-    const lowStockThreshold = 10; // Should come from server config
-    
-    // Initialize inventory management
-    document.addEventListener('DOMContentLoaded', () => {
-        const inventoryManager = new InventoryManager({
-            addForm: '#addInventoryForm',
-            removeForm: '#removeInventoryForm',
-            editForm: '#editInventoryForm',
-            tableBody: '#inventoryTableBody',
-            modal: '#editModal',
-            apiUrl: inventoryApiUrl,
-            exportUrl: exportUrl,
-            lowStockThreshold: lowStockThreshold
+    <script src="{% static 'js/renderAddInventoryForm.js' %}"></script>
+    <script src="{% static 'js/attachFormSubmitHandler.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            renderAddInventoryForm();
+            if (typeof attachSortDropdownHandler !== 'undefined') {
+                attachSortDropdownHandler();
+            }
         });
-    });
-</script>
+    </script>
 {% endblock %}
