@@ -9,53 +9,212 @@
 {% endblock %}
 
 {% block content %}
-<div class="settings-container">
-    <h2>System Settings</h2>
-    
-    <div class="settings-tabs">
-        <button class="tab-link active" data-tab="general">General Settings</button>
-        <button class="tab-link" data-tab="notifications">Notifications</button>
-        <button class="tab-link" data-tab="security">Security</button>
-    </div>
-
-    <div class="settings-content">
-        <div id="general" class="tab-content active">
-            <form method="post" class="settings-form">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="company_name">Company Name</label>
-                    {{ form.company_name }}
-                </div>
-                <div class="form-group">
-                    <label for="timezone">Timezone</label>
-                    {{ form.timezone }}
-                </div>
-                <button type="submit" class="btn btn-save">
-                    <span class="material-symbols-outlined">save</span>
-                    Save Changes
-                </button>
-            </form>
-        </div>
-
-        <div id="notifications" class="tab-content">
-            <h3>Notification Preferences</h3>
-            <form method="post" class="settings-form">
-                {% csrf_token %}
-                {{ notification_form.as_p }}
-                <button type="submit" class="btn btn-save">Save Preferences</button>
-            </form>
-        </div>
-
-        <div id="security" class="tab-content">
-            <h3>Security Settings</h3>
-            <form method="post" class="settings-form">
-                {% csrf_token %}
-                {{ security_form.as_p }}
-                <button type="submit" class="btn btn-save">Update Security</button>
-            </form>
+<main class="settings-container">
+    <div class="settings-header">
+        <h1>System Settings</h1>
+        <div class="settings-actions">
+            <button id="saveAllSettings" class="btn btn-primary" disabled>
+                <span class="material-symbols-outlined">save</span>
+                Save All Changes
+            </button>
         </div>
     </div>
-</div>
+
+    <div class="settings-tabs-container">
+        <div class="settings-tabs">
+            <button class="tab-btn active" data-tab="general">
+                <span class="material-symbols-outlined">settings</span>
+                General
+            </button>
+            <button class="tab-btn" data-tab="notifications">
+                <span class="material-symbols-outlined">notifications</span>
+                Notifications
+            </button>
+            <button class="tab-btn" data-tab="security">
+                <span class="material-symbols-outlined">lock</span>
+                Security
+            </button>
+            <button class="tab-btn" data-tab="integrations">
+                <span class="material-symbols-outlined">link</span>
+                Integrations
+            </button>
+        </div>
+
+        <div class="settings-content">
+            <!-- General Settings Tab -->
+            <div id="general" class="tab-content active">
+                <form method="post" class="settings-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="general">
+                    
+                    <div class="form-section">
+                        <h3>Company Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="company_name">Company Name</label>
+                                {{ form.company_name }}
+                            </div>
+                            <div class="form-group">
+                                <label for="company_logo">Company Logo</label>
+                                <div class="file-upload">
+                                    {{ form.company_logo }}
+                                    <label for="id_company_logo" class="file-upload-label">
+                                        <span class="material-symbols-outlined">upload</span>
+                                        Upload Logo
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>System Preferences</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="timezone">Timezone</label>
+                                {{ form.timezone }}
+                            </div>
+                            <div class="form-group">
+                                <label for="date_format">Date Format</label>
+                                {{ form.date_format }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="material-symbols-outlined">save</span>
+                            Save General Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Notifications Tab -->
+            <div id="notifications" class="tab-content">
+                <form method="post" class="settings-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="notifications">
+                    
+                    <div class="form-section">
+                        <h3>Email Notifications</h3>
+                        <div class="form-group toggle-group">
+                            <label>
+                                {{ notification_form.enable_email_notifications }}
+                                <span class="toggle-label">Enable Email Notifications</span>
+                                <span class="toggle-switch"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notification_email">Notification Email Address</label>
+                            {{ notification_form.notification_email }}
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Alert Preferences</h3>
+                        <div class="form-group toggle-group">
+                            <label>
+                                {{ notification_form.low_stock_alerts }}
+                                <span class="toggle-label">Low Stock Alerts</span>
+                                <span class="toggle-switch"></span>
+                            </label>
+                        </div>
+                        <div class="form-group toggle-group">
+                            <label>
+                                {{ notification_form.critical_stock_alerts }}
+                                <span class="toggle-label">Critical Stock Alerts</span>
+                                <span class="toggle-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="material-symbols-outlined">save</span>
+                            Save Notification Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security Tab -->
+            <div id="security" class="tab-content">
+                <form method="post" class="settings-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="security">
+                    
+                    <div class="form-section">
+                        <h3>Authentication</h3>
+                        <div class="form-group toggle-group">
+                            <label>
+                                {{ security_form.two_factor_auth }}
+                                <span class="toggle-label">Enable Two-Factor Authentication</span>
+                                <span class="toggle-switch"></span>
+                            </label>
+                        </div>
+                        <div class="form-group toggle-group">
+                            <label>
+                                {{ security_form.password_expiry }}
+                                <span class="toggle-label">Enable Password Expiry</span>
+                                <span class="toggle-switch"></span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="password_expiry_days">Password Expiry Days</label>
+                            {{ security_form.password_expiry_days }}
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Session Settings</h3>
+                        <div class="form-group">
+                            <label for="session_timeout">Session Timeout (minutes)</label>
+                            {{ security_form.session_timeout }}
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="material-symbols-outlined">save</span>
+                            Save Security Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Integrations Tab -->
+            <div id="integrations" class="tab-content">
+                <div class="integrations-list">
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <span class="material-symbols-outlined">inventory_2</span>
+                            <h3>Inventory API</h3>
+                            <span class="status-badge active">Connected</span>
+                        </div>
+                        <div class="integration-details">
+                            <p>Connect to external inventory management systems</p>
+                            <button class="btn btn-secondary">Configure</button>
+                        </div>
+                    </div>
+                    
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <span class="material-symbols-outlined">receipt</span>
+                            <h3>Accounting Software</h3>
+                            <span class="status-badge inactive">Not Connected</span>
+                        </div>
+                        <div class="integration-details">
+                            <p>Sync with QuickBooks, Xero, or other accounting software</p>
+                            <button class="btn btn-primary">Connect</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 {% endblock %}
 
 {% block extra_js %}

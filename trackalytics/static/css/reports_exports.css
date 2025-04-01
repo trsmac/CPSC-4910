@@ -1,0 +1,153 @@
+/* trackalytics/static/css/reports_exports.css */
+
+/* Reports & Exports Styles */
+.reports-exports-container {
+    padding: 2rem;
+}
+
+.reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.report-filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.report-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.report-card {
+    padding: 1.5rem;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-header span {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--tertiary-color);
+    background-color: var(--background-color);
+}
+
+.report-history {
+    padding: 1.5rem;
+}
+
+.reports-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reports-table th,
+.reports-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--tertiary-color);
+}
+
+.reports-table th {
+    background-color: var(--background-color);
+    font-weight: 600;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-download,
+.btn-delete {
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-download {
+    background-color: rgba(40, 199, 111, 0.1);
+    color: var(--success-color);
+}
+
+.btn-download:hover {
+    background-color: rgba(40, 199, 111, 0.2);
+}
+
+.btn-delete {
+    background-color: rgba(234, 84, 85, 0.1);
+    color: var(--failure-color);
+}
+
+.btn-delete:hover {
+    background-color: rgba(234, 84, 85, 0.2);
+}
+
+.empty-table {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light-color);
+}
+
+@media (max-width: 768px) {
+    .reports-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .report-filters {
+        width: 100%;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .form-select {
+        width: 100%;
+    }
+    
+    .reports-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

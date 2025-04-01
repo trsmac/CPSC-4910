@@ -1,302 +1,199 @@
-/* ------CSS Root------ */
-:root {
-    --primary-color: #1E1E2D;
-    --secondary-color: #4A4A62;
-    --tertiary-color: #8E8EA3;
+/* trackalytics/static/css/inventory.css */
 
-    --success-color: #28C76F;
-    --failure-color: #EA5455;
-    --warning-color: #FF9F43;
-    --info-color: #4a586b;
-
-    --background-color: #F4F5FA;
-    --card-background-color: #FFFFFF;
-    --sidebar-background-color: #25293C;
-
-    --text-color: #333333;
-    --text-light-color: #888888;
-
-    --card-border-radius: 10px;
-    --border-radius: 10px;
-    --border-radius-2: 10px;
-    --border-radius-3: 10px;
-
-    --card-padding: 20px;
-
-    --card-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    --sidebar-width: 250px;
-}
-/*=============MAIN=============*/
-.menu {
-    display: flex;
-    justify-content: space-between; /* Ensures the close button and logo are spaced properly */
-    align-items: center;
-    padding: 10px;
-}
-
-.logo {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center align */
-    text-align: center; /* Ensure text is centered */
-}
-
-.logo img {
-    max-width: 100px; /*size of image*/
-    height: auto;
-}
-
-.logo h2 {
-    font-size: 18px;
-    margin-top: 5px; /* Add spacing between image and text */
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    appearance: none;
-    border: 0;
-    text-decoration: none;
-    list-style: none;
-    box-sizing: border-box;
-}
-html{
-    font-size: 14px;
-}
-
-body{
-    width: 100vw;
-    height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    background: var(--background-color);
-    user-select: none;
-    overflow-x: hidden;
-}
-
-/*sidebar*/
-.sidebar h2 {
-    font-size: 12px;
-    margin-top: -25px;
-}
-.card {
-    background: var(--card-background-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-box-shadow);
-    padding: var(--card-padding);
-    transition: all 0.3s ease-in-out;
-}
-
-.card:hover {
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.sidebar h3:not(a h3) {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--secondary-color); /* Darker contrast */
-    margin-bottom: 5px;
-    margin-left: 10px;
-}
-
-/* Sidebar Links with Icons */
-.sidebar a {
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--primary-color);
-    text-decoration: none;
-    padding: 12px;
-    border-radius: var(--border-radius);
-    position: relative;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Sidebar Link Text */
-.sidebar a h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin: 0;
-    transition: color 0.3s ease-in-out;
-}
-
-/* Sidebar Link Hover */
-.sidebar a:hover {
-    background: var(--sidebar-background-color);
-    color: var(--background-color);
-}
-
-.sidebar a:hover h3 {
-    color: var(--background-color);
-}
-
-/* Sidebar Icon Hover */
-.sidebar a:hover span {
-    color: var(--background-color);
-}
-
-/* Container Layout */
-.container {
+/* Inventory Container */
+.inventory-container {
     display: grid;
-    width: 100%;
-    margin: 0 auto;
-    background: var(--background-color);
-    gap: 20px;
-    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1rem;
 }
 
-aside {
-    height: 100vh;
-    background: var(--card-background-color); /* White for a clean, modern look */
-    border-right: 1px solid var(--tertiary-color); /* Subtle separation */
+.inventory-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
 
-/* Sidebar Top Menu */
-aside .menu {
-    background: #E8EAF6; /* Light blue-gray for a soft contrast */
-    padding: 15px;
-    border-bottom: 1px solid var(--tertiary-color);
+/* Table Styles */
+.inventory-table {
+    margin-top: 1.5rem;
 }
 
-aside .close {
-    display:none;
-}
-
-/*===== Sidebar =====*/
-aside .sidebar {
-    background: white;
+.table-header {
     display: flex;
-    flex-direction: column;
-    height: 86vh;
-    position: relative;
-    top: 3rem;
-}
-
-.aside h3 {
-    font-weight: 600;
-}
-
-aside .sidebar a {
-    display: flex;
-    color: var(--info-color);
-    margin-left: 2rem;
-    gap: 1rem;
+    justify-content: space-between;
     align-items: center;
-    position: relative;
-    height: 3.5rem;
-    transition: all 300ms ease;
+    margin-bottom: 1rem;
 }
 
-aside .sidebar a span {
-    font-size: 1.8rem;
+.table-actions {
+    display: flex;
+    gap: 0.5rem;
 }
 
-aside .sidebar a:last-child {
-    position: absolute;
-    bottom: 3.5rem;
-    width: 100%;
+.table-responsive {
+    overflow-x: auto;
 }
 
-aside .sidebar a:active {
-    background: var(--info-color);
-    color: var(--background-color);
-    margin-left: 0;
-}
-
-.sidebar a:hover::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 6px;
-    height: 100%;
-    background: rgba(85,90,112,0.71);
-}
-
-aside .sidebar a:active span {
-    color: var(--primary-color);
-    margin-left: calc(1rem - 3px);
-}
-
-aside .sidebar a:hover {
-    color: var(--primary-color);
-}
-
-aside .sidebar a:hover span {
-    margin-left: 1rem;
-}
-
-/* ===== Inventory Form Table ===== */
-.inventory-form {
-    width: 95%;
-    max-width: 1200px;
-    margin: auto;
-    background: var(--card-background-color);
-    padding: var(--card-padding);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-box-shadow);
-}
-
-.inventory-form h2 {
-    text-align: center;
-    font-size: 20px;
-    margin-bottom: 15px;
-}
-
-/* ===== Table Styles ===== */
 #inventoryTable {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
 }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
+#inventoryTable th, 
+#inventoryTable td {
+    padding: 0.75rem;
     text-align: left;
+    border-bottom: 1px solid var(--border-color);
 }
 
-th {
-    background: #f4f4f4;
+#inventoryTable th {
+    background-color: var(--table-header-bg);
+    font-weight: 600;
 }
 
-/* ===== Entry Fields Inside Table ===== */
-.entry-row input {
+#inventoryTable tr:hover {
+    background-color: var(--table-row-hover);
+}
+
+#inventoryTable tr.low-stock {
+    background-color: var(--warning-light);
+}
+
+#inventoryTable tr.low-stock:hover {
+    background-color: var(--warning-light-hover);
+}
+
+#inventoryTable tr.out-of-stock {
+    background-color: var(--danger-light);
+}
+
+#inventoryTable tr.out-of-stock:hover {
+    background-color: var(--danger-light-hover);
+}
+
+.quantity-cell {
+    font-weight: 600;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
     width: 100%;
-    padding: 8px;
-    border: 1px solid var(--tertiary-color);
-    border-radius: var(--border-radius);
-    background: var(--background-color);
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* ===== Save Icon Styling ===== */
-.save-icon {
-    background: var(--success-color);
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    border-radius: var(--border-radius);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    top: 1rem;
+    right: -100%;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
     color: white;
-    border: none;
-    padding: 6px 10px;
+    z-index: 1001;
+    transition: right 0.3s ease-in-out;
+}
+
+.toast.show {
+    right: 1rem;
+}
+
+.toast.success {
+    background-color: var(--success-color);
+}
+
+.toast.error {
+    background-color: var(--danger-color);
+}
+
+.toast.warning {
+    background-color: var(--warning-color);
+}
+
+.toast.info {
+    background-color: var(--info-color);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.5rem 1rem;
     border-radius: var(--border-radius);
     cursor: pointer;
-    display: flex;
+    border: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.save-icon:hover {
-    background: #24b15f;
-}
-
-.material-icons {
-    font-size: 20px;
-    color: white;
+.btn-icon:hover {
+    background-color: var(--hover-bg);
 }

@@ -1,4 +1,4 @@
-# app1/models.py
+# trackalytics/app1/models.py
 
 from django.db import models
 from django.contrib.auth.models import User, Permission, Group  
@@ -10,9 +10,20 @@ class Product(models.Model):
     category = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    low_stock_threshold = models.IntegerField(default=5)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.product_name
+
+    @property
+    def total_quantity(self):
+        """Calculate total quantity across all inventory items for this product"""
+        return self.inventory_set.aggregate(total=models.Sum('quantity'))['total'] or 0
+
+    def is_low_stock(self):
+        """Check if product is below low stock threshold"""
+        return self.total_quantity < self.low_stock_threshold
 
 # Inventory Table
 class Inventory(models.Model):
@@ -80,3 +91,21 @@ class ReportExport(models.Model):
 
     def __str__(self):
         return f"{self.file_name} ({self.file_format})"
+    
+# Notification Table
+class InventoryNotification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('low_stock', 'Low Stock'),
+        ('out_of_stock', 'Out of Stock'),
+        ('expiry', 'Near Expiry'),
+    ]
+    
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    recipients = models.ManyToManyField(User, blank=True)  # Who should receive this
+    
+    def __str__(self):
+        return f"{self.product.product_name} - {self.notification_type}"

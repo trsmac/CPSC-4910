@@ -9,12 +9,18 @@
 {% endblock %}
 
 {% block content %}
-<main class="roles-container">
-    <h1 class="roles-title">Roles & Permissions</h1>
-    <div class="roles-card">
-        <div class="roles-list">
-            <h3>Select Role</h3>
-            <ul>
+<main class="roles-management">
+    <div class="roles-header">
+        <h1>Roles & Permissions</h1>
+        <button id="addRoleBtn" class="btn-primary">
+            <span class="material-symbols-outlined">add</span> Add New Role
+        </button>
+    </div>
+
+    <div class="roles-container card">
+        <div class="roles-sidebar">
+            <h3>Available Roles</h3>
+            <ul class="roles-list">
                 {% for role in roles %}
                 <li class="role-item {% if role.id == selected_role.id %}active{% endif %}" 
                     data-role-id="{{ role.id }}">
@@ -23,61 +29,75 @@
                 {% endfor %}
             </ul>
         </div>
-        
-        <div class="roles-content">
+
+        <div class="role-details">
             <div class="role-header">
-                <h3>{{ selected_role.name }} Role</h3>
-                <button id="editPermissionsBtn" class="btn-primary">Edit Permissions</button>
+                <h2>{{ selected_role.name }}</h2>
+                <button id="editPermissionsBtn" class="btn-secondary">
+                    <span class="material-symbols-outlined">edit</span> Edit Permissions
+                </button>
             </div>
             
             <p class="role-description">{{ selected_role.description }}</p>
-
-            <div id="permissionsModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h3>Edit Permissions</h3>
-                    <form id="permissionsForm" method="post" action="{% url 'update_permissions' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="role_id" value="{{ selected_role.id }}">
-                        <div class="permissions-list">
-                            {% for permission in permissions %}
-                            <label class="permission-item">
-                                <input type="checkbox" name="permissions" 
-                                       value="{{ permission.codename }}"
-                                       {% if permission in role_permissions %}checked{% endif %}>
-                                {{ permission.name }}
-                            </label>
-                            {% endfor %}
-                        </div>
-                        <button type="submit" class="btn-success">Save Changes</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="access-lists">
-                <div class="granted">
-                    <h4>Granted Permissions</h4>
-                    <ul id="granted-list">
+            
+            <div class="permissions-grid">
+                <div class="permissions-section granted-permissions">
+                    <h3>Allowed Permissions</h3>
+                    <ul>
                         {% for permission in role_permissions %}
                         <li>{{ permission.name }}</li>
+                        {% empty %}
+                        <li class="empty">No permissions granted</li>
                         {% endfor %}
                     </ul>
                 </div>
                 
-                <div class="denied">
-                    <h4>Denied Permissions</h4>
-                    <ul id="denied-list">
+                <div class="permissions-section denied-permissions">
+                    <h3>Restricted Permissions</h3>
+                    <ul>
                         {% for permission in denied_permissions %}
                         <li>{{ permission.name }}</li>
+                        {% empty %}
+                        <li class="empty">No permissions restricted</li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Permissions Modal -->
+    <div id="permissionsModal" class="modal">
+        <div class="modal-content card">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Permissions for {{ selected_role.name }}</h2>
+            
+            <form id="permissionsForm" method="post" action="{% url 'update_permissions' %}">
+                {% csrf_token %}
+                <input type="hidden" name="role_id" value="{{ selected_role.id }}">
+                
+                <div class="permissions-list">
+                    {% for permission in permissions %}
+                    <label class="permission-item">
+                        <input type="checkbox" name="permissions" 
+                               value="{{ permission.codename }}"
+                               {% if permission in role_permissions %}checked{% endif %}>
+                        <span class="checkmark"></span>
+                        {{ permission.name }}
+                    </label>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </main>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/role.js' %}"></script>
+<script src="{% static 'js/roles.js' %}"></script>
 {% endblock %}

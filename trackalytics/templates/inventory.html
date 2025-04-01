@@ -1,6 +1,9 @@
-<!-- trackalytics/templates/inventory.html -->
-{% extends 'base.html' %}
+# trackalytics/templates/inventory.html
+
+{% extends "base.html" %}
 {% load static %}
+
+{% block title %}Trackalytics: Inventory Management{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
@@ -8,92 +11,116 @@
 
 {% block content %}
 <div class="inventory-container">
-    <h2>Inventory Management</h2>
-    <div class="inventory-nav">
-        <button id="addInventoryBtn">Add Inventory</button>
-        <button id="removeInventoryBtn">Remove Inventory</button>
-        <button id="viewInventoryBtn">View Inventory</button>
+    <div class="inventory-actions">
+        <div class="card">
+            <h3>Add Inventory</h3>
+            <form id="addInventoryForm" method="post" action="{% url 'app1:inventory' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add">
+                {{ add_form.as_p }}
+                <button type="submit" class="btn-primary">Add Item</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h3>Remove Inventory</h3>
+            <form id="removeInventoryForm" method="post" action="{% url 'app1:inventory' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="remove">
+                {{ remove_form.as_p }}
+                <button type="submit" class="btn-danger">Remove Item</button>
+            </form>
+        </div>
     </div>
 
-    <div id="contentArea">
-        <!-- Initial content will be populated by JS -->
-    </div>
-
-    <div id="viewInventorySection" class="inventory-section" style="display: none;">
-        <h3>View Inventory</h3>
-        <table id="inventoryTable" class="inventory-table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in inventory %}
-                <tr>
-                    <td>{{ item.product.product_name }}</td>
-                    <td>{{ item.quantity }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2">No inventory items available.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="inventory-table card">
+        <div class="table-header">
+            <h3>Current Inventory</h3>
+            <div class="table-actions">
+                <button id="exportCsv" class="btn-secondary">Export CSV</button>
+                <button id="refreshInventory" class="btn-secondary">
+                    <span class="material-symbols-outlined">refresh</span>
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Batch #</th>
+                        <th>Serial #</th>
+                        <th>Quantity</th>
+                        <th>Location</th>
+                        <th>Last Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryTableBody">
+                    {% for item in inventory %}
+                    <tr data-id="{{ item.id }}">
+                        <td>{{ item.product.product_name }}</td>
+                        <td>{{ item.batch_number|default:"-" }}</td>
+                        <td>{{ item.serial_number }}</td>
+                        <td class="quantity-cell">{{ item.quantity }}</td>
+                        <td>{{ item.location|default:"-" }}</td>
+                        <td>{{ item.last_updated|date:"Y-m-d H:i" }}</td>
+                        <td>
+                            <button class="btn-icon edit-item" data-id="{{ item.id }}">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                            <button class="btn-icon delete-item" data-id="{{ item.id }}">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-{% block extra_js %}
-<script src="{% static 'js/addinventory.js' %}"></script>
-<script src="{% static 'js/removeinventory.js' %}"></script>
-<script src="{% static 'js/viewinventory.js' %}"></script>
-<script>
-    // Log the raw products_json to debug
-    console.log("Raw products_json:", "{{ products_json|safe }}");
-
-    // Assign products with a fallback
-    const products = {{ products_json|default:'[]'|safe }};
-    console.log("Parsed products:", products);
-
-    const csrfToken = "{{ csrf_token|default:'' }}";
-
-    document.getElementById('addInventoryBtn').addEventListener('click', function() {
-        renderAddInventoryForm(products);
-        document.getElementById('contentArea').style.display = 'block';
-        document.getElementById('viewInventorySection').style.display = 'none';
-    });
-
-    document.getElementById('removeInventoryBtn').addEventListener('click', function() {
-        document.getElementById('contentArea').innerHTML = `
-            <div class="inventory-form card">
-                <h2>Remove Inventory Item</h2>
-                <form id="removeInventoryForm" method="POST" action="/inventory/">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
-                    <input type="hidden" name="remove_inventory" value="true">
-                    <div class="form-group">
-                        <label for="product">Product</label>
-                        <select id="product" name="product" required>
-                            ${products.map(p => `<option value="${p.id}">${p.product_name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity">Quantity</label>
-                        <input type="number" id="quantity" name="quantity" required>
-                    </div>
-                    <button type="submit" class="btn-primary">Remove Item</button>
-                </form>
+<div id="editModal" class="modal">
+    <div class="modal-content card">
+        <span class="close-modal">&times;</span>
+        <h3>Edit Inventory Item</h3>
+        <form id="editInventoryForm">
+            {% csrf_token %}
+            <input type="hidden" id="editItemId" name="id">
+            <div class="form-group">
+                <label for="editQuantity">Quantity</label>
+                <input type="number" id="editQuantity" name="quantity" min="0" class="form-control">
             </div>
-        `;
-        document.getElementById('contentArea').style.display = 'block';
-        document.getElementById('viewInventorySection').style.display = 'none';
-    });
+            <div class="form-group">
+                <label for="editLocation">Location</label>
+                <input type="text" id="editLocation" name="location" class="form-control">
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
 
-    document.getElementById('viewInventoryBtn').addEventListener('click', function() {
-        document.getElementById('contentArea').style.display = 'none';
-        document.getElementById('viewInventorySection').style.display = 'block';
-        updateInventoryTable();
+{% block extra_js %}
+<script src="{% static 'js/inventory.js' %}"></script>
+<script>
+    const inventoryApiUrl = "{% url 'app1:inventory' %}";
+    const exportUrl = "{% url 'app1:export_data' %}";
+    const lowStockThreshold = 10; // Should come from server config
+    
+    // Initialize inventory management
+    document.addEventListener('DOMContentLoaded', () => {
+        const inventoryManager = new InventoryManager({
+            addForm: '#addInventoryForm',
+            removeForm: '#removeInventoryForm',
+            editForm: '#editInventoryForm',
+            tableBody: '#inventoryTableBody',
+            modal: '#editModal',
+            apiUrl: inventoryApiUrl,
+            exportUrl: exportUrl,
+            lowStockThreshold: lowStockThreshold
+        });
     });
 </script>
-{% endblock %}
 {% endblock %}

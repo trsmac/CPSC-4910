@@ -1,266 +1,5 @@
-/*
-This sheet contains the CSS shell for the coding.
-(1) Use this as the base line.
-(2) When creating a new html file where we need to create the CSS style.
- - We'll need to copy and paste this coding to a new sheet and use that.
-    - This came after the css file grew larger and was hard to keep up with.
- */
-
-/* ------CSS Root------ */
-:root {
-    --primary-color: #1E1E2D;
-    --secondary-color: #4A4A62;
-    --tertiary-color: #8E8EA3;
-
-    --success-color: #28C76F;
-    --failure-color: #EA5455;
-    --warning-color: #FF9F43;
-    --info-color: #4a586b;
-
-    --background-color: #F4F5FA;
-    --card-background-color: #FFFFFF;
-    --sidebar-background-color: #25293C;
-
-    --text-color: #333333;
-    --text-light-color: #888888;
-
-    --card-border-radius: 10px;
-    --border-radius: 10px;
-    --border-radius-2: 10px;
-    --border-radius-3: 10px;
-
-    --card-padding: 20px;
-
-    --card-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    --sidebar-width: 250px;
-}
-/*=============MAIN=============*/
-.menu {
-    display: flex;
-    justify-content: space-between; /* Ensures the close button and logo are spaced properly */
-    align-items: center;
-    padding: 10px;
-}
-
-.logo {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center align */
-    text-align: center; /* Ensure text is centered */
-}
-
-.logo img {
-    max-width: 100px; /*size of image*/
-    height: auto;
-}
-
-.logo h2 {
-    font-size: 18px;
-    margin-top: 5px; /* Add spacing between image and text */
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    appearance: none;
-    border: 0;
-    text-decoration: none;
-    list-style: none;
-    box-sizing: border-box;
-}
-html{
-    font-size: 14px;
-}
-
-body{
-    width: 100vw;
-    height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    background: var(--background-color);
-    user-select: none;
-    overflow-x: hidden;
-}
-
-/*sidebar*/
-.sidebar h2 {
-    font-size: 12px;
-    margin-top: -25px;
-}
-.card {
-    background: var(--card-background-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-box-shadow);
-    padding: var(--card-padding);
-    transition: all 0.3s ease-in-out;
-}
-
-.card:hover {
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.sidebar h3:not(a h3) {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--secondary-color); /* Darker contrast */
-    margin-bottom: 5px;
-    margin-left: 10px;
-}
-
-/* Sidebar Links with Icons */
-.sidebar a {
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--primary-color);
-    text-decoration: none;
-    padding: 12px;
-    border-radius: var(--border-radius);
-    position: relative;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Sidebar Link Text */
-.sidebar a h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin: 0;
-    transition: color 0.3s ease-in-out;
-}
-
-/* Sidebar Link Hover */
-.sidebar a:hover {
-    background: var(--sidebar-background-color);
-    color: var(--background-color);
-}
-
-.sidebar a:hover h3 {
-    color: var(--background-color);
-}
-
-/* Sidebar Icon Hover */
-.sidebar a:hover span {
-    color: var(--background-color);
-}
-
-/* Container Layout */
-.container {
-    display: grid;
-    width: 100%;
-    margin: 0 auto;
-    background: var(--background-color);
-    gap: 20px;
-    grid-template-columns: var(--sidebar-width) 1fr;
-}
-
-aside {
-    height: 100vh;
-    background: var(--card-background-color); /* White for a clean, modern look */
-    border-right: 1px solid var(--tertiary-color); /* Subtle separation */
-}
-
-/* Sidebar Top Menu */
-aside .menu {
-    background: #E8EAF6; /* Light blue-gray for a soft contrast */
-    padding: 15px;
-    border-bottom: 1px solid var(--tertiary-color);
-}
-
-aside .close {
-    display:none;
-}
-
-/*===== Sidebar =====*/
-aside .sidebar {
-    background: white;
-    display: flex;
-    flex-direction: column;
-    height: 86vh;
-    position: relative;
-    top: 3rem;
-}
-
-.aside h3 {
-    font-weight: 600;
-}
-
-aside .sidebar a {
-    display: flex;
-    color: var(--info-color);
-    margin-left: 2rem;
-    gap: 1rem;
-    align-items: center;
-    position: relative;
-    height: 3.5rem;
-    transition: all 300ms ease;
-}
-
-aside .sidebar a span {
-    font-size: 1.8rem;
-}
-
-aside .sidebar a:last-child {
-    position: absolute;
-    bottom: 3.5rem;
-    width: 100%;
-}
-
-aside .sidebar a:active {
-    background: var(--info-color);
-    color: var(--background-color);
-    margin-left: 0;
-}
-
-.sidebar a:hover::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 6px;
-    height: 100%;
-    background: rgba(85,90,112,0.71);
-}
-
-aside .sidebar a:active span {
-    color: var(--primary-color);
-    margin-left: calc(1rem - 3px);
-}
-
-aside .sidebar a:hover {
-    color: var(--primary-color);
-}
-
-aside .sidebar a:hover span {
-    margin-left: 1rem;
-}
-
-/*(2)============= DASHBOARD STYLES =============*/
-
-.dashboard-title {
-    width: 100%;
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px; /* Space between title and metrics */
-}
-
-.dashboard-title-text {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--primary-color);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
+/* ------trackalytics/static/css/dashboard.css------ */
+/* Dashboard Container */
 .dashboard-container {
     overflow: auto;
     padding: 20px;
@@ -272,22 +11,28 @@ aside .sidebar a:hover span {
 }
 
 .dashboard-title {
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
 }
 
-.dashboard-title > p {
-    font-size: 18px;
+.dashboard-title-text {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
+/* Metrics Cards */
 .dashboard-main-cards {
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
     gap: 100px;
-    justify-content: center; /* Fully centers metric cards */
+    justify-content: center;
     align-items: center;
-    max-width: 1500px; /* Keeps it from stretching too wide - will auto move the card to the next line */
+    max-width: 1500px;
     width: 100%;
 }
 
@@ -296,15 +41,11 @@ aside .sidebar a:hover span {
     flex-direction: column;
     justify-content: space-around;
     padding: 25px;
-    background: var(--card-background-color);
-    box-sizing: border-box;
-    border-radius: 5px;
-    box-shadow: var(--card-box-shadow);
-    width: 350px; /* width of the cards */
+    width: 350px;
     height: 150px;
     font-size: 25px;
 }
-/* Each Card Styling*/
+
 .dashboard-card:first-child {
     border-left: 15px solid #246dec;
 }
@@ -317,11 +58,6 @@ aside .sidebar a:hover span {
     border-left: 15px solid #f5b74f;
 }
 
-.card > span {
-    font-size: 20px;
-    font-weight: 600;
-}
-
 .card-inner {
     display: flex;
     align-items: center;
@@ -329,35 +65,31 @@ aside .sidebar a:hover span {
 }
 
 .card-inner > p {
-    font-size: 25px; /* Metric Titles */
+    font-size: 25px;
 }
+
 .card-inner > span {
-    font-size: 40px;  /* Icons */
+    font-size: 40px;
 }
 
-
-/* =====Charts===== */
+/* Charts Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-top: 40px;
+    width: 100%;
+    max-width: 1500px;
+}
 
 .charts {
-    margin-top: 60px;
     display: flex;
-    flex-direction: row;
-    justify-content: center; /* Centers the charts horizontally */
-    gap: 40px; /* Space between the charts */
-    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
-    align-items: center;
+    flex-direction: column;
+    gap: 40px;
 }
 
-
-.charts-card {
-    background-color: #FFFFFF;
-    margin-bottom: 20px;
+.chart-card {
     padding: 20px;
-    box-sizing: border-box;
-    -webkit-column-break-inside: avoid;
-    border: 1px solid #d2d2d3;
-    border-radius: 5px;
-    box-shadow: 0 6px 7px rgba(0, 0, 0, 0.2);
 }
 
 .chart-title {
@@ -366,5 +98,83 @@ aside .sidebar a:hover span {
     justify-content: center;
     font-size: 25px;
     font-weight: 500;
+    margin-bottom: 15px;
+}
+
+/* Alerts Section */
+.alerts-container {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.alerts-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.alerts-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.alerts-header span {
+    color: var(--failure-color);
+    font-size: 2rem;
+}
+
+.alerts-body {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .alerts-container {
+        position: static;
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-main-cards {
+        gap: 30px;
+    }
+    
+    .dashboard-card {
+        width: 100%;
+        max-width: 350px;
+    }
+}
+
+/* Loading Animation */
+.alert-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: var(--tertiary-color);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin 1.5s linear infinite;
+    font-size: 3rem;
     margin-bottom: 15px;
 }
