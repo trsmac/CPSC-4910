@@ -1,19 +1,11 @@
-/* ------trackalytics/static/css/dashboard.css------ */
-/* Dashboard Container */
-.dashboard-container {
-    overflow: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: flex-start;
-    width: 100%;
-}
+/* trackalytics/static/css/dashboard.css */
 
+/* Dashboard Specific Styles */
 .dashboard-title {
     width: 100%;
     text-align: center;
-    margin: 10px 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .dashboard-title-text {
@@ -24,7 +16,16 @@
     letter-spacing: 2px;
 }
 
-/* Metrics Cards */
+.dashboard-container {
+    overflow: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
 .dashboard-main-cards {
     margin-top: 30px;
     display: flex;
@@ -41,6 +42,10 @@
     flex-direction: column;
     justify-content: space-around;
     padding: 25px;
+    background: var(--card-background-color);
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: var(--card-box-shadow);
     width: 350px;
     height: 150px;
     font-size: 25px;
@@ -72,24 +77,24 @@
     font-size: 40px;
 }
 
-/* Charts Grid */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    margin-top: 40px;
-    width: 100%;
-    max-width: 1500px;
-}
-
 .charts {
+    margin-top: 60px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
     gap: 40px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .chart-card {
+    background-color: var(--card-background-color);
+    margin-bottom: 20px;
     padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid #d2d2d3;
+    border-radius: 5px;
+    box-shadow: 0 6px 7px rgba(0, 0, 0, 0.2);
 }
 
 .chart-title {
@@ -101,80 +106,19 @@
     margin-bottom: 15px;
 }
 
-/* Alerts Section */
-.alerts-container {
-    position: sticky;
-    top: 20px;
-    height: fit-content;
+/* Text Colors */
+.text-blue {
+    color: #246dec;
 }
 
-.alerts-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+.text-red {
+    color: #cc3c43;
 }
 
-.alerts-header h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin: 0;
+.text-yellow {
+    color: #f5b74f;
 }
 
-.alerts-header span {
-    color: var(--failure-color);
-    font-size: 2rem;
-}
-
-.alerts-body {
-    max-height: 500px;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 1200px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .alerts-container {
-        position: static;
-        margin-top: 40px;
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard-main-cards {
-        gap: 30px;
-    }
-    
-    .dashboard-card {
-        width: 100%;
-        max-width: 350px;
-    }
-}
-
-/* Loading Animation */
-.alert-loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    color: var(--tertiary-color);
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.spin {
-    animation: spin 1.5s linear infinite;
-    font-size: 3rem;
-    margin-bottom: 15px;
+.font-weight-bold {
+    font-weight: 700;
 }

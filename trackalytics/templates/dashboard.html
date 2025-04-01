@@ -1,82 +1,60 @@
 <!-- trackalytics/templates/dashboard.html -->
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}Dashboard - Trackalytics{% endblock %}
+{% block title %}Trackalytics: Dashboard{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 {% endblock %}
 
 {% block content %}
-<main class="dashboard-container">
-    <div class="dashboard-title">
-        <h1 class="dashboard-title-text">Dashboard Overview</h1>
-    </div>
-    
-    <!-- Metrics Cards -->
-    <div class="dashboard-main-cards">
-        <div class="dashboard-card">
-            <div class="card-inner">
-                <p class="text-primary">Total Inventory</p>
-                <span class="material-symbols-outlined text-blue">inventory_2</span>
-            </div>
-            <span class="text-primary font-weight-bold">{{ total_inventory }}</span>
+    <div class="dashboard-container">
+        <div class="dashboard-title">
+            <h1 class="dashboard-title-text">Dashboard Overview</h1>
         </div>
-        
-        <div class="dashboard-card">
-            <div class="card-inner">
-                <p class="text-primary">Low Stock Items</p>
-                <span class="material-symbols-outlined text-red">e911_emergency</span>
-            </div>
-            <span class="text-primary font-weight-bold">{{ low_stock_items }}</span>
-        </div>
-        
-        <div class="dashboard-card">
-            <div class="card-inner">
-                <p class="text-primary">Zero Stock Items</p>
-                <span class="material-symbols-outlined text-yellow">block</span>
-            </div>
-            <span class="text-primary font-weight-bold">{{ zero_stock_items }}</span>
-        </div>
-    </div>
 
-    <!-- Charts and Alerts Grid -->
-    <div class="dashboard-grid">
+        <div class="dashboard-main-cards">
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Total Inventory</p>
+                    <span class="material-symbols-outlined text-blue">inventory_2</span>
+                </div>
+                <span class="text-primary font-weight-bold">100</span>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Low Stock Items</p>
+                    <span class="material-symbols-outlined text-red">e911_emergency</span>
+                </div>
+                <span class="text-primary font-weight-bold">13</span>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-inner">
+                    <p class="text-primary">Zero Stock Items</p>
+                    <span class="material-symbols-outlined text-yellow">block</span>
+                </div>
+                <span class="text-primary font-weight-bold">6</span>
+            </div>
+        </div>
+
         <div class="charts">
             <div class="chart-card">
                 <p class="chart-title">Top 5 Products</p>
                 <div id="bar-chart"></div>
             </div>
-            
+
             <div class="chart-card">
                 <p class="chart-title">Overall Inventory</p>
                 <div id="area-chart"></div>
             </div>
         </div>
-
-        <!-- Real-time Alerts -->
-        <div class="alerts-container">
-            <div class="alerts-card">
-                <div class="alerts-header">
-                    <span class="material-symbols-outlined">notifications_active</span>
-                    <h3>Real-Time Alerts</h3>
-                </div>
-                <div class="alerts-body" id="low-stock-alerts">
-                    <div class="alert-loading">
-                        <span class="material-symbols-outlined spin">refresh</span>
-                        <p>Loading inventory alerts...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</main>
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="{% static 'js/dashboard.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<script src="{% static 'js/realtime_inventory.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
