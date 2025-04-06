@@ -2,42 +2,95 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Product Management - Trackalytics{% endblock %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/products.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="products-container">
-    <h2>Product Management</h2>
-    
-    <div class="product-actions">
-        <a href="{% url 'app1:product_create' %}" class="btn btn-primary">
-            <span class="material-symbols-outlined">add</span>
-            Add New Product
-        </a>
+<main class="products-container">
+    <div class="products-header">
+        <h1>Product Management</h1>
+        <div class="products-actions">
+            <a href="{% url 'app1:product_create' %}" class="btn btn-primary">
+                <span class="material-symbols-outlined">add</span>
+                Add New Product
+            </a>
+            <div class="search-box">
+                <input type="text" id="productSearch" placeholder="Search products...">
+                <span class="material-symbols-outlined">search</span>
+            </div>
+        </div>
     </div>
 
-    <div class="product-table-container">
-        <table class="product-table">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <!-- Add other headers as needed -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
-                <tr>
-                    <td>{{ product.product_name }}</td>
-                    <!-- Add other columns as needed -->
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="1">No products available.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="products-table-container card">
+        <div class="table-responsive">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>SKU</th>
+                        <th>Category</th>
+                        <th>Current Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.product_name }}</td>
+                        <td>{{ product.sku }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.current_stock }}</td>
+                        <td>
+                            <span class="status-badge {% if product.current_stock > product.low_stock_threshold %}in-stock{% else %}low-stock{% endif %}">
+                                {% if product.current_stock > product.low_stock_threshold %}
+                                In Stock
+                                {% else %}
+                                Low Stock
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <a href="{% url 'app1:product_update' product.id %}" class="btn-edit">
+                                <span class="material-symbols-outlined">edit</span>
+                            </a>
+                            <a href="{% url 'app1:product_delete' product.id %}" class="btn-delete" 
+                               onclick="return confirm('Are you sure you want to delete this product?');">
+                                <span class="material-symbols-outlined">delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="empty-table">No products available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
     </div>
-</div>
+</main>
 {% endblock %}

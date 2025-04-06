@@ -9,40 +9,71 @@
 {% endblock %}
 
 {% block content %}
-<main class="dashboard-container">
-    <div class="activity-log-box">
-        <h2>Activity Log</h2>
-        <div class="filter-section">
-            <select id="userFilter" class="form-select">
-                <option value="">All Users</option>
-                {% for user in users %}
-                <option value="{{ user.id }}">{{ user.username }}</option>
-                {% endfor %}
-            </select>
+<main class="activity-log-container">
+    <div class="activity-log-header">
+        <h1>Activity Log</h1>
+        <div class="log-filters">
+            <div class="filter-group">
+                <label for="userFilter">Filter by User:</label>
+                <select id="userFilter" class="form-select">
+                    <option value="">All Users</option>
+                    {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="dateFilter">Filter by Date:</label>
+                <input type="date" id="dateFilter" class="form-select">
+            </div>
         </div>
-        <div class="activity-log-table">
-            <table>
+    </div>
+
+    <div class="activity-log-content card">
+        <div class="table-responsive">
+            <table class="activity-log-table">
                 <thead>
                     <tr>
                         <th>Timestamp</th>
                         <th>User</th>
                         <th>Action</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for log in activity_logs %}
                     <tr>
-                        <td>{{ log.timestamp|date:"Y-m-d H:i" }}</td>
+                        <td>{{ log.timestamp|date:"M d, Y H:i" }}</td>
                         <td>{{ log.user.username }}</td>
                         <td>{{ log.action }}</td>
+                        <td>{{ log.details|truncatechars:50 }}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="3">No activity records found</td>
+                        <td colspan="4" class="empty-table">No activity records found</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+        
+        <div class="pagination">
+            <span class="step-links">
+                {% if activity_logs.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ activity_logs.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ activity_logs.number }} of {{ activity_logs.paginator.num_pages }}
+                </span>
+
+                {% if activity_logs.has_next %}
+                    <a href="?page={{ activity_logs.next_page_number }}">next</a>
+                    <a href="?page={{ activity_logs.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
         </div>
     </div>
 </main>

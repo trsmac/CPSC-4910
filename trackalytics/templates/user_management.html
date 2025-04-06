@@ -1,4 +1,5 @@
 <!-- trackalytics/templates/user_management.html -->
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -9,61 +10,128 @@
 {% endblock %}
 
 {% block content %}
-<div class="user-management-container">
-    <h2>User Management</h2>
-    
-    <div class="user-actions">
-        <a href="{% url 'add_user' %}" class="btn btn-primary">
-            <span class="material-symbols-outlined">person_add</span>
-            Add New User
-        </a>
+<main class="user-management-container">
+    <div class="user-management-header">
+        <h1>User Management</h1>
+        <div class="user-actions">
+            <a href="{% url 'add_user' %}" class="btn btn-primary">
+                <span class="material-symbols-outlined">person_add</span>
+                Add New User
+            </a>
+            <div class="user-search">
+                <input type="text" id="userSearch" placeholder="Search users...">
+                <span class="material-symbols-outlined">search</span>
+            </div>
+        </div>
     </div>
 
-    <div class="user-table-container">
-        <table class="user-table">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.role.role_name }}</td>
-                    <td>
-                        <span class="status-badge {% if user.is_active %}active{% else %}inactive{% endif %}">
-                            {{ user.is_active|yesno:"Active,Inactive" }}
-                        </span>
-                    </td>
-                    <td class="actions">
-                        <a href="{% url 'edit_user' user.id %}" class="btn btn-edit">
-                            <span class="material-symbols-outlined">edit</span>
-                            Edit
-                        </a>
-                        <a href="{% url 'delete_user' user.id %}" class="btn btn-delete"
-                           onclick="return confirm('Are you sure you want to delete this user?');">
-                            <span class="material-symbols-outlined">delete</span>
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="no-users">
-                        No users found. <a href="{% url 'add_user' %}">Add a new user</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="user-table-container card">
+        <div class="table-responsive">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Contact</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Last Active</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td class="user-info">
+                            <div class="user-avatar">
+                                {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}">
+                                {% else %}
+                                <span class="material-symbols-outlined">account_circle</span>
+                                {% endif %}
+                            </div>
+                            <div class="user-details">
+                                <strong>{{ user.username }}</strong>
+                                <small>{{ user.get_full_name }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="contact-info">
+                                <div>{{ user.email }}</div>
+                                {% if user.phone %}<div>{{ user.phone }}</div>{% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="role-badge" style="background-color: {{ user.role.color }}20; color: {{ user.role.color }};">
+                                {{ user.role.role_name }}
+                            </span>
+                        </td>
+                            <span class="status-badge {% if user.is_active %}active{% else %}inactive{% endif %}">
+                                {{ user.is_active|yesno:"Active,Inactive" }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if user.last_login %}
+                            {{ user.last_login|date:"M d, Y" }}
+                            {% else %}
+                            Never logged in
+                            {% endif %}
+                        </td>
+                        <td class="actions">
+                            <div class="action-buttons">
+                                <a href="{% url 'edit_user' user.id %}" class="btn-action btn-edit" title="Edit">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </a>
+                                {% if user.is_active %}
+                                <a href="{% url 'deactivate_user' user.id %}" class="btn-action btn-deactivate" title="Deactivate">
+                                    <span class="material-symbols-outlined">toggle_off</span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'activate_user' user.id %}" class="btn-action btn-activate" title="Activate">
+                                    <span class="material-symbols-outlined">toggle_on</span>
+                                </a>
+                                {% endif %}
+                                <a href="{% url 'delete_user' user.id %}" class="btn-action btn-delete" title="Delete"
+                                   onclick="return confirm('Are you sure you want to delete this user?');">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="empty-table">
+                            <div class="empty-state">
+                                <span class="material-symbols-outlined">group_off</span>
+                                <p>No users found. <a href="{% url 'add_user' %}">Add a new user</a></p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
     </div>
-</div>
+</main>
 {% endblock %}
 
 {% block extra_js %}
