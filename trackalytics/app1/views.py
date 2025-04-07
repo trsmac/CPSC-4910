@@ -11,7 +11,7 @@ import csv
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
-# Dashboard View (No login required)
+# Dashboard View
 def dashboard(request):
     total_inventory = Inventory.objects.count()
     low_stock_items = Inventory.objects.filter(quantity__lte=10).count()
@@ -27,7 +27,7 @@ def dashboard(request):
     }
     return render(request, 'dashboard.html', context)
 
-# Inventory View (No login required)
+# Inventory View
 def inventory(request):
     add_form = AddInventoryForm(request.POST or None)
     remove_form = RemoveInventoryForm(request.POST or None)
@@ -74,12 +74,12 @@ def inventory(request):
     }
     return render(request, 'inventory.html', context)
 
-# Product List View (No login required)
+# Product List View
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'products.html', {'products': products})
 
-# Product Create View (No login required)
+# Product Create View
 def product_create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -93,12 +93,12 @@ def product_create(request):
         form = ProductForm()
     return render(request, 'product_form.html', {'form': form})
 
-# Inventory History View (No login required)
+# Inventory History View
 def inventory_history(request):
     history = InventoryHistory.objects.all().order_by('-transaction_date')
     return render(request, 'inventory_history.html', {'history': history})
 
-# Reports & Exports View (No login required)
+# Reports & Exports View
 def reports_exports(request):
     if request.method == 'POST':
         form = ExportForm(request.POST)
@@ -120,7 +120,7 @@ def reports_exports(request):
     }
     return render(request, 'reports_exports.html', context)
 
-# Generate Inventory Report (No login required)
+# Generate Inventory Report
 def generate_inventory_report(request):
     if request.method == 'POST':
         start_date = request.POST.get('start_date')
@@ -138,7 +138,7 @@ def generate_inventory_report(request):
         })
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-# Export Data (No login required)
+# Export Data
 def export_data(request):
     if request.method == 'POST':
         export_format = request.POST.get('export_format')
@@ -174,14 +174,41 @@ def export_data(request):
     
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-# Activity Log View (No login required)
+# Download Report
+def download_report(request, report_id):
+    try:
+        report = ReportExport.objects.get(id=report_id)
+        if report.file:
+            response = HttpResponse(report.file, content_type='application/octet-stream')
+            response['Content-Disposition'] = f'attachment; filename="{report.name}.{report.file_format.lower()}"'
+            if request.user.is_authenticated:
+                ActivityLog.objects.create(user=request.user, action=f'Downloaded report: {report.name}')
+            return response
+    except ReportExport.DoesNotExist:
+        pass
+    messages.error(request, 'Report not found or no file attached')
+    return redirect('app1:reports_exports')
+
+# Delete Report
+def delete_report(request, report_id):
+    try:
+        report = ReportExport.objects.get(id=report_id)
+        if request.user.is_authenticated:
+            ActivityLog.objects.create(user=request.user, action=f'Deleted report: {report.name}')
+        report.delete()
+        messages.success(request, 'Report deleted successfully')
+    except ReportExport.DoesNotExist:
+        messages.error(request, 'Report not found')
+    return redirect('app1:reports_exports')
+
+# Activity Log View
 def activity_log(request):
     # Show user-specific logs if authenticated, all logs if not
     logs = ActivityLog.objects.filter(user=request.user) if request.user.is_authenticated else ActivityLog.objects.all()
     logs = logs.order_by('-timestamp')
-    return render(request, 'activity_log.html', {'logs': logs})
+    return render(request, 'activitylog.html', {'logs': logs})
 
-# Registration View (No login required)
+# Registration View
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)

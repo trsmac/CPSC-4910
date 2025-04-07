@@ -31,7 +31,7 @@
                 <span class="material-symbols-outlined">inventory_2</span>
                 <h3>Inventory Report</h3>
             </div>
-            <form method="post" action="{% url 'generate_inventory_report' %}">
+            <form method="post" action="{% url 'app1:generate_inventory_report' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="start_date">Start Date</label>
@@ -61,7 +61,7 @@
                 <span class="material-symbols-outlined">database</span>
                 <h3>Data Export</h3>
             </div>
-            <form method="post" action="{% url 'export_data' %}">
+            <form method="post" action="{% url 'app1:export_data' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="data_type">Data Type</label>
@@ -112,10 +112,10 @@
                         <td>{{ report.get_file_format_display }}</td>
                         <td>{{ report.file_size|filesizeformat }}</td>
                         <td class="actions">
-                            <a href="{% url 'download_report' report.id %}" class="btn-download">
+                            <a href="{% url 'app1:download_report' report.id %}" class="btn-download">
                                 <span class="material-symbols-outlined">download</span>
                             </a>
-                            <a href="{% url 'delete_report' report.id %}" class="btn-delete"
+                            <a href="{% url 'app1:delete_report' report.id %}" class="btn-delete"
                                onclick="return confirm('Are you sure you want to delete this report?');">
                                 <span class="material-symbols-outlined">delete</span>
                             </a>
