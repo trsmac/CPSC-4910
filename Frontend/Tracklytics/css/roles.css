@@ -18,55 +18,33 @@
 
     --card-border-radius: 10px;
     --border-radius: 10px;
-    --border-radius-2: 10px;
-    --border-radius-3: 10px;
 
     --card-padding: 20px;
-
     --card-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     --sidebar-width: 250px;
-}
-/*=============MAIN=============*/
-.menu {
-    display: flex;
-    justify-content: space-between; /* Ensures the close button and logo are spaced properly */
-    align-items: center;
-    padding: 10px;
-}
-
-.logo {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center align */
-    text-align: center; /* Ensure text is centered */
-}
-
-.logo img {
-    max-width: 100px; /*size of image*/
-    height: auto;
-}
-
-.logo h2 {
-    font-size: 18px;
-    margin-top: 5px; /* Add spacing between image and text */
 }
 
 * {
     margin: 0;
     padding: 0;
     outline: 0;
-    appearance: none;
     border: 0;
     text-decoration: none;
     list-style: none;
     box-sizing: border-box;
 }
-html{
+
+input:not([type="checkbox"]) {
+    appearance: none;
+}
+
+
+html {
     font-size: 14px;
 }
 
-body{
+body {
     width: 100vw;
     height: 100vh;
     font-family: 'Poppins', sans-serif;
@@ -76,76 +54,7 @@ body{
     overflow-x: hidden;
 }
 
-/*sidebar*/
-.sidebar h2 {
-    font-size: 12px;
-    margin-top: -25px;
-}
-.card {
-    background: var(--card-background-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-box-shadow);
-    padding: var(--card-padding);
-    transition: all 0.3s ease-in-out;
-}
-
-.card:hover {
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.sidebar h3:not(a h3) {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--secondary-color); /* Darker contrast */
-    margin-bottom: 5px;
-    margin-left: 10px;
-}
-
-/* Sidebar Links with Icons */
-.sidebar a {
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--primary-color);
-    text-decoration: none;
-    padding: 12px;
-    border-radius: var(--border-radius);
-    position: relative;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Sidebar Link Text */
-.sidebar a h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin: 0;
-    transition: color 0.3s ease-in-out;
-}
-
-/* Sidebar Link Hover */
-.sidebar a:hover {
-    background: var(--sidebar-background-color);
-    color: var(--background-color);
-}
-
-.sidebar a:hover h3 {
-    color: var(--background-color);
-}
-
-/* Sidebar Icon Hover */
-.sidebar a:hover span {
-    color: var(--background-color);
-}
-
-/* Container Layout */
+/* Sidebar & Layout */
 .container {
     display: grid;
     width: 100%;
@@ -157,36 +66,26 @@ body{
 
 aside {
     height: 100vh;
-    background: var(--card-background-color); /* White for a clean, modern look */
-    border-right: 1px solid var(--tertiary-color); /* Subtle separation */
+    background: var(--card-background-color);
+    border-right: 1px solid var(--tertiary-color);
 }
 
-/* Sidebar Top Menu */
-aside .menu {
-    background: #E8EAF6; /* Light blue-gray for a soft contrast */
-    padding: 15px;
-    border-bottom: 1px solid var(--tertiary-color);
-}
-
-aside .close {
-    display:none;
-}
-
-/*===== Sidebar =====*/
-aside .sidebar {
-    background: white;
+.sidebar {
     display: flex;
     flex-direction: column;
     height: 86vh;
     position: relative;
     top: 3rem;
+    background: white;
 }
 
-.aside h3 {
+.sidebar h3 {
     font-weight: 600;
+    font-size: 14px;
+    margin: 10px 0 5px 10px;
 }
 
-aside .sidebar a {
+.sidebar a {
     display: flex;
     color: var(--info-color);
     margin-left: 2rem;
@@ -195,48 +94,46 @@ aside .sidebar a {
     position: relative;
     height: 3.5rem;
     transition: all 300ms ease;
+    font-size: 12px;
+    font-weight: 500;
 }
 
-aside .sidebar a span {
-    font-size: 1.8rem;
-}
-
-aside .sidebar a:last-child {
-    position: absolute;
-    bottom: 3.5rem;
-    width: 100%;
-}
-
-aside .sidebar a:active {
-    background: var(--info-color);
+.sidebar a:hover {
+    background: var(--sidebar-background-color);
     color: var(--background-color);
-    margin-left: 0;
 }
 
-.sidebar a:hover::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 6px;
-    height: 100%;
-    background: rgba(85,90,112,0.71);
+.sidebar a:hover h3,
+.sidebar a:hover span {
+    color: var(--background-color);
 }
 
-aside .sidebar a:active span {
-    color: var(--primary-color);
-    margin-left: calc(1rem - 3px);
-}
-
-aside .sidebar a:hover {
+.sidebar a h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
     color: var(--primary-color);
 }
 
-aside .sidebar a:hover span {
-    margin-left: 1rem;
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-/* Roles Page Layout */
+.logo img {
+    max-width: 100px;
+    height: auto;
+}
+
+.logo h2 {
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+/* Roles Layout */
 .roles-container {
     flex-grow: 1;
     padding: 20px;
@@ -248,7 +145,6 @@ aside .sidebar a:hover span {
     margin-bottom: 20px;
 }
 
-/* Roles Card */
 .roles-card {
     display: flex;
     background: white;
@@ -258,7 +154,7 @@ aside .sidebar a:hover span {
     gap: 20px;
 }
 
-/* Role Selection Sidebar */
+/* Role List */
 .roles-list {
     width: 200px;
     background: var(--background-color);
@@ -266,7 +162,6 @@ aside .sidebar a:hover span {
     border-right: 2px solid var(--tertiary-color);
 }
 
-/* Role List - Add Spacing Between Role Buttons */
 .roles-list ul {
     list-style: none;
     padding: 0;
@@ -278,35 +173,31 @@ aside .sidebar a:hover span {
     background: var(--secondary-color);
     color: white;
     border-radius: 5px;
-    transition: 0.3s;
     text-align: center;
-    margin-bottom: 10px; /* 🔹 Added spacing between buttons */
+    margin-bottom: 10px;
+    transition: 0.3s;
 }
 
-/* Keep the active role highlighted */
-.role-item.active {
-    background: var(--secondary-color);
-}
-
-/* Add hover effect */
 .role-item:hover {
     background: var(--info-color);
 }
 
+.role-item.active {
+    background: var(--secondary-color);
+}
 
-/* Role Content */
+/* Roles Content */
 .roles-content {
     flex: 1;
     padding: 20px;
 }
 
-/* Role Header */
 .role-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-/* Role Description */
+
 .role-description {
     font-size: 14px;
     font-weight: 500;
@@ -315,12 +206,10 @@ aside .sidebar a:hover span {
     padding: 5px 0;
 }
 
-
 .role-header button {
     background: var(--primary-color);
     color: white;
     padding: 6px 12px;
-    border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
@@ -330,7 +219,7 @@ aside .sidebar a:hover span {
     background: var(--secondary-color);
 }
 
-/* Access List Sections */
+/* Access Lists */
 .access-lists {
     display: flex;
     gap: 20px;
@@ -340,45 +229,35 @@ aside .sidebar a:hover span {
 .granted, .denied {
     flex: 1;
     padding: 15px;
-    border-radius: 5px;
     font-size: 14px;
+    border-radius: 5px;
 }
 
-/* Updated Lighter Green for "What this role can access" */
 .granted {
-    background: #D4EDDA; /* Light green */
-    color: #155724; /* Darker green for contrast */
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    border-left: 5px solid #28A745; /* Adds a slight border for emphasis */
+    background: #D4EDDA;
+    color: #155724;
+    border-left: 5px solid #28A745;
 }
 
-/* Updated Lighter Red for "What this role can't access" */
 .denied {
-    background: #F8D7DA; /* Light red */
-    color: #721C24; /* Darker red for contrast */
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    border-left: 5px solid #DC3545; /* Adds a slight border for emphasis */
+    background: #F8D7DA;
+    color: #721C24;
+    border-left: 5px solid #DC3545;
 }
-/* Style the granted and denied permission lists */
+
 .granted ul, .denied ul {
-    list-style-type: none; /* Removes default bullets */
+    list-style-type: none;
     padding-left: 0;
 }
 
 .granted ul li::before,
 .denied ul li::before {
-    content: "- "; /* Adds dash before each item */
+    content: \"- \";
     font-weight: bold;
-    color: inherit; /* Keeps the text color consistent */
     margin-right: 5px;
 }
 
-
-/* Modal Styling */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -398,9 +277,9 @@ aside .sidebar a:hover span {
     border-radius: var(--border-radius);
     box-shadow: var(--card-box-shadow);
     text-align: center;
+    overflow: visible;
 }
 
-/* Close Button */
 .close {
     float: right;
     font-size: 20px;
@@ -408,7 +287,7 @@ aside .sidebar a:hover span {
     cursor: pointer;
 }
 
-/* Permissions List */
+/* Permissions Modal */
 .permissions {
     display: flex;
     flex-direction: column;
@@ -417,55 +296,29 @@ aside .sidebar a:hover span {
     padding: 10px;
 }
 
-/* Ensure checkboxes are properly visible */
 .permissions label {
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 14px;
-    cursor: pointer;
     color: var(--text-color);
 }
 
-/* Make checkboxes appear properly */
-.permissions input[type="checkbox"] {
+.permissions input[type=\"checkbox\"] {
     width: 18px;
     height: 18px;
-    cursor: pointer;
-    appearance: auto; /* Ensures checkboxes use default browser appearance */
-    -webkit-appearance: checkbox;
-    -moz-appearance: checkbox;
+    appearance: auto;
 }
 
-/* Add spacing between checkboxes */
-.permissions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-}
-
-/* Ensure modal content is not hidden */
-.modal-content {
-    background-color: white;
-    margin: 10% auto;
-    padding: 20px;
-    width: 40%;
-    border-radius: var(--border-radius);
-    box-shadow: var(--card-box-shadow);
-    text-align: center;
-    overflow: visible; /* Ensure content is not hidden */
-}
-/* Save Button */
-#savePermissions {
+/* Buttons */
+#savePermissions,
+#assignConfirmBtn {
     background: var(--success-color);
     color: white;
     padding: 12px 20px;
-    border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    font-weight: bold;
     text-transform: uppercase;
     transition: background 0.3s ease, transform 0.2s ease;
     display: block;
@@ -474,13 +327,103 @@ aside .sidebar a:hover span {
     text-align: center;
 }
 
-/* Save Button Hover Effect */
-#savePermissions:hover {
+#savePermissions:hover,
+#assignConfirmBtn:hover {
     background: #1E8449;
     transform: scale(1.05);
 }
 
-/* Save Button Active (Click) Effect */
-#savePermissions:active {
+#savePermissions:active,
+#assignConfirmBtn:active {
     transform: scale(0.95);
+}
+
+/* Assign Table */
+#userTable {
+    width: 100%;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+#userTable th, #userTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#userTable th {
+    background-color: var(--background-color);
+}
+
+#userTable tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* ====== Dropdown Highlight Styles ====== */
+.dropdown-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.option-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.option-list li {
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+    background-color: transparent;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease;
+}
+
+.option-list li::before {
+    content: \"\";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--text-light-color);
+    border-radius: 50%;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.option-list li.active {
+    font-weight: 600;
+    background-color: #f0f0f0;
+}
+
+.option-list li.active::before {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+/* Styled Dropdowns */
+.styled-dropdown {
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid var(--tertiary-color);
+    background-color: white;
+    color: var(--text-color);
+    width: 150px;
+    appearance: none;
+}
+
+.dropdown-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--text-color);
 }

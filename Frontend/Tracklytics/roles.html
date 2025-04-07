@@ -2,15 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Trackalytics: Dashboard</title>
-
-  <!-- Material Icons -->
+  <title>Trackalytics: User Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-
-  <!-- Google Fonts Inter&Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
-
-  <!-- Style -->
   <link rel="stylesheet" href="css/roles.css">
 </head>
 <body>
@@ -26,55 +20,24 @@
         <span class="material-symbols-outlined">close</span>
       </div>
     </div>
-
     <div class="sidebar">
       <h3>Navigation</h3>
-      <a href="dashboard.html">
-        <span class="material-symbols-outlined">space_dashboard</span>
-        <h3>Dashboard</h3>
-      </a>
-      <a href="#">
-        <span class="material-symbols-outlined">inventory_2</span>
-        <h3>Products</h3>
-      </a>
+      <a href="main-dashboard.html"><span class="material-symbols-outlined">space_dashboard</span><h3>Dashboard</h3></a>
+      <a href="#"><span class="material-symbols-outlined">inventory_2</span><h3>Products</h3></a>
       <h3>Inventory</h3>
-      <a href="inventory.html">
-        <span class="material-symbols-outlined">add</span>
-        <h3>Add Inventory</h3>
-      </a>
-      <a href="#">
-        <span class="material-symbols-outlined">remove</span>
-        <h3>Remove Inventory</h3>
-      </a>
-      <a href="#">
-        <span class="material-symbols-outlined">visibility</span>
-        <h3>View Inventory</h3>
-      </a>
+      <a href="inventory.html"><span class="material-symbols-outlined">add</span><h3>Add Inventory</h3></a>
+      <a href="#"><span class="material-symbols-outlined">remove</span><h3>Remove Inventory</h3></a>
+      <a href="#"><span class="material-symbols-outlined">visibility</span><h3>View Inventory</h3></a>
       <h3>Admin</h3>
-      <a href="#">
-        <span class="material-symbols-outlined">groups</span>
-        <h3>User Management</h3>
-      </a>
-      <a href="#">
-        <span class="material-symbols-outlined">folder</span>
-        <h3>Reports & Exports</h3>
-      </a>
-      <a href="activitylog.html">
-        <span class="material-symbols-outlined">history</span>
-        <h3>Activity Log</h3>
-      </a>
-      <a href="#">
-        <span class="material-symbols-outlined">tune</span>
-        <h3>Settings</h3>
-      </a>
-      <a href="#">
-        <span class="material-symbols-outlined">logout</span>
-        <h3>Logout</h3>
-      </a>
+      <a href="#"><span class="material-symbols-outlined">groups</span><h3>User Management</h3></a>
+      <a href="#"><span class="material-symbols-outlined">folder</span><h3>Reports & Exports</h3></a>
+      <a href="activitylog.html"><span class="material-symbols-outlined">history</span><h3>Activity Log</h3></a>
+      <a href="#"><span class="material-symbols-outlined">tune</span><h3>Settings</h3></a>
+      <a href="#"><span class="material-symbols-outlined">logout</span><h3>Logout</h3></a>
     </div>
   </aside>
 
-  <!-- Roles & Permissions Content -->
+  <!-- Roles Content -->
   <main class="roles-container">
     <h1 class="roles-title">Roles & Permissions</h1>
     <div class="roles-card">
@@ -82,8 +45,9 @@
         <h3>Select Role</h3>
         <ul>
           <li class="role-item active" data-role="admin">Admin</li>
-          <li class="role-item active" data-role="editor">Editor</li>
-          <li class="role-item active" data-role="viewer">Viewer</li>
+          <li class="role-item" data-role="editor">Editor</li>
+          <li class="role-item" data-role="viewer">Viewer</li>
+          <li class="role-item" data-role="assign">Assign User Role's</li>
         </ul>
       </div>
       <div class="roles-content">
@@ -91,14 +55,12 @@
           <h3>Admin Role</h3>
           <button id="editPermissionsBtn">Edit Permissions</button>
         </div>
-        <p class="role-description">
-          Has access to all organization resources, including dashboards, users, and teams.
-        </p>
+        <p class="role-description">Has access to all organization resources, including dashboards, users, and teams.</p>
 
-        <!-- Modal Popup for Editing Permissions -->
+        <!-- Permissions Modal -->
         <div id="permissionsModal" class="modal">
           <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" id="closePermissionsModal">&times;</span>
             <h3>Edit Permissions</h3>
             <div class="permissions">
               <label><input type="checkbox" class="perm" value="dashboard1"> View Dashboard 1</label>
@@ -114,21 +76,63 @@
         </div>
 
         <div class="access-lists">
-          <div class="granted">
-            <h4>What this role can access</h4>
-            <ul id="granted-list"></ul>
-          </div>
-          <div class="denied">
-            <h4>What this role can't access</h4>
-            <ul id="denied-list"></ul>
-          </div>
+          <div class="granted"><h4>What this role can access</h4><ul id="granted-list"></ul></div>
+          <div class="denied"><h4>What this role can't access</h4><ul id="denied-list"></ul></div>
         </div>
       </div>
     </div>
   </main>
 </div>
 
-<!-- Script -->
+<!-- Assign Role Modal -->
+<div id="assignRoleModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="assignClose">&times;</span>
+    <h3>Assign Role to User</h3>
+
+    <div style="margin-bottom: 15px; text-align: left;">
+      <label for="userSearch"><strong>Search by name</strong></label>
+      <input type="text" id="userSearch" placeholder="e.g. Alice" style="width: 100%; padding: 8px; margin-top: 5px;">
+    </div>
+
+    <div style="display: flex; gap: 40px; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap;">
+      <div class="dropdown-group">
+        <label class="dropdown-label">Sort By</label>
+        <select id="sortDropdown" class="styled-dropdown">
+          <option value="name">Last Name</option>
+          <option value="role">Role</option>
+        </select>
+      </div>
+
+      <div class="dropdown-group">
+        <label class="dropdown-label">Filter By</label>
+        <select id="filterDropdown" class="styled-dropdown">
+          <option value="all">All Users</option>
+          <option value="assigned">Assigned</option>
+          <option value="unassigned">Unassigned</option>
+          <option value="admin">Admin</option>
+          <option value="editor">Editor</option>
+          <option value="viewer">Viewer</option>
+        </select>
+      </div>
+    </div>
+
+
+    <table id="userTable" style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+      <thead>
+      <tr>
+        <th></th>
+        <th id="sortName" style="cursor: pointer;">Name ▲▼</th>
+        <th id="sortRole" style="cursor: pointer;">Role ▲▼</th>
+      </tr>
+      </thead>
+      <tbody id="userTableBody"></tbody>
+    </table>
+
+    <button id="assignConfirmBtn">Assign</button>
+  </div>
+</div>
+
 <script src="js/role.js"></script>
 </body>
 </html>
