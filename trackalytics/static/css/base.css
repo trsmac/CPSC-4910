@@ -1,0 +1,233 @@
+/* trackalytics/static/css/base.css */
+:root {
+    --primary-color: #1E1E2D;
+    --secondary-color: #4A4A62;
+    --tertiary-color: #8E8EA3;
+    --success-color: #28C76F;
+    --failure-color: #EA5455;
+    --warning-color: #FF9F43;
+    --info-color: #4a586b;
+    --background-color: #F4F5FA;
+    --card-background-color: #FFFFFF;
+    --sidebar-background-color: #25293C;
+    --text-color: #333333;
+    --text-light-color: #888888;
+    --card-border-radius: 10px;
+    --border-radius: 10px;
+    --card-padding: 20px;
+    --card-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --sidebar-width: 250px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background: var(--background-color);
+    user-select: none;
+    overflow-x: hidden;
+}
+
+.container {
+    display: grid;
+    width: 100%;
+    margin: 0 auto;
+    background: var(--background-color);
+    gap: 20px;
+    grid-template-columns: var(--sidebar-width) 1fr;
+}
+
+/* Sidebar Styles */
+aside {
+    height: 100vh;
+    background: var(--card-background-color);
+    border-right: 1px solid var(--tertiary-color);
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #E8EAF6;
+    border-bottom: 1px solid var(--tertiary-color);
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.logo img {
+    max-width: 100px;
+    height: auto;
+}
+
+.logo h2 {
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+.sidebar {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    height: 86vh;
+    position: relative;
+    top: 3rem;
+}
+
+.sidebar h3:not(a h3) {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+.sidebar a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    margin-left: 2rem;
+}
+
+.sidebar a h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+    transition: color 0.3s ease-in-out;
+}
+
+.sidebar a:hover {
+    background: var(--sidebar-background-color);
+    color: var(--background-color);
+}
+
+.sidebar a:hover h3,
+.sidebar a:hover span {
+    color: var(--background-color);
+}
+
+.sidebar a:hover::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: rgba(85,90,112,0.71);
+}
+
+.sidebar a:last-child {
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+}
+
+.close {
+    display: none;
+}
+
+/* Base Card Styles */
+.card {
+    background: var(--card-background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    padding: var(--card-padding);
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Notification Styles */
+#notification-badge {
+    background-color: var(--danger-color);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    position: absolute;
+    right: 20px;
+    display: none;
+}
+
+.notifications-panel {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 300px;
+    background: var(--card-background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    z-index: 1000;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid var(--tertiary-color);
+}
+
+.notifications-list {
+    padding: 5px;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: var(--background-color);
+}
+
+.notification-item.unread {
+    background-color: rgba(234, 84, 85, 0.1);
+}
+
+.notification-item .time {
+    font-size: 12px;
+    color: var(--tertiary-color);
+}

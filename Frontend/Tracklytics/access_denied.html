@@ -1,0 +1,39 @@
+<!-- templates/rbac/access_denied.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Access Denied</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .access-denied-container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .access-denied-icon {
+            color: #dc3545;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="access-denied-container">
+    <div class="access-denied-icon">🚫</div>
+    <h1>Access Denied</h1>
+    <p>You do not have permission to access this page.</p>
+    <p>Please contact your system administrator if you believe this is an error.</p>
+    <a href="{% url 'dashboard' %}">Return to Dashboard</a>
+</div>
+</body>
+</html>

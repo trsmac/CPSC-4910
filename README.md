@@ -22,13 +22,13 @@ Once your Codespace is up and running, execute the following commands in the ter
 **Make the setup script executable**
 
    ```bash
-   chmod +x setup_project.sh
+   chmod +x run.sh
    ```
 
 **Run the setup script**
 
    ```bash
-   ./setup_project.sh
+   ./run.sh
    ```
 
 ### Step 3: Access the Application

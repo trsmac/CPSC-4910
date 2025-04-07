@@ -1,99 +1,28 @@
 <!-- trackalytics/templates/inventory.html -->
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
+{% block title %}Trackalytics: Add Inventory{% endblock %}
+
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+    <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="inventory-container">
-    <h2>Inventory Management</h2>
-    <div class="inventory-nav">
-        <button id="addInventoryBtn">Add Inventory</button>
-        <button id="removeInventoryBtn">Remove Inventory</button>
-        <button id="viewInventoryBtn">View Inventory</button>
-    </div>
-
     <div id="contentArea">
-        <!-- Initial content will be populated by JS -->
+        <!-- Form will be rendered here by JavaScript -->
     </div>
-
-    <div id="viewInventorySection" class="inventory-section" style="display: none;">
-        <h3>View Inventory</h3>
-        <table id="inventoryTable" class="inventory-table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in inventory %}
-                <tr>
-                    <td>{{ item.product.product_name }}</td>
-                    <td>{{ item.quantity }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2">No inventory items available.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+{% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/addinventory.js' %}"></script>
-<script src="{% static 'js/removeinventory.js' %}"></script>
-<script src="{% static 'js/viewinventory.js' %}"></script>
-<script>
-    // Log the raw products_json to debug
-    console.log("Raw products_json:", "{{ products_json|safe }}");
-
-    // Assign products with a fallback
-    const products = {{ products_json|default:'[]'|safe }};
-    console.log("Parsed products:", products);
-
-    const csrfToken = "{{ csrf_token|default:'' }}";
-
-    document.getElementById('addInventoryBtn').addEventListener('click', function() {
-        renderAddInventoryForm(products);
-        document.getElementById('contentArea').style.display = 'block';
-        document.getElementById('viewInventorySection').style.display = 'none';
-    });
-
-    document.getElementById('removeInventoryBtn').addEventListener('click', function() {
-        document.getElementById('contentArea').innerHTML = `
-            <div class="inventory-form card">
-                <h2>Remove Inventory Item</h2>
-                <form id="removeInventoryForm" method="POST" action="/inventory/">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
-                    <input type="hidden" name="remove_inventory" value="true">
-                    <div class="form-group">
-                        <label for="product">Product</label>
-                        <select id="product" name="product" required>
-                            ${products.map(p => `<option value="${p.id}">${p.product_name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity">Quantity</label>
-                        <input type="number" id="quantity" name="quantity" required>
-                    </div>
-                    <button type="submit" class="btn-primary">Remove Item</button>
-                </form>
-            </div>
-        `;
-        document.getElementById('contentArea').style.display = 'block';
-        document.getElementById('viewInventorySection').style.display = 'none';
-    });
-
-    document.getElementById('viewInventoryBtn').addEventListener('click', function() {
-        document.getElementById('contentArea').style.display = 'none';
-        document.getElementById('viewInventorySection').style.display = 'block';
-        updateInventoryTable();
-    });
-</script>
-{% endblock %}
+    <script src="{% static 'js/renderAddInventoryForm.js' %}"></script>
+    <script src="{% static 'js/attachFormSubmitHandler.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            renderAddInventoryForm();
+            if (typeof attachSortDropdownHandler !== 'undefined') {
+                attachSortDropdownHandler();
+            }
+        });
+    </script>
 {% endblock %}

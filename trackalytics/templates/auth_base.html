@@ -1,0 +1,58 @@
+<!-- trackalytics/templates/auth_base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Trackalytics | Authentication{% endblock %}</title>
+    
+    <!-- Inherit all your existing head elements -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    
+    <!-- Additional auth-specific CSS -->
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f7fa;
+            padding: 2rem;
+        }
+        .auth-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 28rem;
+        }
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .auth-logo {
+            height: 48px;
+            margin-bottom: 1rem;
+        }
+        /* Inherit your existing button styles */
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="auth-layout">
+    <div class="auth-container">
+        <div class="auth-card">
+            {% block auth_content %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- Inherit your existing JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
