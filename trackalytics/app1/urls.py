@@ -17,4 +17,5 @@ urlpatterns = [
     path('report/delete/<int:report_id>/', views.delete_report, name='delete_report'),
     path('activity/', views.activity_log, name='activity_log'),
     path('register/', views.register, name='register'),
+    path('api/activity-logs/', views.api_activity_logs, name='api_activity_logs'),
 ]

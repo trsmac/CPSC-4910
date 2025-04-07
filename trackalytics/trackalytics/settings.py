@@ -100,3 +100,46 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'  # Where users go after logging out
 if DEBUG:
     # Allow local development hosts
     ALLOWED_HOSTS.extend(['localhost', '127.0.0.1', '0.0.0.0'])
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'auth_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/auth_events.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'auth_events': {
+            'handlers': ['auth_file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+LOGGING['handlers']['auth_file'] = {
+    'level': 'INFO',
+    'class': 'logging.handlers.RotatingFileHandler',
+    'filename': 'logs/auth_events.log',
+    'formatter': 'verbose',
+    'maxBytes': 10485760,  # 10MB
+    'backupCount': 10,     # Keep 10 backup files
+}
