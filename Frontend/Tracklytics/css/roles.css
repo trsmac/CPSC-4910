@@ -25,26 +25,45 @@
     --sidebar-width: 250px;
 }
 
+.menu {
+    display: flex;
+    justify-content: space-between; /* Ensures the close button and logo are spaced properly */
+    align-items: center;
+    padding: 10px;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align */
+    text-align: center; /* Ensure text is centered */
+}
+
+.logo img {
+    max-width: 100px; /*size of image*/
+    height: auto;
+}
+
+.logo h2 {
+    font-size: 18px;
+    margin-top: 5px; /* Add spacing between image and text */
+}
+
 * {
     margin: 0;
     padding: 0;
     outline: 0;
+    appearance: none;
     border: 0;
     text-decoration: none;
     list-style: none;
     box-sizing: border-box;
 }
-
-input:not([type="checkbox"]) {
-    appearance: none;
-}
-
-
-html {
+html{
     font-size: 14px;
 }
 
-body {
+body{
     width: 100vw;
     height: 100vh;
     font-family: 'Poppins', sans-serif;
@@ -54,7 +73,76 @@ body {
     overflow-x: hidden;
 }
 
-/* Sidebar & Layout */
+/*sidebar*/
+.sidebar h2 {
+    font-size: 12px;
+    margin-top: -25px;
+}
+.card {
+    background: var(--card-background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    padding: var(--card-padding);
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar h3:not(a h3) {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--secondary-color); /* Darker contrast */
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+/* Sidebar Links with Icons */
+.sidebar a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Sidebar Link Text */
+.sidebar a h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Sidebar Link Hover */
+.sidebar a:hover {
+    background: var(--sidebar-background-color);
+    color: var(--background-color);
+}
+
+.sidebar a:hover h3 {
+    color: var(--background-color);
+}
+
+/* Sidebar Icon Hover */
+.sidebar a:hover span {
+    color: var(--background-color);
+}
+
+/* Container Layout */
 .container {
     display: grid;
     width: 100%;
@@ -66,26 +154,36 @@ body {
 
 aside {
     height: 100vh;
-    background: var(--card-background-color);
-    border-right: 1px solid var(--tertiary-color);
+    background: var(--card-background-color); /* White for a clean, modern look */
+    border-right: 1px solid var(--tertiary-color); /* Subtle separation */
 }
 
-.sidebar {
+/* Sidebar Top Menu */
+aside .menu {
+    background: #E8EAF6; /* Light blue-gray for a soft contrast */
+    padding: 15px;
+    border-bottom: 1px solid var(--tertiary-color);
+}
+
+aside .close {
+    display:none;
+}
+
+/*===== Sidebar =====*/
+aside .sidebar {
+    background: white;
     display: flex;
     flex-direction: column;
     height: 86vh;
     position: relative;
     top: 3rem;
-    background: white;
 }
 
-.sidebar h3 {
+.aside h3 {
     font-weight: 600;
-    font-size: 14px;
-    margin: 10px 0 5px 10px;
 }
 
-.sidebar a {
+aside .sidebar a {
     display: flex;
     color: var(--info-color);
     margin-left: 2rem;
@@ -94,46 +192,47 @@ aside {
     position: relative;
     height: 3.5rem;
     transition: all 300ms ease;
-    font-size: 12px;
-    font-weight: 500;
 }
 
-.sidebar a:hover {
-    background: var(--sidebar-background-color);
+aside .sidebar a span {
+    font-size: 1.8rem;
+}
+
+aside .sidebar a:last-child {
+    position: absolute;
+    bottom: 3.5rem;
+    width: 100%;
+}
+
+aside .sidebar a:active {
+    background: var(--info-color);
     color: var(--background-color);
+    margin-left: 0;
 }
 
-.sidebar a:hover h3,
-.sidebar a:hover span {
-    color: var(--background-color);
+.sidebar a:hover::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: rgba(85,90,112,0.71);
 }
 
-.sidebar a h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0;
+aside .sidebar a:active span {
+    color: var(--primary-color);
+    margin-left: calc(1rem - 3px);
+}
+
+aside .sidebar a:hover {
     color: var(--primary-color);
 }
 
-.logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+aside .sidebar a:hover span {
+    margin-left: 1rem;
 }
-
-.logo img {
-    max-width: 100px;
-    height: auto;
-}
-
-.logo h2 {
-    font-size: 18px;
-    margin-top: 5px;
-}
-
-/* Roles Layout */
+/* ===== ROLES =====*/
 .roles-container {
     flex-grow: 1;
     padding: 20px;
@@ -154,7 +253,6 @@ aside {
     gap: 20px;
 }
 
-/* Role List */
 .roles-list {
     width: 200px;
     background: var(--background-color);
@@ -186,7 +284,6 @@ aside {
     background: var(--secondary-color);
 }
 
-/* Roles Content */
 .roles-content {
     flex: 1;
     padding: 20px;
@@ -219,7 +316,6 @@ aside {
     background: var(--secondary-color);
 }
 
-/* Access Lists */
 .access-lists {
     display: flex;
     gap: 20px;
@@ -252,12 +348,11 @@ aside {
 
 .granted ul li::before,
 .denied ul li::before {
-    content: \"- \";
+    content: "- ";
     font-weight: bold;
     margin-right: 5px;
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -287,7 +382,6 @@ aside {
     cursor: pointer;
 }
 
-/* Permissions Modal */
 .permissions {
     display: flex;
     flex-direction: column;
@@ -304,13 +398,12 @@ aside {
     color: var(--text-color);
 }
 
-.permissions input[type=\"checkbox\"] {
+.permissions input[type="checkbox"] {
     width: 18px;
     height: 18px;
     appearance: auto;
 }
 
-/* Buttons */
 #savePermissions,
 #assignConfirmBtn {
     background: var(--success-color);
@@ -338,7 +431,6 @@ aside {
     transform: scale(0.95);
 }
 
-/* Assign Table */
 #userTable {
     width: 100%;
     font-size: 14px;
@@ -359,58 +451,6 @@ aside {
     background-color: #f1f1f1;
 }
 
-/* ====== Dropdown Highlight Styles ====== */
-.dropdown-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.dropdown-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: var(--text-color);
-}
-
-.option-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.option-list li {
-    cursor: pointer;
-    padding: 6px 10px;
-    border-radius: 15px;
-    margin-bottom: 5px;
-    background-color: transparent;
-    color: var(--text-color);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background 0.2s ease;
-}
-
-.option-list li::before {
-    content: \"\";
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border: 2px solid var(--text-light-color);
-    border-radius: 50%;
-    background-color: transparent;
-    transition: background-color 0.3s ease;
-}
-
-.option-list li.active {
-    font-weight: 600;
-    background-color: #f0f0f0;
-}
-
-.option-list li.active::before {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-/* Styled Dropdowns */
 .styled-dropdown {
     padding: 8px 10px;
     font-size: 14px;
