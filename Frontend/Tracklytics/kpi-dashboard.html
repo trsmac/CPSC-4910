@@ -2,9 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Trackalytics Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="dashboard">
+        <h1>Trackalytics Dashboard</h1>
+        <div class="kpi">
+            <h2>Inventory Turnover</h2>
+            <p id="inventoryTurnover"></p>
+        </div>
+        <div class="kpi">
+            <h2>Order Fulfillment Rate</h2>
+            <p id="orderFulfillmentRate"></p>
+        </div>
+        <div class="kpi">
+            <h2>Supplier Performance</h2>
+            <p id="supplierPerformance"></p>
+        </div>
+    </div>
 
+
+    <script src="kpi-dashboard.js"></script>
+
+
+    <script>
+        // Function to update KPIs on the dashboard
+function updateKPIs() {
+  // Update Inventory Turnover
+  const inventoryTurnover = calculateInventoryTurnover(inventory);
+  document.getElementById("inventoryTurnover").innerText = `Inventory Turnover: ${inventoryTurnover.toFixed(2)}`;
+
+
+  // Update Order Fulfillment Rate
+  const orderFulfillmentRate = calculateOrderFulfillmentRate(orders);
+  document.getElementById("orderFulfillmentRate").innerText = `Order Fulfillment Rate: ${orderFulfillmentRate.toFixed(2)}%`;
+
+
+  // Update Supplier Performance
+  const supplierPerformance = calculateSupplierPerformance(suppliers);
+  document.getElementById("supplierPerformance").innerHTML = supplierPerformance.map(supplier => {
+    return `<strong>${supplier.supplierName}:</strong> On-Time Delivery: ${supplier.onTimeDeliveryRate}% | Quality Rate: ${supplier.qualityRate}%<br>`;
+  }).join('');
+}
+
+
+// Call the update function to display KPIs
+updateKPIs();
+
+
+    </script>
 </body>
 </html>
