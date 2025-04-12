@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trackalytics: Campground Reservations</title>
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <!-- Google Fonts Inter & Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Style -->
+  <link rel="stylesheet" href="css/reservation.css">
+</head>
+<body>
+<div class="container">
+  <!-- Sidebar -->
+  <aside>
+    <div class="menu">
+      <div class="logo">
+        <img src="./images/logo.png" alt="logo">
+        <h2>Trackalytics</h2>
+      </div>
+      <div class="close" id="close-btn">
+        <span class="material-symbols-outlined">close</span>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <h3>Dashboards</h3>
+      <a href="main-dashboard.html">
+        <span class="material-symbols-outlined">space_dashboard</span>
+        <h3>Main Dashboard</h3>
+      </a>
+      <a href="kpi-dashboard.html">
+        <span class="material-symbols-outlined">speed</span>
+        <h3>KPI Dashboard</h3>
+      </a>
+      <h3>Inventory</h3>
+      <a href="inventory.html">
+        <span class="material-symbols-outlined">inventory</span>
+        <h3>View Inventory</h3>
+      </a>
+      <a href="reservation.html">
+        <span class="material-symbols-outlined">event_available</span>
+        <h3>View Reservations</h3>
+      </a>
+
+      <h3>Admin</h3>
+      <a href="roles.html">
+        <span class="material-symbols-outlined">groups</span>
+        <h3>User Management</h3>
+      </a>
+      <a href="reports.html">
+        <span class="material-symbols-outlined">folder</span>
+        <h3>Reports & Exports</h3>
+      </a>
+      <a href="activitylog.html">
+        <span class="material-symbols-outlined">history</span>
+        <h3>Activity Log</h3>
+      </a>
+      <a href="settings.html">
+        <span class="material-symbols-outlined">tune</span>
+        <h3>Settings</h3>
+      </a>
+      <a href="login.html">
+        <span class="material-symbols-outlined">logout</span>
+        <h3>Logout</h3>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="dashboard-container">
+    <div class="dashboard-title">
+      <h1 class="dashboard-title-text">Reservation Overview</h1>
+    </div>
+
+  <div class="equipment-form-wrapper">
+    <div class="equipment-selection">
+      <label class="equipment-card">
+        <img src="images/tent.jpg" alt="Tent">
+        <h3>Tent</h3>
+        <p>Standard camping tent</p>
+        <div class="checkbox-container">
+          <input type="radio" name="equipment" value="Tent" id="tent-radio">
+          <span>Select for reservation</span>
+        </div>
+      </label>
+
+      <label class="equipment-card">
+        <img src="images/kayak.jpg" alt="Kayak">
+        <h3>Kayak</h3>
+        <p>Single-person kayak</p>
+        <div class="checkbox-container">
+          <input type="radio" name="equipment" value="Kayak" id="kayak-radio">
+          <span>Select for reservation</span>
+        </div>
+      </label>
+
+      <label class="equipment-card">
+        <img src="images/campsite.jpg" alt="Campsite">
+        <h3>Campsite</h3>
+        <p>Reserve a campsite spot</p>
+        <div class="checkbox-container">
+          <input type="radio" name="equipment" value="Campsite" id="campsite-radio">
+          <span>Select for reservation</span>
+        </div>
+      </label>
+
+      <label class="equipment-card">
+        <img src="images/washing_machine.jpg" alt="Washing Machine">
+        <h3>Washing Machine</h3>
+        <p>Laundry access during stay</p>
+        <div class="checkbox-container">
+          <input type="radio" name="equipment" value="Washing Machine" id="washing-radio">
+          <span>Select for reservation</span>
+        </div>
+      </label>
+    </div>
+
+    <div class="reservation-section">
+      <button id="view-reservations-btn">View Current Reservations</button>
+      <div class="reservation-form-card">
+        <h2>Reservation Form</h2>
+        <form id="reservation-form">
+          <input type="text" id="customer-name" placeholder="Customer Name" required>
+          <input type="tel" id="customer-phone" placeholder="Phone Number" required>
+          <input type="email" id="customer-email" placeholder="Email" required>
+          <input type="number" id="campsite-number" placeholder="Campsite Number (1–10)" min="0" max="10" required>
+          <input type="number" id="quantity" placeholder="Quantity" min="0" max="5" required>
+          <button type="submit">Reserve Equipment</button>
+        </form>
+        <p id="campsite-warning" class="warning-text"></p>
+      </div>
+    </div>
+  </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div id="reservation-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="close-modal">&times;</span>
+    <h2>Current Reservations</h2>
+
+    <div class="filter-sort-wrapper">
+      <input type="text" id="filter-input" placeholder="Search by name or item...">
+      <select id="sort-select">
+        <option value="">Sort by</option>
+        <option value="name-asc">Name (A → Z)</option>
+        <option value="name-desc">Name (Z → A)</option>
+        <option value="item-asc">Item (A → Z)</option>
+        <option value="item-desc">Item (Z → A)</option>
+      </select>
+    </div>
+
+    <table id="reservations-table">
+      <thead>
+      <tr>
+        <th>Item</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Campsite #</th>
+        <th>Quantity</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="save-reservation-status" class="modal-save-btn">Save Changes</button>
+  </div>
+</div>
+
+<script src="js/reservation.js"></script>
+</body>
+</html>

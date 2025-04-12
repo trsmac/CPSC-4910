@@ -1,0 +1,472 @@
+/*
+This sheet contains the CSS shell for the coding.
+(1) Use this as the base line.
+(2) When creating a new html file where we need to create the CSS style.
+ - We'll need to copy and paste this coding to a new sheet and use that.
+    - This came after the css file grew larger and was hard to keep up with.
+ */
+
+/* ------CSS Root------ */
+:root {
+    --primary-color: #1E1E2D;
+    --secondary-color: #4A4A62;
+    --tertiary-color: #8E8EA3;
+
+    --success-color: #28C76F;
+    --failure-color: #EA5455;
+    --warning-color: #FF9F43;
+    --info-color: #4a586b;
+
+    --background-color: #F4F5FA;
+    --card-background-color: #FFFFFF;
+    --sidebar-background-color: #25293C;
+
+    --text-color: #333333;
+    --text-light-color: #888888;
+
+    --card-border-radius: 10px;
+    --border-radius: 10px;
+    --border-radius-2: 10px;
+    --border-radius-3: 10px;
+
+    --card-padding: 20px;
+
+    --card-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    --sidebar-width: 250px;
+}
+/*=============MAIN=============*/
+.menu {
+    display: flex;
+    justify-content: space-between; /* Ensures the close button and logo are spaced properly */
+    align-items: center;
+    padding: 10px;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align */
+    text-align: center; /* Ensure text is centered */
+}
+
+.logo img {
+    max-width: 100px; /*size of image*/
+    height: auto;
+}
+
+.logo h2 {
+    font-size: 18px;
+    margin-top: 5px; /* Add spacing between image and text */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+html{
+    font-size: 14px;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background: var(--background-color);
+    user-select: none;
+    overflow-x: hidden;
+}
+
+/*sidebar*/
+.sidebar h2 {
+    font-size: 12px;
+    margin-top: -25px;
+}
+.card {
+    background: var(--card-background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    padding: var(--card-padding);
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar h3:not(a h3) {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--secondary-color); /* Darker contrast */
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+/* Sidebar Links with Icons */
+.sidebar a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Sidebar Link Text */
+.sidebar a h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Sidebar Link Hover */
+.sidebar a:hover {
+    background: var(--sidebar-background-color);
+    color: var(--background-color);
+}
+
+.sidebar a:hover h3 {
+    color: var(--background-color);
+}
+
+/* Sidebar Icon Hover */
+.sidebar a:hover span {
+    color: var(--background-color);
+}
+
+/* Container Layout */
+.container {
+    display: grid;
+    width: 100%;
+    margin: 0 auto;
+    background: var(--background-color);
+    gap: 20px;
+    grid-template-columns: var(--sidebar-width) 1fr;
+}
+
+
+
+aside {
+    height: 100vh;
+    background: var(--card-background-color); /* White for a clean, modern look */
+    border-right: 1px solid var(--tertiary-color); /* Subtle separation */
+}
+
+/* Sidebar Top Menu */
+aside .menu {
+    background: #E8EAF6; /* Light blue-gray for a soft contrast */
+    padding: 15px;
+    border-bottom: 1px solid var(--tertiary-color);
+}
+
+aside .close {
+    display:none;
+}
+
+/*===== Sidebar =====*/
+aside .sidebar {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    height: 86vh;
+    position: relative;
+    top: 3rem;
+}
+
+.aside h3 {
+    font-weight: 600;
+}
+
+aside .sidebar a {
+    display: flex;
+    color: var(--info-color);
+    margin-left: 2rem;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+    height: 3.5rem;
+    transition: all 300ms ease;
+}
+
+aside .sidebar a span {
+    font-size: 1.8rem;
+}
+
+aside .sidebar a:last-child {
+    position: absolute;
+    bottom: 3.5rem;
+    width: 100%;
+}
+
+aside .sidebar a:active {
+    background: var(--info-color);
+    color: var(--background-color);
+    margin-left: 0;
+}
+
+.sidebar a:hover::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: rgba(85,90,112,0.71);
+}
+
+aside .sidebar a:active span {
+    color: var(--primary-color);
+    margin-left: calc(1rem - 3px);
+}
+
+aside .sidebar a:hover {
+    color: var(--primary-color);
+}
+
+aside .sidebar a:hover span {
+    margin-left: 1rem;
+}
+/*=== RESERVATION ===*/
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+}
+
+.dashboard-title {
+    width: 100%;
+    text-align: left;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: 20px;
+}
+
+.dashboard-title-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.equipment-form-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 150px;
+}
+
+.equipment-selection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px; /* Reduce this if spacing is too wide */
+    align-items: stretch;
+    width: 60%;
+}
+
+.equipment-card {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 95%;
+    box-sizing: border-box;
+    position: relative;
+    min-height: 150px;
+    height: auto; /* limit height */
+}
+
+.equipment-card img {
+    width: 25%;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 5px;
+}
+
+.equipment-card h3 {
+    font-size: 15px;
+    margin: 4px 0 2px 0;
+}
+
+.equipment-card p {
+    font-size: 13px;
+    color: #555;
+    margin: 0 0 6px 0;
+}
+
+.equipment-card input[type="radio"] {
+    transform: scale(1.5);
+    margin-top: 2px;
+    cursor: pointer;
+    opacity: 1;
+    position: relative;
+    align-self: flex-start;
+    appearance: auto; /* Override the 'appearance: none' from your global styles */
+}
+
+.equipment-card .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.equipment-card .checkbox-container span {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #555;
+}
+
+/* Add visual feedback for selected cards */
+.equipment-card:has(input[type="radio"]:checked) {
+    background-color: #e6f2ff;
+    border: 2px solid #1c72e8;
+}
+
+.reservation-section {
+    width: 300px;
+    margin-left: -20px;
+}
+
+#view-reservations-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #005fe6;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px 8px 0 0;
+}
+
+.reservation-form-card {
+    background-color: #d8e7fb;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+}
+
+.reservation-form-card input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+.reservation-form-card button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1c72e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.warning-text {
+    color: red;
+    font-size: 14px;
+}
+
+#reservation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
+    border-radius: 10px;
+}
+
+.modal-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.modal-content th, .modal-content td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.close-btn {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal {
+    pointer-events: auto;
+}
+
+.modal[style*="display: none"] {
+    pointer-events: none !important;
+}
+
+.modal-save-btn {
+    background-color: var(--success-color);
+    color: white;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.modal-save-btn:hover {
+    background-color: #1E8449;
+}
+
+.filter-sort-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#filter-input, #sort-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
