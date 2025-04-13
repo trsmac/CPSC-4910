@@ -2,55 +2,121 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Trackalytics Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Trackalytics: KPI Dashboard</title>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <!-- Google Fonts Inter&Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/kpiDashboard.css">
 </head>
 <body>
-    <div class="dashboard">
-        <h1>Trackalytics Dashboard</h1>
-        <div class="kpi">
-            <h2>Inventory Turnover</h2>
-            <p id="inventoryTurnover"></p>
+<div class="container">
+    <!-- Sidebar -->
+    <aside>
+        <div class="menu">
+            <div class="logo">
+                <img src="./images/logo.png" alt="logo">
+                <h2>Trackalytics</h2>
+            </div>
+            <div class="close" id="close-btn">
+                <span class="material-symbols-outlined">close</span>
+            </div>
         </div>
-        <div class="kpi">
-            <h2>Order Fulfillment Rate</h2>
-            <p id="orderFulfillmentRate"></p>
+
+        <div class="sidebar">
+            <h3>Dashboards</h3>
+            <a href="main-dashboard.html">
+                <span class="material-symbols-outlined">space_dashboard</span>
+                <h3>Main Dashboard</h3>
+            </a>
+            <a href="kpi-dashboard.html">
+                <span class="material-symbols-outlined">speed</span>
+                <h3>KPI Dashboard</h3>
+            </a>
+            <h3>Inventory</h3>
+            <a href="inventory.html">
+                <span class="material-symbols-outlined">inventory</span>
+                <h3>View Inventory</h3>
+            </a>
+            <a href="reservation.html">
+                <span class="material-symbols-outlined">event_available</span>
+                <h3>View Reservations</h3>
+            </a>
+            <h3>Admin</h3>
+            <a href="roles.html">
+                <span class="material-symbols-outlined">groups</span>
+                <h3>User Management</h3>
+            </a>
+            <a href="reports.html">
+                <span class="material-symbols-outlined">folder</span>
+                <h3>Reports & Exports</h3>
+            </a>
+            <a href="activitylog.html">
+                <span class="material-symbols-outlined">history</span>
+                <h3>Activity Log</h3>
+            </a>
+            <a href="settings.html">
+                <span class="material-symbols-outlined">tune</span>
+                <h3>Settings</h3>
+            </a>
+            <a href="login.html">
+                <span class="material-symbols-outlined">logout</span>
+                <h3>Logout</h3>
+            </a>
         </div>
-        <div class="kpi">
-            <h2>Supplier Performance</h2>
-            <p id="supplierPerformance"></p>
+    </aside>
+    <!-- Main Content -->
+    <main class="dashboard-content">
+        <!-- Top Row Cards -->
+        <div class="top-kpi-row">
+            <div class="card" id="sellThroughCard">
+                <h3>Sell-through Rate</h3>
+                <p id="sellThroughValue">--%</p>
+            </div>
+            <div class="card" id="avgInventoryCard">
+                <h3>Average Inventory</h3>
+                <p id="avgInventoryValue">-- units</p>
+            </div>
+            <div class="card" id="deadStockCard">
+                <h3>Dead Stock / Spoilage</h3>
+                <p id="deadStockValue">--%</p>
+            </div>
         </div>
-    </div>
 
+        <!-- Return Metrics Section -->
+        <div class="return-section">
+            <h3>Returns</h3>
+            <div class="return-card-container">
+                <div class="card" id="returnRateCard">
+                    <h3>Return Rate</h3>
+                    <p id="returnRateValue">--%</p>
+                </div>
+                <div class="card" id="damagedCard">
+                    <h3>Damaged</h3>
+                    <p id="damagedValue">--%</p>
+                </div>
+                <div class="card" id="missingCard">
+                    <h3>Missing</h3>
+                    <p id="missingValue">--%</p>
+                </div>
+                <div class="card" id="returnedCard">
+                    <h3>Returned</h3>
+                    <p id="returnedValue">--%</p>
+                </div>
+                <div class="card" id="checkedOutCard">
+                    <h3>Checked-out</h3>
+                    <p id="checkedOutValue">--%</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
 
-    <script src="kpi-dashboard.js"></script>
-
-
-    <script>
-        // Function to update KPIs on the dashboard
-function updateKPIs() {
-  // Update Inventory Turnover
-  const inventoryTurnover = calculateInventoryTurnover(inventory);
-  document.getElementById("inventoryTurnover").innerText = `Inventory Turnover: ${inventoryTurnover.toFixed(2)}`;
-
-
-  // Update Order Fulfillment Rate
-  const orderFulfillmentRate = calculateOrderFulfillmentRate(orders);
-  document.getElementById("orderFulfillmentRate").innerText = `Order Fulfillment Rate: ${orderFulfillmentRate.toFixed(2)}%`;
-
-
-  // Update Supplier Performance
-  const supplierPerformance = calculateSupplierPerformance(suppliers);
-  document.getElementById("supplierPerformance").innerHTML = supplierPerformance.map(supplier => {
-    return `<strong>${supplier.supplierName}:</strong> On-Time Delivery: ${supplier.onTimeDeliveryRate}% | Quality Rate: ${supplier.qualityRate}%<br>`;
-  }).join('');
-}
-
-
-// Call the update function to display KPIs
-updateKPIs();
-
-
-    </script>
+<!-- Script -->
+<script src="js/kpi-dashboard.js"></script>
 </body>
 </html>
