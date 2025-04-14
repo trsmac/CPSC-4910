@@ -12,6 +12,14 @@
 
     <!-- Style -->
     <link rel="stylesheet" href="css/kpiDashboard.css">
+
+    <!-- Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 <body>
 <div class="container">
@@ -70,53 +78,115 @@
         </div>
     </aside>
     <!-- Main Content -->
-    <main class="dashboard-content">
-        <!-- Top Row Cards -->
-        <div class="top-kpi-row">
-            <div class="card" id="sellThroughCard">
-                <h3>Sell-through Rate</h3>
-                <p id="sellThroughValue">--%</p>
+    <main class="dashboard-container">
+        <!-- Top KPI Cards -->
+        <div class="dashboard-main-cards">
+            <div class="dashboard-card">
+                <div class="card-inner"><p>Sell-through Rate</p></div>
+                <span>88%</span>
             </div>
-            <div class="card" id="avgInventoryCard">
-                <h3>Average Inventory</h3>
-                <p id="avgInventoryValue">-- units</p>
+            <div class="dashboard-card">
+                <div class="card-inner"><p>Dead Stock / Spoilage</p></div>
+                <span>12%</span>
             </div>
-            <div class="card" id="deadStockCard">
-                <h3>Dead Stock / Spoilage</h3>
-                <p id="deadStockValue">--%</p>
+            <div class="dashboard-card">
+                <div class="card-inner"><p>Average Inventory</p></div>
+                <span>432</span>
             </div>
         </div>
 
-        <!-- Return Metrics Section -->
-        <div class="return-section">
-            <h3>Returns</h3>
-            <div class="return-card-container">
-                <div class="card" id="returnRateCard">
-                    <h3>Return Rate</h3>
-                    <p id="returnRateValue">--%</p>
+        <!-- Chart Section -->
+        <div class="charts">
+            <!-- Line Chart and Tabs -->
+            <div class="charts-card line-chart unified-card">
+                <div class="chart-top">
+                    <div class="chart-header">
+                        <p class="chart-title">Inventory Rates Over Time</p>
+                        <div class="chart-menu" onclick="toggleMenu('line')">⋮</div>
+                        <ul class="chart-dropdown" id="line-menu">
+                            <li onclick="downloadChart('line', 'png')">Download as PNG</li>
+                            <li onclick="downloadChart('line', 'pdf')">Download as PDF</li>
+                        </ul>
+                    </div>
+                    <div id="line-chart"></div>
                 </div>
-                <div class="card" id="damagedCard">
-                    <h3>Damaged</h3>
-                    <p id="damagedValue">--%</p>
+                <div class="chart-tabs">
+                    <button id="tab-sell" onclick="updateLineChart('sell')" class="tab-btn-tab active-tab">Sell-through</button>
+                    <button id="tab-dead" onclick="updateLineChart('dead')" class="tab-btn-tab">Dead Stock</button>
+                    <button id="tab-avg" onclick="updateLineChart('avg')" class="tab-btn-tab">Average Inventory</button>
                 </div>
-                <div class="card" id="missingCard">
-                    <h3>Missing</h3>
-                    <p id="missingValue">--%</p>
+            </div>
+
+
+
+            <!-- Pie Chart -->
+            <div class="charts-card" style="width: 400px;">
+                <div class="chart-header">
+                    <p class="chart-title">Item Status</p>
+                    <div class="chart-menu" onclick="toggleMenu('pie')">⋮</div>
+                    <ul class="chart-dropdown" id="pie-menu">
+                        <li onclick="downloadChart('pie', 'png')">Download as PNG</li>
+                        <li onclick="downloadChart('pie', 'pdf')">Download as PDF</li>
+                    </ul>
                 </div>
-                <div class="card" id="returnedCard">
-                    <h3>Returned</h3>
-                    <p id="returnedValue">--%</p>
-                </div>
-                <div class="card" id="checkedOutCard">
-                    <h3>Checked-out</h3>
-                    <p id="checkedOutValue">--%</p>
-                </div>
+                <div id="pie-chart"></div>
+                <ul class="pie-legend">
+                    <li>
+                        <span class="legend-dot" style="background-color: #4e73df;"></span>
+                        <div class="legend-labels">
+                            <div class="label-row">
+                                <span class="status">Checked-out</span>
+                                <span class="legend-value">40%</span>
+                            </div>
+                            <small>86 products</small>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="legend-dot" style="background-color: #e74a3b;"></span>
+                        <div class="legend-labels">
+                            <div class="label-row">
+                                <span class="status">Damaged</span>
+                                <span class="legend-value">20%</span>
+                            </div>
+                            <small>43 products</small>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="legend-dot" style="background-color: #f6c23e;"></span>
+                        <div class="legend-labels">
+                            <div class="label-row">
+                                <span class="status">Returned</span>
+                                <span class="legend-value">15%</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="legend-dot" style="background-color: #36b9cc;"></span>
+                        <div class="legend-labels">
+                            <div class="label-row">
+                                <span class="status">Missing</span>
+                                <span class="legend-value">10%</span>
+                            </div>
+                            <small>22 products</small>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="legend-dot" style="background-color: #1cc88a;"></span>
+                        <div class="legend-labels">
+                            <div class="label-row">
+                                <span class="status">Available</span>
+                                <span class="legend-value">15%</span>
+                            </div>
+                            <small>32 products</small>
+                        </div>
+                    </li>
+                </ul>
+
             </div>
         </div>
     </main>
 </div>
 
-<!-- Script -->
 <script src="js/kpi-dashboard.js"></script>
 </body>
 </html>

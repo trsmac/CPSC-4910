@@ -244,94 +244,269 @@ aside .sidebar a:hover span {
     margin-left: 1rem;
 }
 
-.card-row .card {
-    flex: 1 1 calc(33% - 20px);
-    min-width: 250px;
+/* Dashboard KPI Card Layout */
+.dashboard-container {
+    padding: 40px;
 }
 
-.dashboard-content {
+.dashboard-main-cards {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
     justify-content: center;
-    padding: 40px 20px;
-    min-height: 100vh;
-    box-sizing: border-box;
-    width: 100%;
+    margin-bottom: 40px;
 }
 
-.card {
-    flex: 1 1 300px;
-    max-width: 300px;
-    height: 170px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start; /* aligns text to the left */
-    text-align: left;        /* aligns paragraph/small text to the left */
-    padding: 20px;
-}
-
-.top-kpi-row {
-    display: flex;
-    gap: 30px;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1100px;
-    margin-bottom: -30px;
-}
-
-.top-kpi-row .card {
-    flex: 1;
-    min-width: 280px;
-    max-width: none;
-    height: 190px;
-}
-
-
-.return-section {
-    width: 100%;
-    max-width: 1100px;
-    background-color: white;
-    padding: 20px 20px 20px 20px; /* top, right, bottom, left */
-    margin-top: 60px;
-    border-radius: 25px;
+.dashboard-card {
+    background: var(--card-background-color);
+    border-left: 10px solid #246dec;
+    width: 300px;
+    height: 140px;
     box-shadow: var(--card-box-shadow);
-    max-height: 400pxx;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
-.card p {
-    font-size: 26px;
+.dashboard-card:nth-child(2) {
+    border-left-color: #cc3c43;
+}
+.dashboard-card:nth-child(3) {
+    border-left-color: #f5b74f;
+}
+
+.dashboard-card span {
+    font-size: 32px;
     font-weight: 700;
-    margin: 5px 0;
+    color: var(--text-color);
 }
 
-.return-section h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: var(--primary-color);
+.card-inner p {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
 }
 
-.return-card-container {
+.charts {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 40px;
     justify-content: center;
 }
-.return-card-container .card {
-    background-color: var(--background-color); /* Slightly darker than white */
-    color: var(--text-color);  /* Black/dark text */
+
+.charts-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--card-box-shadow);
+}
+
+.charts-card.line-chart {
+    width: 650px;
+    padding: 0;
+    height: auto;
+    box-shadow: none;
+    max-height: 420px;
+}
+
+.chart-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.unified-card {
+    padding: 0;
+    border: none;
     box-shadow: none;
 }
 
-.return-card-container .card p {
-    font-size: 24px;
-    font-weight: 700;
+
+.chart-top {
+    padding: 10px 20px 0 20px;
 }
 
 
-.return-card-container .card h3,
-.return-card-container .card p,
-.return-card-container .card small {
-    color: var(--text-color); /* #333333 from root */
+.chart-tabs {
+    display: flex;
+    border-top: 1px solid var(--tertiary-color);
+    border-left: 1px solid var(--tertiary-color);
+    border-right: 1px solid var(--tertiary-color);
+}
+
+.tab-btn {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1.5px solid var(--primary-color);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tab-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.tab-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.tab-btn.full {
+    flex: 1;
+    text-align: center;
+}
+
+.tab-btn-tab {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    background-color: #f8f8f8;
+    text-align: center;
+    font-weight: 600;
+    color: var(--primary-color);
+    cursor: pointer;
+    border-right: 1px solid var(--tertiary-color);
+    transition: background-color 0.2s ease;
+}
+
+.tab-btn-tab:last-child {
+    border-right: none;
+}
+
+.tab-btn-tab:hover {
+    background-color: #e8e8e8;
+}
+
+.tab-btn-tab.active-tab {
+    background-color: white;
+    border-bottom: 2px solid white;
+    font-weight: 700;
+}
+
+/* Pie Chart */
+.pie-legend {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pie-legend li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 1px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.legend-labels {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.legend-labels span {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.legend-value {
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-left: 10px;
+}
+
+.status {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.legend-labels small {
+    font-size: 12px;
+    color: var(--text-light-color);
+    padding-top: 2px;
+}
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 0 20px;
+}
+
+.chart-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.chart-menu {
+    font-size: 20px;
+    cursor: pointer;
+    user-select: none;
+    padding: 5px;
+}
+
+.chart-dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    background: white;
+    border: 1px solid var(--tertiary-color);
+    border-radius: 5px;
+    box-shadow: var(--card-box-shadow);
+    z-index: 10;
+}
+
+.chart-dropdown li {
+    padding: 10px 15px;
+    font-size: 13px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.chart-dropdown li:hover {
+    background-color: #f1f1f1;
+}
+
+.chart-dropdown.show {
+    display: block;
+}
+
+/* Download */
+
+.download-title-label {
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-color);
 }
