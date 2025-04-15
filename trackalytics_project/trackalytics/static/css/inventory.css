@@ -1,0 +1,63 @@
+.inventory-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+#inventoryTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#inventoryTable th,
+#inventoryTable td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#inventoryTable input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+    visibility: visible;
+}
+
+.save-icon,
+.search-icon,
+.clear-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.save-icon:hover,
+.search-icon:hover,
+.clear-icon:hover {
+    color: #1a1a2e;
+}

@@ -1,0 +1,38 @@
+.activity-log {
+    padding: 20px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section select,
+.filter-section button {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#activity-table th,
+#activity-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#activity-table th {
+    background: #f4f4f4;
+    font-weight: bold;
+}
+
+#activity-table tr:hover {
+    background: #f9f9f9;
+}

@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackalytics: {% block title %}Dashboard{% endblock %}</title>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    {% endblock %}
+</head>
+<body>
+<div class="container">
+    <!-- Sidebar -->
+    <aside>
+        <div class="menu">
+            <div class="logo">
+                <img src="{% static 'images/logo.png' %}" alt="logo">
+                <h2>Trackalytics</h2>
+            </div>
+            <div class="close" id="close-btn">
+                <span class="material-symbols-outlined">close</span>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <h3>Dashboards</h3>
+            <a href="{% url 'trackalytics:main_dashboard' %}">
+                <span class="material-symbols-outlined">space_dashboard</span>
+                <h3>Main Dashboard</h3>
+            </a>
+            <a href="{% url 'trackalytics:kpi_dashboard' %}">
+                <span class="material-symbols-outlined">speed</span>
+                <h3>KPI Dashboard</h3>
+            </a>
+            <h3>Inventory</h3>
+            <a href="{% url 'trackalytics:inventory' %}">
+                <span class="material-symbols-outlined">inventory</span>
+                <h3>View Inventory</h3>
+            </a>
+            <a href="{% url 'trackalytics:reservation' %}">
+                <span class="material-symbols-outlined">event_available</span>
+                <h3>View Reservations</h3>
+            </a>
+            <h3>Admin</h3>
+            <a href="{% url 'trackalytics:roles' %}">
+                <span class="material-symbols-outlined">groups</span>
+                <h3>User Management</h3>
+            </a>
+            <a href="{% url 'trackalytics:reports' %}">
+                <span class="material-symbols-outlined">folder</span>
+                <h3>Reports & Exports</h3>
+            </a>
+            <a href="{% url 'trackalytics:activity_log' %}">
+                <span class="material-symbols-outlined">history</span>
+                <h3>Activity Log</h3>
+            </a>
+            <a href="{% url 'trackalytics:settings' %}">
+                <span class="material-symbols-outlined">tune</span>
+                <h3>Settings</h3>
+            </a>
+            <a href="{% url 'trackalytics:logout' %}">
+                <span class="material-symbols-outlined">logout</span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-container">
+        {% block content %}
+        {% endblock %}
+    </main>
+</div>
+
+<!-- JavaScript -->
+{% block js %}
+{% endblock %}
+</body>
+</html>

@@ -6,21 +6,25 @@ echo "      🚀 Trackalytics Setup Script 🌟"
 echo "=============================================="
 echo ""
 
-# Step 1: Install dependencies
-echo -e "\033[1;34m📦 Installing Django and ReportLab... 🛠\033[0m"
-pip install django reportlab
-pip install xhtml2pdf
+# Install dependencies
+echo -e "\033[1;34m📦 Installing Django...\033[0m"
+pip install django
+echo "✅ Django installed."
+pip freeze > requirements.txt
+echo "✅ Requirements file updated."
 echo "========================================="  # Divider
 
-# Step 2: Navigate to the project directory
+# Navigate to the project directory
 echo -e "\033[1;33m📂 Navigating to project directory...\033[0m"
-cd trackalytics || { echo -e "\033[1;31m❌ Directory 'trackalytics' not found!\033[0m"; exit 1; }
+cd trackalytics_project || { echo -e "\033[1;31m❌ Directory 'trackalytics_project' not found!\033[0m"; exit 1; }
+echo "✅ In project directory."
 echo "========================================="  # Divider
 
 # Step 3: Run migrations
 echo -e "\033[1;32m⚙️ Running migrations...\033[0m"
 python manage.py makemigrations
 python manage.py migrate
+echo "✅ Migrations applied."
 echo "========================================="  # Divider
 
 # Step 4: Verify migrations by displaying tables
@@ -56,7 +60,7 @@ except Exception as e:
 EOF
 echo "========================================="  # Divider
 
-# Step 5: Run the Django development server
+# Run the Django development server
 echo -e "\033[1;35m🚀 Starting Django development server...\033[0m"
 python manage.py runserver
 echo "========================================="  # Divider
