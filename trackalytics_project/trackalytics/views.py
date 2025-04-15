@@ -4,7 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
 from django.db.models import Count
+from django.forms.models import model_to_dict
 from django.contrib.auth.models import Group, Permission
+from django.utils.dateformat import format
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from .models import CustomUser, InventoryItem, Reservation, ActivityLog
 from .forms import SignUpForm, InventoryForm, ReservationForm
 import json
@@ -40,15 +44,53 @@ def inventory(request):
     if request.method == 'POST':
         form = InventoryForm(request.POST)
         if form.is_valid():
-            form.save()
+            item = form.save()
             ActivityLog.objects.create(
                 user=request.user,
-                action=f"Added inventory item: {form.cleaned_data['item_name']}",
+                action=f"Added inventory item: {item.item_name}",
                 ip_address=get_client_ip(request)
             )
-            return JsonResponse({'success': True})
+
+            return JsonResponse({
+                'success': True,
+                'item': {
+                    **model_to_dict(item),
+                    'created_at': format(item.created_at, 'YmdHis'),
+                    'created_at_display': item.created_at.strftime('%b %d, %Y %I:%M %p'),
+                    'user': request.user.get_full_name() or request.user.email,
+                }
+            })
         return JsonResponse({'success': False, 'errors': form.errors})
+
     return render(request, 'inventory.html', {'items': InventoryItem.objects.all()})
+
+@login_required
+@require_POST
+@csrf_exempt
+def update_inventory(request, item_id):
+    try:
+        item = InventoryItem.objects.get(id=item_id)
+    except InventoryItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Item not found'}, status=404)
+
+    form = InventoryForm(request.POST, instance=item)
+    if form.is_valid():
+        item = form.save()
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f"Updated inventory item: {item.item_name}",
+            ip_address=get_client_ip(request)
+        )
+        return JsonResponse({
+            'success': True,
+            'item': {
+                **model_to_dict(item),
+                'created_at': format(item.created_at, 'YmdHis'),
+                'created_at_display': item.created_at.strftime('%b %d, %Y %I:%M %p'),
+                'user': request.user.get_full_name() or request.user.email,
+            }
+        })
+    return JsonResponse({'success': False, 'errors': form.errors}, status=400)
 
 @login_required
 def reservation(request):

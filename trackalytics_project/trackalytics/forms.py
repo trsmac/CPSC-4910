@@ -31,8 +31,11 @@ class InventoryForm(forms.ModelForm):
         model = InventoryItem
         fields = ['item_name', 'item_no', 'batch_no', 'batch_name', 'quantity', 'description']
         widgets = {
-            'description': forms.Textarea(attrs={'rows': 3}),
+            'item_name': forms.TextInput(attrs={'placeholder': 'e.g. Tent'}),
+            'item_no': forms.TextInput(attrs={'placeholder': 'T001'}),
+            'description': forms.Textarea(attrs={'rows': 2}),
         }
+
 
 class ReservationForm(forms.ModelForm):
     class Meta:

@@ -1,63 +1,86 @@
-.inventory-form {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+/* Container Card Style */
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
 }
 
-#inventoryTable {
+/* Headings */
+.card h2,
+.card h3 {
+    margin-bottom: 1.5rem;
+}
+
+/* Form Table */
+.inventory-form table {
     width: 100%;
-    border-collapse: collapse;
+    border-spacing: 0 10px;
 }
 
-#inventoryTable th,
-#inventoryTable td {
-    padding: 10px;
+.inventory-form th {
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
 }
 
-#inventoryTable input {
+.inventory-form td {
+    padding-bottom: 0.5rem;
+}
+
+/* Form Inputs */
+.inventory-form input,
+.inventory-form textarea {
     width: 100%;
-    padding: 8px;
+    padding: 0.5rem 0.75rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
 }
 
-.tooltip-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltip-text {
-    visibility: hidden;
-    background: #333;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    position: absolute;
-    z-index: 1;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-}
-
-.tooltip-wrapper:hover .tooltip-text {
-    visibility: visible;
-}
-
-.save-icon,
-.search-icon,
-.clear-icon {
-    background: none;
+/* Button Styling */
+.inventory-form button {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #1e1e2d;
+    color: white;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
 }
 
-.save-icon:hover,
-.search-icon:hover,
-.clear-icon:hover {
-    color: #1a1a2e;
+.inventory-form button:hover {
+    background-color: #34344e;
+}
+
+/* Inventory List Styling */
+.inventory-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.inventory-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #fafafa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inventory-item .item-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.inventory-item .item-info {
+    color: #666;
+    font-size: 0.95rem;
 }
