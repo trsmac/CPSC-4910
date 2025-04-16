@@ -39,6 +39,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    def get_full_name(self):
+        # Return first_name + last_name, or fall back to email
+        full_name = f"{self.first_name} {self.last_name}".strip()
+        return full_name or self.email
+
 class InventoryItem(models.Model):
     item_name = models.CharField(max_length=100)
     item_no = models.CharField(max_length=50, unique=True)

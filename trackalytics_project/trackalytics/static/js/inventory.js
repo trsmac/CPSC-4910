@@ -88,6 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = e.target.closest(".inventory-item");
 
         if (e.target.classList.contains("edit-btn")) {
+            const itemId = li.dataset.id;
+            console.log("Editing item ID:", itemId);
             const info = li.querySelector(".item-info");
             const itemName = li.querySelector(".item-name").textContent;
             const description = li.querySelector("em")?.textContent || "";
@@ -108,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="form-group full-width"><label>Description</label><textarea name="description" rows="3">${description}</textarea></div>
                 </div>
                 <div class="action-buttons">
-                    <button class="save-btn" data-id="${li.dataset.id}">Save</button>
+                <button class="save-btn" data-id="${itemId}">Save</button>
                     <button class="cancel-btn">Cancel</button>
                 </div>
             `;
@@ -118,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (e.target.classList.contains("save-btn")) {
             const itemId = e.target.dataset.id;
+            console.log("Saving item ID:", itemId);
             const inputs = li.querySelectorAll("input, textarea");
             const formData = new FormData();
             inputs.forEach(input => formData.append(input.name, input.value));
@@ -149,7 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <em>${data.item.description || ''}</em><br>
                                 <small>Updated by ${data.item.user} on ${data.item.created_at_display}</small>
                             </div>
-                            <button class="edit-btn" data-id="${data.item.id}">Edit</button>
+                            <div class="action-buttons">
+                                <button class="edit-btn" data-id="${data.item.id}">Edit</button>
+                            </div>
                         </li>
                     `;
                     sortSelect?.dispatchEvent(new Event("change"));
@@ -157,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("Update failed. Please check your inputs.");
                 }
             } catch (err) {
-                console.error("Update failed:", err);
+                console.error("Update failed:", err, "FormData:", Object.fromEntries(formData.entries()));
                 alert("Something went wrong while updating the item.");
             }
         }

@@ -73,24 +73,32 @@ def update_inventory(request, item_id):
     except InventoryItem.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Item not found'}, status=404)
 
-    form = InventoryForm(request.POST, instance=item)
-    if form.is_valid():
-        item = form.save()
-        ActivityLog.objects.create(
-            user=request.user,
-            action=f"Updated inventory item: {item.item_name}",
-            ip_address=get_client_ip(request)
-        )
-        return JsonResponse({
-            'success': True,
-            'item': {
-                **model_to_dict(item),
-                'created_at': format(item.created_at, 'YmdHis'),
-                'created_at_display': item.created_at.strftime('%b %d, %Y %I:%M %p'),
-                'user': request.user.get_full_name() or request.user.email,
-            }
-        })
-    return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+    try:
+        form = InventoryForm(request.POST, instance=item)
+        if form.is_valid():
+            updated_item = form.save()
+            ActivityLog.objects.create(
+                user=request.user,
+                action=f"Updated inventory item: {updated_item.item_name}",
+                ip_address=get_client_ip(request)
+            )
+
+            return JsonResponse({
+                'success': True,
+                'item': {
+                    **model_to_dict(updated_item),
+                    'created_at': format(updated_item.created_at, 'YmdHis'),
+                    'created_at_display': updated_item.created_at.strftime('%b %d, %Y %I:%M %p'),
+                    'user': request.user.get_full_name() or request.user.email,
+                }
+            })
+        else:
+            print("❌ Form is invalid:", form.errors)
+            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+    except Exception as e:
+        import traceback
+        print("💥 Server error in update_inventory:", traceback.format_exc())
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 @login_required
 def reservation(request):
