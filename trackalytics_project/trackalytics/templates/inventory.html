@@ -57,11 +57,14 @@
                 data-name="{{ item.item_name|lower }}"
                 data-quantity="{{ item.quantity }}"
                 data-created="{{ item.created_at|date:'YmdHis' }}">
+
                 <div class="item-name">{{ item.item_name }}</div>
                 <div class="item-info">
                     No: {{ item.item_no }} | Batch: {{ item.batch_no }} ({{ item.batch_name }}) | Qty: {{ item.quantity }}<br>
                     <em>{{ item.description }}</em>
-                    <button class="edit-btn" data-id="{{ item.id }}">✏️ Edit</button>
+                </div>
+                <div class="action-buttons">
+                    <button class="edit-btn">Edit</button>
                 </div>
             </li>
         {% empty %}
@@ -69,7 +72,6 @@
         {% endfor %}
     </ul>
 </div>
-
 {% endblock %}
 
 {% block js %}

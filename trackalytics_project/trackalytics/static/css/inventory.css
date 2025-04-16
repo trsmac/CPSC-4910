@@ -1,64 +1,69 @@
-/* Container Card Style */
+/* ========== Card Container ========== */
 .card {
     background: white;
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     margin-bottom: 2rem;
 }
 
-/* Headings */
+/* ========== Headings ========== */
 .card h2,
 .card h3 {
     margin-bottom: 1.5rem;
 }
 
-/* Form Table */
-.inventory-form table {
-    width: 100%;
-    border-spacing: 0 10px;
+/* ========== Grid-based Form Layout ========== */
+.input-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
 }
 
-.inventory-form th {
-    text-align: left;
-    padding-bottom: 0.5rem;
-    font-weight: 600;
+.input-row .form-group:nth-child(5) {
+    grid-column: span 1; /* Quantity */
+}
+
+.input-row .form-group:nth-child(6) {
+    grid-column: span 3; /* Description fills the rest */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+    font-weight: 500;
     color: #333;
 }
 
-.inventory-form td {
-    padding-bottom: 0.5rem;
+.form-group.full-width {
+    grid-column: span 4;
 }
 
-/* Form Inputs */
-.inventory-form input,
-.inventory-form textarea {
+/* ========== Inputs & Textareas ========== */
+input,
+textarea {
     width: 100%;
     padding: 0.5rem 0.75rem;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
 }
 
-/* Button Styling */
-.inventory-form button {
-    margin-top: 1rem;
-    padding: 0.6rem 1.2rem;
-    background-color: #1e1e2d;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
+textarea {
+    min-height: 2.8rem;
+    resize: vertical;
 }
 
-.inventory-form button:hover {
-    background-color: #34344e;
-}
-
-/* Inventory List Styling */
+/* ========== Inventory List ========== */
 .inventory-list ul {
     list-style: none;
     padding: 0;
@@ -71,8 +76,8 @@
     border-radius: 8px;
     background: #fafafa;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .inventory-item .item-name {
@@ -83,4 +88,67 @@
 .inventory-item .item-info {
     color: #666;
     font-size: 0.95rem;
+}
+
+/* ========== Buttons ========== */
+button {
+    font-family: inherit;
+}
+
+.inventory-form button,
+.action-buttons button {
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.inventory-form button {
+    background-color: #1e1e2d;
+    color: white;
+}
+
+.inventory-form button:hover {
+    background-color: #34344e;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #218838;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+
+/* ========== Toast ========== */
+.toast {
+    display: none;
+    margin-top: 1rem;
+    background-color: #28a745;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.toast.show {
+    display: inline-block;
 }

@@ -64,9 +64,9 @@ def inventory(request):
 
     return render(request, 'inventory.html', {'items': InventoryItem.objects.all()})
 
-@login_required
-@require_POST
 @csrf_exempt
+@require_POST
+@login_required
 def update_inventory(request, item_id):
     try:
         item = InventoryItem.objects.get(id=item_id)
