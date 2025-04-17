@@ -1,60 +1,109 @@
-# Trackalytics - Django Web Application 
+```markdown
+# Trackalytics - GitHub Codespaces Setup Guide
 
-Trackalytics is a Django-based web application designed to manage inventory, track activities, and view products. This guide will show you how to set up and run the project using **GitHub Codespaces** (Ubuntu environment).
+## Prerequisites
+- GitHub account with Codespaces access
+- Trackalytics repository cloned in Codespaces
+  - Must contain `run.sh` script
+  - Must contain `trackalytics_project` directory
+- Basic terminal/command line familiarity
 
-**Table of Contents**
+## Setup Instructions
 
-1. [Installation and Setup Steps](#installation-and-setup-steps-using-github-codespaces-ubuntu)
-2. [Project Structure](#project-structure)
-3. [Testing](#testing)
+### 1. Launch GitHub Codespaces
+1. Navigate to your Trackalytics repository on GitHub
+2. Click the **Code** button (green button near repo top)
+3. Select **Codespaces > Create codespace on main**
+   - (Or select your preferred branch)
+4. Wait for environment initialization
+   - This typically takes 1-2 minutes
+   - Creates cloud-based VS Code environment
 
-## Installation and Setup Steps using GitHub Codespaces (Ubuntu)
+### 2. Verify Project Structure
+In the terminal (automatically opens in Codespaces):
+```bash
+ls
+```
+Expected output:
+```
+run.sh  trackalytics_project  [other files]
+```
 
-### Step 1: Open GitHub Codespace
+### 3. Make Script Executable
+```bash
+chmod +x run.sh
+```
 
-1. Navigate to your GitHub repository where **Trackalytics** is hosted.
-2. Click the green "Code" button, then select "Open with Codespaces" to open a new or existing Codespace.
+### 4. Execute Setup Script
+```bash
+./run.sh
+```
 
-### Step 2: Run the Setup Script
+## Script Execution Process
+The script performs these automated steps:
+1. 📦 **Dependency Installation**
+   - Installs Django package
+   - Updates requirements.txt
+2. 🗂 **Project Navigation**
+   - Changes to trackalytics_project directory
+3. 🧹 **Database Reset**
+   - Removes existing db.sqlite3
+   - Clears migration files
+4. ⚙️ **Migrations**
+   - Creates new migrations
+   - Applies migrations to database
+5. 🔍 **Database Verification**
+   - Lists all created tables
+   - Displays table schema
+6. 🚀 **Server Launch**
+   - Starts Django development server
+   - Binds to port 8000
 
-Once your Codespace is up and running, execute the following commands in the terminal within the Codespace environment to set up your project:
+## Accessing the Application
+After server starts (look for 🚀 emoji):
 
-**Make the setup script executable**
+### Option 1: Notification Popup
+1. Click "Open in Browser" in the VS Code notification
+2. Automatically opens new tab with application
 
-   ```bash
-   chmod +x run.sh
+### Option 2: Ports Panel
+1. Open VS Code "Ports" tab (left sidebar)
+2. Locate port 8000 in the list
+3. Set visibility to "Public" if needed
+4. Click the URL under "Local Address"
+
+## Monitoring Operation
+### Successful Indicators
+- ✅ Green success messages
+- Color-coded emoji status updates
+- "Starting development server" final message
+
+### Error Handling
+- ❌ Red error messages for failures
+- Common issues highlighted:
+  - Missing directories
+  - Database errors
+  - Port conflicts
+
+## Shutting Down
+To stop the development server:
+1. Focus on the terminal window
+2. Press `Ctrl+C`
+3. Wait for shutdown confirmation:
+   ```
+   🎉 Application Successfully Closed! 🎉
    ```
 
-**Run the setup script**
-
+## Troubleshooting
+If you encounter issues:
+1. Verify all files exist in correct locations
+2. Check terminal for specific error messages
+3. Ensure port 8000 isn't already in use
+4. Try full reset:
    ```bash
+   rm -rf db.sqlite3 trackalytics_project/migrations/
    ./run.sh
    ```
 
-### Step 3: Access the Application
-
-Once the setup script finishes running, you can access the Trackalytics web application by visiting:
-```
-http://127.0.0.1:8000/
-```
-
-## Project Structure
-
-Here is an overview of the key files and directories in the project:
-
-- `trackalytics/` - Main project directory containing settings and configurations.
-- `trackalytics/app1/` - Django app where the core business logic resides (models, views, etc.).
-- `trackalytics/static/` - Static files (CSS, JavaScript, and images) used throughout the application.
-- `trackalytics/templates/` - HTML templates for rendering web pages.
-- `trackalytics/db.sqlite3` - SQLite database file (default).
-- `trackalytics/setup_project.sh` - A shell script that automates the setup process, including making the necessary files executable, installing dependencies, and running the setup steps to prepare the project for use.
-
-## Testing
-
-To run the tests for this project:
-
-Run tests using Django's test framework:
-
-```bash
-python manage.py test
+> **Note**: All commands assume default configuration. Contact maintainers if your setup differs.
 ```

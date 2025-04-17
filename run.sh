@@ -20,11 +20,21 @@ cd trackalytics_project || { echo -e "\033[1;31m❌ Directory 'trackalytics_proj
 echo "✅ In project directory."
 echo "========================================="  # Divider
 
+# Step 2: Full DB & migration reset
+echo -e "\033[1;31m🧹 Resetting database and migrations...\033[0m"
+rm -f db.sqlite3
+find ../trackalytics -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find ../trackalytics -path "*/migrations/*.pyc" -delete
+mkdir -p ../trackalytics/migrations
+touch ../trackalytics/migrations/__init__.py
+echo "✅ Database and migration files cleaned."
+echo "========================================="  # Divider
+
 # Step 3: Run migrations
-echo -e "\033[1;32m⚙️ Running migrations...\033[0m"
+echo -e "\033[1;32m⚙️ Creating and applying migrations...\033[0m"
 python manage.py makemigrations
 python manage.py migrate
-echo "✅ Migrations applied."
+echo "✅ Migrations created and applied."
 echo "========================================="  # Divider
 
 # Step 4: Verify migrations by displaying tables
@@ -60,12 +70,12 @@ except Exception as e:
 EOF
 echo "========================================="  # Divider
 
-# Run the Django development server
+# Step 5: Run the Django development server
 echo -e "\033[1;35m🚀 Starting Django development server...\033[0m"
 python manage.py runserver
 echo "========================================="  # Divider
 
 # Footer with completion message
 echo "=============================================="
-echo "🎉 Setup Complete! All systems go! 🚀"
+echo "🎉 Application Successfully Closed! 🎉"
 echo "=============================================="
