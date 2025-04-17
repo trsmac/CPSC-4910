@@ -2,7 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Inventory JS loaded ✅");
 
     const form = document.getElementById("inventoryForm");
-    const sortSelect = document.getElementById("sortSelect");
+    const sortBy = document.getElementById("sortBy");
+    const sortOrder = document.getElementById("sortOrder");
+    const clearBtn = document.getElementById("clearForm");
+    const downloadBtn = document.getElementById("downloadCSV");
 
     function showToast(message) {
         const toast = document.getElementById("toast");
@@ -29,7 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <em>${item.description || ''}</em><br>
                 <small>Added by ${item.user} on ${item.created_at_display}</small>
             </div>
-            <button class="edit-btn" data-id="${item.id}">Edit</button>
+            <div class="action-buttons">
+                <div class="tooltip-wrapper">
+                    <button class="edit-btn" data-id="${item.id}">
+                        <span class="material-symbols-outlined">edit</span>
+                    </button>
+                    <span class="tooltip-text">Edit Item</span>
+                </div>
+            </div>
         `;
 
         ul.appendChild(li);
@@ -51,12 +61,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 showToast("Item saved successfully!");
                 renderItem(data.item);
                 form.reset();
-                sortSelect?.dispatchEvent(new Event("change"));
+                sortInventory();
             } else {
                 alert("Error saving item. Check form fields.");
             }
         });
     }
+
+    clearBtn?.addEventListener("click", () => {
+        form?.reset();
+        form?.querySelector("[name='item_name']")?.focus();
+    });
 
     document.getElementById("searchInput")?.addEventListener("input", function () {
         const value = this.value.toLowerCase();
@@ -65,31 +80,64 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    sortSelect?.addEventListener("change", function () {
-        const value = this.value;
-        const items = Array.from(document.querySelectorAll(".inventory-item"));
+    function sortInventory() {
+        const field = sortBy?.value || "item_name";
+        const order = sortOrder?.value || "asc";
 
+        const items = Array.from(document.querySelectorAll(".inventory-item"));
         items.sort((a, b) => {
-            if (value === "quantity") {
-                return b.dataset.quantity - a.dataset.quantity;
-            } else if (value === "created_at") {
-                return b.dataset.created.localeCompare(a.dataset.created);
+            let aVal = a.dataset[field];
+            let bVal = b.dataset[field];
+
+            if (!isNaN(aVal)) aVal = parseFloat(aVal);
+            if (!isNaN(bVal)) bVal = parseFloat(bVal);
+
+            if (order === "asc") {
+                return aVal > bVal ? 1 : -1;
             } else {
-                return a.dataset.name.localeCompare(b.dataset.name);
+                return aVal < bVal ? 1 : -1;
             }
         });
 
         const ul = document.getElementById("inventoryItems");
         ul.innerHTML = "";
         items.forEach(item => ul.appendChild(item));
+    }
+
+    sortBy?.addEventListener("change", sortInventory);
+    sortOrder?.addEventListener("change", sortInventory);
+
+    downloadBtn?.addEventListener("click", () => {
+        const rows = Array.from(document.querySelectorAll(".inventory-item"));
+        const data = rows.map(row => {
+            const name = row.querySelector(".item-name")?.textContent.trim();
+            const info = row.querySelector(".item-info")?.textContent || '';
+            const [itemNo, batchStr, qtyStr] = info.split('|').map(s => s.trim());
+            const [_, batchNo, batchName] = batchStr.match(/Batch: (.*?) \((.*?)\)/) || [];
+            const [__, quantity] = qtyStr.match(/Qty: (\d+)/) || [];
+            const description = row.querySelector("em")?.textContent.trim();
+            return [name, itemNo.replace('No: ', ''), batchNo, batchName, quantity, description];
+        });
+
+        const header = ['Item', 'Item No.', 'Batch No.', 'Batch Name', 'Quantity', 'Description'];
+        data.unshift(header);
+
+        const csvContent = data.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `inventory_${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 
     document.getElementById("inventoryItems").addEventListener("click", async function (e) {
         const li = e.target.closest(".inventory-item");
 
-        if (e.target.classList.contains("edit-btn")) {
+        if (e.target.closest(".edit-btn")) {
             const itemId = li.dataset.id;
-            console.log("Editing item ID:", itemId);
             const info = li.querySelector(".item-info");
             const itemName = li.querySelector(".item-name").textContent;
             const description = li.querySelector("em")?.textContent || "";
@@ -110,17 +158,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="form-group full-width"><label>Description</label><textarea name="description" rows="3">${description}</textarea></div>
                 </div>
                 <div class="action-buttons">
-                <button class="save-btn" data-id="${itemId}">Save</button>
+                    <button class="save-btn" data-id="${itemId}">Save</button>
                     <button class="cancel-btn">Cancel</button>
                 </div>
             `;
 
-            li.querySelector("input")?.focus(); // Autofocus for better UX
+            li.querySelector("input")?.focus();
         }
 
         if (e.target.classList.contains("save-btn")) {
             const itemId = e.target.dataset.id;
-            console.log("Saving item ID:", itemId);
             const inputs = li.querySelectorAll("input, textarea");
             const formData = new FormData();
             inputs.forEach(input => formData.append(input.name, input.value));
@@ -131,11 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     method: "POST",
                     body: formData
                 });
-
-                const contentType = response.headers.get("content-type");
-                if (!response.ok || !contentType?.includes("application/json")) {
-                    throw new Error("Bad response from server");
-                }
 
                 const data = await response.json();
                 if (data.success) {
@@ -153,16 +195,21 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <small>Updated by ${data.item.user} on ${data.item.created_at_display}</small>
                             </div>
                             <div class="action-buttons">
-                                <button class="edit-btn" data-id="${data.item.id}">Edit</button>
+                                <div class="tooltip-wrapper">
+                                    <button class="edit-btn" data-id="${data.item.id}">
+                                        <span class="material-symbols-outlined">edit</span>
+                                    </button>
+                                    <span class="tooltip-text">Edit Item</span>
+                                </div>
                             </div>
                         </li>
                     `;
-                    sortSelect?.dispatchEvent(new Event("change"));
+                    sortInventory();
                 } else {
                     alert("Update failed. Please check your inputs.");
                 }
             } catch (err) {
-                console.error("Update failed:", err, "FormData:", Object.fromEntries(formData.entries()));
+                console.error("Update failed:", err);
                 alert("Something went wrong while updating the item.");
             }
         }
@@ -173,5 +220,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    sortSelect?.dispatchEvent(new Event("change"));
+    sortInventory();
 });

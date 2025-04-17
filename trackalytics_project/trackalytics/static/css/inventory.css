@@ -17,17 +17,8 @@
 .input-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto auto;
     gap: 1.2rem;
     margin-bottom: 1.5rem;
-}
-
-.input-row .form-group:nth-child(5) {
-    grid-column: span 1; /* Quantity */
-}
-
-.input-row .form-group:nth-child(6) {
-    grid-column: span 3; /* Description fills the rest */
 }
 
 .form-group {
@@ -90,7 +81,7 @@ textarea {
     font-size: 0.95rem;
 }
 
-/* ========== Buttons ========== */
+/* ========== Form + Button Styles ========== */
 button {
     font-family: inherit;
 }
@@ -151,4 +142,68 @@ button {
 
 .toast.show {
     display: inline-block;
+}
+
+/* ========== Inventory Controls ========== */
+.inventory-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.inventory-controls input[type="text"],
+.inventory-controls select {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+.download-csv-btn {
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.download-csv-btn:hover {
+    background-color: #0056b3;
+}
+
+/* ========== Tooltip Styling ========== */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ========== Material Icons ========== */
+.material-symbols-outlined {
+    vertical-align: middle;
+    font-size: 20px;
 }

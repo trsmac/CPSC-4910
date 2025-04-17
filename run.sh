@@ -13,12 +13,13 @@ cd /workspaces/CPSC-4910/trackalytics_project || {
 }
 
 # Install dependencies from existing shared requirements file
-echo -e "\033[1;34m📦 Installing dependencies from shared requirements.txt...\033[0m"
-pip install -r ../requirements.txt || {
+echo -e "\033[1;34m📦 Checking dependencies from shared requirements.txt...\033[0m"
+if pip install -r requirements.txt --quiet > /dev/null 2>&1; then
+  echo -e "\033[1;32m✅ All dependencies are already satisfied.\033[0m"
+else
   echo -e "\033[1;31m❌ Failed to install requirements.\033[0m"
   exit 1
-}
-echo "✅ Dependencies installed."
+fi
 echo "========================================="
 
 # Clean old DB and migrations

@@ -34,7 +34,14 @@
                 </tr>
             </tbody>
         </table>
-        <button type="submit">Save</button>
+        <div class="action-buttons">
+            <button type="submit">
+                <span class="material-symbols-outlined">save</span> Save
+            </button>
+            <button type="button" id="clearForm">
+                <span class="material-symbols-outlined">delete</span> Clear
+            </button>
+        </div>
     </form>
     <div id="toast" class="toast">Item saved successfully!</div>
 </div>
@@ -42,11 +49,23 @@
 <div class="card inventory-list">
     <div class="inventory-controls">
         <input type="text" id="searchInput" placeholder="Search inventory...">
-        <select id="sortSelect">
-            <option value="item_name">Sort by Item Name</option>
-            <option value="quantity">Sort by Quantity</option>
-            <option value="created_at">Sort by Date</option>
+        
+        <label for="sortBy">Sort By:</label>
+        <select id="sortBy">
+            <option value="item_name">Item Name</option>
+            <option value="quantity">Quantity</option>
+            <option value="created">Date</option>
         </select>
+
+        <label for="sortOrder">Order:</label>
+        <select id="sortOrder">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+
+        <button id="downloadCSV" class="download-csv-btn">
+            <span class="material-symbols-outlined">download</span> Export CSV
+        </button>
     </div>
 
     <h3>Current Inventory</h3>
@@ -64,7 +83,12 @@
                     <em>{{ item.description }}</em>
                 </div>
                 <div class="action-buttons">
-                    <button class="edit-btn">Edit</button>
+                    <div class="tooltip-wrapper">
+                        <button class="edit-btn">
+                            <span class="material-symbols-outlined">edit</span>
+                        </button>
+                        <span class="tooltip-text">Edit Item</span>
+                    </div>
                 </div>
             </li>
         {% empty %}
