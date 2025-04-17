@@ -80,5 +80,5 @@ echo "========================================="
 # Start server
 echo -e "\033[1;35m🚀 Starting Django dev server...\033[0m"
 python manage.py runserver 0.0.0.0:8000
-echo "🎉 Server running at http://localhost:8000"
+echo "🎉 Server closed at http://localhost:8000"
 echo "=============================================="
