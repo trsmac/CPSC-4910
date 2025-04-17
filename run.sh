@@ -12,14 +12,13 @@ cd /workspaces/CPSC-4910/trackalytics_project || {
   exit 1
 }
 
-# Install dependencies from existing shared requirements file
-echo -e "\033[1;34m📦 Checking dependencies from shared requirements.txt...\033[0m"
-if pip install -r requirements.txt --quiet > /dev/null 2>&1; then
-  echo -e "\033[1;32m✅ All dependencies are already satisfied.\033[0m"
-else
-  echo -e "\033[1;31m❌ Failed to install requirements.\033[0m"
+# Install Django
+echo -e "\033[1;34m📦 Installing Django and dependencies...\033[0m"
+pip install django || {
+  echo -e "\033[1;31m❌ Failed to install Django.\033[0m"
   exit 1
-fi
+}
+echo "✅ Django installed."
 echo "========================================="
 
 # Clean old DB and migrations
