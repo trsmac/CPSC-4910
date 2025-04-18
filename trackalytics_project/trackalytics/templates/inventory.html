@@ -1,79 +1,121 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/inventory.css' %}">
-{% endblock %}
-
 {% block title %}Inventory{% endblock %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="card inventory-form">
-    <h2>Add Inventory Item</h2>
-
-    <form method="post" id="inventoryForm">
-        {% csrf_token %}
-        {{ form.as_p }}
-
-        <div class="form-actions">
-            <button type="submit" class="btn primary">
-                <span class="material-symbols-outlined">save</span> Save
-            </button>
-            <button type="button" id="clearForm" class="btn">
-                <span class="material-symbols-outlined">delete</span> Clear
-            </button>
-        </div>
-    </form>
-
-    <div id="toast" class="toast">Item saved successfully!</div>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Inventory</h1>
+  <div class="flex items-center gap-2">
+    <div class="relative group">
+      <button class="btn btn-primary flex items-center gap-1">
+        <span class="material-symbols-outlined">create_new_folder</span> New
+      </button>
+      <div class="absolute hidden group-hover:block bg-white shadow rounded w-56 mt-2 z-20">
+        <a href="{% url 'trackalytics:inventory' %}" class="block px-4 py-2 hover:bg-gray-100">➕ New Inventory Item</a>
+        <a href="{% url 'trackalytics:reservation' %}" class="block px-4 py-2 hover:bg-gray-100">📅 Reservation</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100">📋 Rental Inquiry</a>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="card inventory-list">
-    <div class="inventory-controls">
-        <input type="text" id="searchInput" placeholder="Search by name or barcode">
-
-        <label for="sortBy">Sort By:</label>
-        <select id="sortBy">
-            <option value="item_name">Item Name</option>
-            <option value="quantity">Quantity</option>
-            <option value="created">Date Added</option>
-        </select>
-
-        <label for="sortOrder">Order:</label>
-        <select id="sortOrder">
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-        </select>
-
-        <button id="downloadCSV" class="download-csv-btn">
-            <span class="material-symbols-outlined">download</span> Export CSV
-        </button>
+<!-- Add Inventory Form -->
+<div class="card">
+  <h2 class="text-xl font-semibold mb-4">Add Inventory Item</h2>
+  <form method="post" id="inventoryForm" class="grid gap-4 md:grid-cols-2">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-actions md:col-span-2 flex justify-end gap-3 mt-2">
+      <button type="submit" class="btn btn-primary">
+        <span class="material-symbols-outlined">save</span> Save
+      </button>
+      <button type="button" id="clearForm" class="btn btn-secondary">
+        <span class="material-symbols-outlined">delete</span> Clear
+      </button>
     </div>
+  </form>
+  <div id="toast" class="toast mt-2">Item saved successfully!</div>
+</div>
 
-    <h3>Current Inventory</h3>
+<!-- Filters + Inventory Table -->
+<div class="card">
+  <div class="inventory-controls flex flex-wrap items-center gap-4 mb-4">
+    <input type="text" id="searchInput" class="input" placeholder="Search by name or barcode">
+
+    <select id="categoryFilter" class="input">
+      <option value="">All Categories</option>
+      {% for category in categories %}
+      <option value="{{ category }}">{{ category }}</option>
+      {% endfor %}
+    </select>
+
+    <select id="sortBy" class="input">
+      <option value="item_name">Sort by Name</option>
+      <option value="quantity">Sort by Quantity</option>
+      <option value="created">Sort by Date</option>
+    </select>
+
+    <select id="sortOrder" class="input">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+
+    <div class="relative group">
+      <button class="download-csv-btn btn btn-primary flex items-center gap-1">
+        <span class="material-symbols-outlined">download</span> Export
+      </button>
+      <div class="absolute hidden group-hover:block bg-white shadow rounded w-44 mt-2 z-10">
+        <a href="{% url 'trackalytics:export_inventory_csv' %}" class="block px-4 py-2 hover:bg-gray-100">CSV</a>
+        <a href="{% url 'trackalytics:export_inventory_excel' %}" class="block px-4 py-2 hover:bg-gray-100">Excel</a>
+        <a href="{% url 'trackalytics:export_inventory_json' %}" class="block px-4 py-2 hover:bg-gray-100">JSON</a>
+        <a href="{% url 'trackalytics:export_inventory_pdf' %}" class="block px-4 py-2 hover:bg-gray-100">PDF</a>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="text-lg font-semibold mb-3">Current Inventory</h3>
+  <div class="inventory-table">
+    <div class="inventory-header">
+      <span>Item Code</span>
+      <span>Item Name</span>
+      <span>Category</span>
+      <span>Quantity</span>
+      <span>Actions</span>
+    </div>
     <ul id="inventoryItems">
-        {% for item in items %}
-        <li class="inventory-item"
-            data-id="{{ item.id }}"
-            data-name="{{ item.item_name|lower }}"
-            data-barcode="{{ item.barcode }}"
-            data-quantity="{{ item.quantity }}"
-            data-created="{{ item.created_at|date:'YmdHis' }}">
-
-            <div class="item-name">{{ item.item_code }} — {{ item.item_name }}</div>
-            <div class="item-info">
-                {% if item.category_type %}Category: {{ item.category_type }} |{% endif %}
-                Qty: {{ item.quantity }} |
-                {% if item.price %}Price: ${{ item.price }} |{% endif %}
-                {% if item.expiration_date %}Expires: {{ item.expiration_date }} |{% endif %}
-                {% if item.barcode %}Barcode: {{ item.barcode }}{% endif %}<br>
-                <em>{{ item.notes }}</em>
-            </div>
-        </li>
-        {% empty %}
-        <p>No inventory items found.</p>
-        {% endfor %}
+      {% for item in items %}
+      <li class="inventory-item"
+          data-id="{{ item.id }}"
+          data-name="{{ item.item_name|lower }}"
+          data-barcode="{{ item.barcode }}"
+          data-quantity="{{ item.quantity }}"
+          data-created="{{ item.created_at }}"
+          data-category="{{ item.category_type }}">
+        <span>{{ item.item_code }}</span>
+        <span>{{ item.item_name }}</span>
+        <span>{{ item.category_type }}</span>
+        <span>
+          <input type="number" class="qty-input" value="{{ item.quantity }}" min="0">
+        </span>
+        <span>
+          <button class="edit-btn btn btn-secondary">Edit</button>
+          <span class="edit-actions hidden">
+            <button class="save-btn btn btn-primary">Save</button>
+            <button class="delete-btn btn btn-danger">Delete</button>
+          </span>
+        </span>
+      </li>
+      {% empty %}
+      <li class="text-gray-500 text-sm">No inventory items found.</li>
+      {% endfor %}
     </ul>
+  </div>
 </div>
 {% endblock %}
 

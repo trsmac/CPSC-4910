@@ -5,50 +5,53 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/activitylog.css' %}">
+<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-title">
-    <h1 class="dashboard-title-text">Activity Log</h1>
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Activity Log</h1>
 </div>
-<div class="activity-log">
-    <div class="filter-section">
-        <form method="post">
-            {% csrf_token %}
-            <label for="user-filter">Filter by User:</label>
-            <select id="user-filter" name="user_id">
-                <option value="">All Users</option>
-                {% for user in users %}
-                <option value="{{ user.id }}">{{ user.username }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Filter</button>
-        </form>
-    </div>
-    <table id="activity-table">
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Action</th>
-                <th>IP Address</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs %}
-            <tr>
-                <td>{{ log.user.username }}</td>
-                <td>{{ log.action }}</td>
-                <td>{{ log.ip_address }}</td>
-                <td>{{ log.timestamp|date:"Y-m-d H:i:s" }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4">No activity logs available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+<div class="mb-6">
+  <form method="post" class="flex flex-wrap gap-4 items-center">
+    {% csrf_token %}
+    <label for="user-filter" class="text-sm font-medium">Filter by User:</label>
+    <select id="user-filter" name="user_id" class="input">
+      <option value="">All Users</option>
+      {% for user in users %}
+      <option value="{{ user.id }}">{{ user.get_full_name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </form>
+</div>
+
+<div class="overflow-x-auto">
+  <table id="activity-table" class="w-full text-sm bg-white shadow rounded overflow-hidden">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-2 text-left">User</th>
+        <th>Action</th>
+        <th>IP Address</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr class="border-t">
+        <td class="px-4 py-2">{{ log.user.get_full_name }}</td>
+        <td>{{ log.action }}</td>
+        <td>{{ log.ip_address }}</td>
+        <td>{{ log.timestamp|date:"Y-m-d H:i:s" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-center py-4 text-gray-500">No activity logs available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
 

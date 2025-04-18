@@ -51,7 +51,13 @@ class InventoryForm(forms.ModelForm):
         model = InventoryItem
         exclude = ['item_code', 'created_at']
         widgets = {
-            'notes': forms.Textarea(attrs={'rows': 2}),
+            'notes': forms.Textarea(attrs={'rows': 2, 'class': 'input'}),
+            'item_name': forms.TextInput(attrs={'class': 'input'}),
+            'barcode': forms.TextInput(attrs={'class': 'input'}),
+            'category_type': forms.Select(attrs={'class': 'input'}),
+            'quantity': forms.NumberInput(attrs={'class': 'input'}),
+            'vendor_price': forms.NumberInput(attrs={'class': 'input'}),
+            'retail_price': forms.NumberInput(attrs={'class': 'input'}),
         }
         labels = {
             'item_name': 'Item Name',
@@ -73,15 +79,15 @@ class InventoryForm(forms.ModelForm):
         self.fields['item_name'].required = True
         self.fields['category_type'].required = True
 
-        # Optional fields loop
+        # Optional fields
         optional_fields = ['barcode', 'vendor_price', 'retail_price', 'notes']
         for field in optional_fields:
             self.fields[field].required = False
 
-        # Add barcode validator
+        # Barcode validation
         self.fields['barcode'].validators.append(validate_barcode)
 
-        # Help texts (optional UX)
+        # Help texts
         self.fields['barcode'].help_text = "8–13 digit barcode (leave blank if not applicable)"
         self.fields['vendor_price'].help_text = "Internal cost (optional)"
         self.fields['retail_price'].help_text = "Selling price (optional)"
@@ -94,8 +100,12 @@ class InventoryForm(forms.ModelForm):
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ['item', 'name', 'phone', 'email', 'campsite', 'quantity']
+        fields = ['name', 'phone', 'email', 'campsite', 'quantity']
         widgets = {
-            'campsite': forms.NumberInput(attrs={'min': 1, 'max': 10}),
-            'quantity': forms.NumberInput(attrs={'min': 1, 'max': 5}),
+            'name': forms.TextInput(attrs={'class': 'input'}),
+            'phone': forms.TextInput(attrs={'class': 'input'}),
+            'email': forms.EmailInput(attrs={'class': 'input'}),
+            'campsite': forms.NumberInput(attrs={'class': 'input'}),
+            'quantity': forms.NumberInput(attrs={'class': 'input'}),
         }
+

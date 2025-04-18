@@ -1,0 +1,3848 @@
+
+
+===== START OF: manage.py =====
+
+#!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
+import os
+import sys
+
+
+def main():
+    """Run administrative tasks."""
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "trackalytics_project.settings")
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
+
+
+if __name__ == "__main__":
+    main()
+
+===== END OF: manage.py =====
+
+
+
+===== START OF: requirements.txt =====
+
+anyio==4.9.0
+argon2-cffi==23.1.0
+argon2-cffi-bindings==21.2.0
+arrow==1.3.0
+asgiref==3.8.1
+asttokens==3.0.0
+async-lru==2.0.5
+attrs==25.3.0
+babel==2.17.0
+beautifulsoup4==4.13.3
+bleach==6.2.0
+certifi==2025.1.31
+cffi==1.17.1
+charset-normalizer==3.4.1
+colorama==0.4.6
+comm==0.2.2
+contourpy==1.3.1
+cycler==0.12.1
+debugpy==1.8.13
+decorator==5.2.1
+defusedxml==0.7.1
+Django==5.2
+executing==2.2.0
+fastjsonschema==2.21.1
+filelock==3.13.1
+fonttools==4.56.0
+fqdn==1.5.1
+fsspec==2024.6.1
+gitdb==4.0.12
+GitPython==3.1.44
+h11==0.14.0
+httpcore==1.0.7
+httpx==0.28.1
+idna==3.10
+ipykernel==6.29.5
+ipython==9.0.2
+ipython_pygments_lexers==1.1.1
+isoduration==20.11.0
+jedi==0.19.2
+Jinja2==3.1.6
+joblib==1.4.2
+json5==0.10.0
+jsonpointer==3.0.0
+jsonschema==4.23.0
+jsonschema-specifications==2024.10.1
+jupyter-events==0.12.0
+jupyter-lsp==2.2.5
+jupyter-server-mathjax==0.2.6
+jupyter_client==8.6.3
+jupyter_core==5.7.2
+jupyter_server==2.15.0
+jupyter_server_terminals==0.5.3
+jupyterlab==4.3.6
+jupyterlab_git==0.51.0
+jupyterlab_pygments==0.3.0
+jupyterlab_server==2.27.3
+kiwisolver==1.4.8
+MarkupSafe==3.0.2
+matplotlib==3.10.1
+matplotlib-inline==0.1.7
+mistune==3.1.2
+mpmath==1.3.0
+narwhals==1.31.0
+nbclient==0.10.2
+nbconvert==7.16.6
+nbdime==4.0.2
+nbformat==5.10.4
+nest-asyncio==1.6.0
+networkx==3.3
+notebook_shim==0.2.4
+numpy==2.2.4
+overrides==7.7.0
+packaging==24.2
+pandas==2.2.3
+pandocfilters==1.5.1
+parso==0.8.4
+pexpect==4.9.0
+pillow==11.1.0
+platformdirs==4.3.6
+plotly==6.0.1
+prometheus_client==0.21.1
+prompt_toolkit==3.0.50
+psutil==7.0.0
+ptyprocess==0.7.0
+pure_eval==0.2.3
+pycparser==2.22
+Pygments==2.19.1
+pyparsing==3.2.1
+python-dateutil==2.9.0.post0
+python-json-logger==3.3.0
+pytz==2025.1
+PyYAML==6.0.2
+pyzmq==26.3.0
+referencing==0.36.2
+requests==2.32.3
+rfc3339-validator==0.1.4
+rfc3986-validator==0.1.1
+rpds-py==0.23.1
+scikit-learn==1.6.1
+scipy==1.15.2
+seaborn==0.13.2
+Send2Trash==1.8.3
+setuptools==76.0.0
+six==1.17.0
+smmap==5.0.2
+sniffio==1.3.1
+soupsieve==2.6
+sqlparse==0.5.3
+stack-data==0.6.3
+sympy==1.13.1
+terminado==0.18.1
+threadpoolctl==3.6.0
+tinycss2==1.4.0
+torch==2.6.0+cpu
+tornado==6.4.2
+traitlets==5.14.3
+types-python-dateutil==2.9.0.20241206
+typing_extensions==4.12.2
+tzdata==2025.1
+uri-template==1.3.0
+urllib3==2.3.0
+wcwidth==0.2.13
+webcolors==24.11.1
+webencodings==0.5.1
+websocket-client==1.8.0
+openpyxl==3.1.2
+reportlab==4.0.8
+
+===== END OF: requirements.txt =====
+
+
+
+===== START OF: trackalytics/admin.py =====
+
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import InventoryItem, Reservation, ActivityLog, CustomUser
+
+@admin.register(CustomUser)
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active')
+    search_fields = ('email',)
+    ordering = ('email',)
+
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal Info', {'fields': ('first_name', 'last_name')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important Dates', {'fields': ('last_login',)}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')
+        }),
+    )
+
+@admin.register(InventoryItem)
+class InventoryItemAdmin(admin.ModelAdmin):
+    list_display = (
+        'item_code',
+        'item_name',
+        'category_type',
+        'quantity',
+        'vendor_price',
+        'retail_price',
+        'created_at',
+    )
+    search_fields = ('item_name', 'item_code', 'barcode')
+    list_filter = ('category_type', 'created_at')
+
+
+@admin.register(Reservation)
+class ReservationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'campsite', 'status', 'created_at')
+    search_fields = ('name', 'email')
+    list_filter = ('status', 'created_at')
+
+@admin.register(ActivityLog)
+class ActivityLogAdmin(admin.ModelAdmin):
+    list_display = ('user', 'action', 'ip_address', 'timestamp')
+    search_fields = ('user__email', 'action')
+    list_filter = ('timestamp',)
+===== END OF: trackalytics/admin.py =====
+
+
+
+===== START OF: trackalytics/apps.py =====
+
+from django.apps import AppConfig
+
+class TrackalyticsConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'trackalytics'
+===== END OF: trackalytics/apps.py =====
+
+
+
+===== START OF: trackalytics/auth_backends.py =====
+
+from django.contrib.auth.backends import ModelBackend
+from .models import CustomUser
+
+class EmailBackend(ModelBackend):
+    def authenticate(self, request, email=None, password=None, **kwargs):
+        try:
+            user = CustomUser.objects.get(email=email)
+            if user.check_password(password):
+                return user
+        except CustomUser.DoesNotExist:
+            return None
+===== END OF: trackalytics/auth_backends.py =====
+
+
+
+===== START OF: trackalytics/consumers.py =====
+
+from channels.generic.websocket import AsyncWebsocketConsumer
+import json
+
+class InventoryConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.channel_layer.group_add("inventory_updates", self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("inventory_updates", self.channel_name)
+
+    async def send_inventory_update(self, event):
+        await self.send(text_data=json.dumps(event["content"]))
+
+    async def connect(self):
+        await self.channel_layer.group_add("inventory_updates", self.channel_name)
+        await self.accept()
+        print(f"[Connected] {self.channel_name}")
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("inventory_updates", self.channel_name)
+        print(f"[Disconnected] {self.channel_name}")
+===== END OF: trackalytics/consumers.py =====
+
+
+
+===== START OF: trackalytics/forms.py =====
+
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
+from .models import CustomUser, InventoryItem, Reservation
+import re
+
+# ─────────────────────────────────────────────
+#              Custom User Signup Form
+# ─────────────────────────────────────────────
+
+class SignUpForm(UserCreationForm):
+    full_name = forms.CharField(
+        max_length=100,
+        required=True,
+        label="Full name",
+        help_text="Enter your full name"
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ['full_name', 'email', 'password1', 'password2']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+
+        full_name = self.cleaned_data['full_name'].strip().split()
+        user.first_name = full_name[0]
+        user.last_name = ' '.join(full_name[1:]) if len(full_name) > 1 else ''
+
+        if commit:
+            user.save()
+        return user
+
+
+# ─────────────────────────────────────────────
+#              Barcode Validator
+# ─────────────────────────────────────────────
+
+def validate_barcode(value):
+    if value and not re.match(r'^\d{8,13}$', value):
+        raise ValidationError("Barcode must be 8–13 digits (numbers only).")
+
+
+# ─────────────────────────────────────────────
+#              Inventory Item Form
+# ─────────────────────────────────────────────
+
+class InventoryForm(forms.ModelForm):
+    class Meta:
+        model = InventoryItem
+        exclude = ['item_code', 'created_at']
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 2, 'class': 'input'}),
+            'item_name': forms.TextInput(attrs={'class': 'input'}),
+            'barcode': forms.TextInput(attrs={'class': 'input'}),
+            'category_type': forms.Select(attrs={'class': 'input'}),
+            'quantity': forms.NumberInput(attrs={'class': 'input'}),
+            'vendor_price': forms.NumberInput(attrs={'class': 'input'}),
+            'retail_price': forms.NumberInput(attrs={'class': 'input'}),
+        }
+        labels = {
+            'item_name': 'Item Name',
+            'barcode': 'Barcode (optional)',
+            'category_type': 'Category',
+            'quantity': 'Quantity in Stock',
+            'vendor_price': 'Vendor Price ($)',
+            'retail_price': 'Retail Price ($)',
+            'notes': 'Additional Notes',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Default quantity
+        self.fields['quantity'].initial = 0
+
+        # Required fields
+        self.fields['item_name'].required = True
+        self.fields['category_type'].required = True
+
+        # Optional fields
+        optional_fields = ['barcode', 'vendor_price', 'retail_price', 'notes']
+        for field in optional_fields:
+            self.fields[field].required = False
+
+        # Barcode validation
+        self.fields['barcode'].validators.append(validate_barcode)
+
+        # Help texts
+        self.fields['barcode'].help_text = "8–13 digit barcode (leave blank if not applicable)"
+        self.fields['vendor_price'].help_text = "Internal cost (optional)"
+        self.fields['retail_price'].help_text = "Selling price (optional)"
+
+
+# ─────────────────────────────────────────────
+#              Reservation Form
+# ─────────────────────────────────────────────
+
+class ReservationForm(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ['name', 'phone', 'email', 'campsite', 'quantity']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'input'}),
+            'phone': forms.TextInput(attrs={'class': 'input'}),
+            'email': forms.EmailInput(attrs={'class': 'input'}),
+            'campsite': forms.NumberInput(attrs={'class': 'input'}),
+            'quantity': forms.NumberInput(attrs={'class': 'input'}),
+        }
+
+
+===== END OF: trackalytics/forms.py =====
+
+
+
+===== START OF: trackalytics/models.py =====
+
+from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.base_user import BaseUserManager
+
+
+# ─────────────────────────────────────────────
+#            Custom User Model & Manager
+# ─────────────────────────────────────────────
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if not extra_fields.get("is_staff"):
+            raise ValueError("Superuser must have is_staff=True.")
+        if not extra_fields.get("is_superuser"):
+            raise ValueError("Superuser must have is_superuser=True.")
+
+        return self.create_user(email, password, **extra_fields)
+
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
+
+    def get_full_name(self):
+        full_name = f"{self.first_name} {self.last_name}".strip()
+        return full_name or self.email
+
+
+# ─────────────────────────────────────────────
+#              Inventory Item Model
+# ─────────────────────────────────────────────
+
+class InventoryItem(models.Model):
+    CATEGORY_CHOICES = [
+        ('G', 'Grocery & Food'),
+        ('O', 'Camping & Outdoor'),
+        ('P', 'Personal & Cleaning Supplies'),
+        ('H', 'Hardware & Tools'),
+        ('F', 'Bait & Tackle'),
+        ('T', 'Tax-Exempt Items'),
+        ('M', 'Miscellaneous/Other'),
+    ]
+
+    item_code = models.CharField(max_length=20, unique=True, blank=True, editable=False)
+
+    item_name = models.CharField(max_length=100, unique=True)
+    barcode = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    category_type = models.CharField(max_length=1, choices=CATEGORY_CHOICES)
+
+    quantity = models.PositiveIntegerField(default=0)
+    vendor_price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    retail_price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.item_code:
+            category = self.category_type or 'X'
+            # Count existing items in this category
+            count = InventoryItem.objects.filter(category_type=category).count() + 1
+            self.item_code = f"{category}{str(count).zfill(6)}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.item_name} ({self.item_code})"
+
+    class Meta:
+        ordering = ['item_name']
+        verbose_name = "Inventory Item"
+        verbose_name_plural = "Inventory Items"
+        permissions = [
+            ("can_add_inventory", "Can add inventory items"),
+            ("can_edit_inventory", "Can edit inventory items"),
+            ("can_delete_inventory", "Can delete inventory items"),
+        ]
+
+# ─────────────────────────────────────────────
+#              Reservation Model
+# ─────────────────────────────────────────────
+
+class Reservation(models.Model):
+    item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+    campsite = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(default=1)
+    status = models.CharField(max_length=20, default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} (Site {self.campsite})"
+
+    class Meta:
+        ordering = ['-created_at']
+
+# ─────────────────────────────────────────────
+#              Activity Log Model
+# ─────────────────────────────────────────────
+
+class ActivityLog(models.Model):
+    user = models.ForeignKey('trackalytics.CustomUser', on_delete=models.CASCADE)
+    action = models.CharField(max_length=200)
+    ip_address = models.GenericIPAddressField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.action}"
+
+    class Meta:
+        ordering = ['-timestamp']
+        verbose_name = "Activity Log"
+        verbose_name_plural = "Activity Logs"
+
+===== END OF: trackalytics/models.py =====
+
+
+
+===== START OF: trackalytics/routing.py =====
+
+# websocket_routing.py
+
+from django.urls import re_path
+from . import consumers
+
+websocket_urlpatterns = [
+    # Handles inventory add/update/delete broadcasts
+    re_path(r'^ws/inventory/$', consumers.InventoryConsumer.as_asgi()),
+]
+===== END OF: trackalytics/routing.py =====
+
+
+
+===== START OF: trackalytics/tests.py =====
+
+from django.test import TestCase
+from django.contrib.auth.models import User
+from .models import InventoryItem, Reservation, ActivityLog
+from django.urls import reverse
+
+class InventoryItemTests(TestCase):
+    def setUp(self):
+        self.item = InventoryItem.objects.create(
+            item_name="Tent",
+            item_no="T001",
+            batch_no="B001",
+            batch_name="Summer Batch",
+            quantity=10,
+            description="Camping tent"
+        )
+
+    def test_item_creation(self):
+        self.assertEqual(self.item.item_name, "Tent")
+        self.assertEqual(self.item.quantity, 10)
+
+    def test_unique_item_no(self):
+        with self.assertRaises(Exception):
+            InventoryItem.objects.create(
+                item_name="Kayak",
+                item_no="T001",  # Duplicate item_no
+                batch_no="B002",
+                batch_name="Water Batch",
+                quantity=5
+            )
+
+class ReservationTests(TestCase):
+    def setUp(self):
+        self.reservation = Reservation.objects.create(
+            item="Tent",
+            name="John Doe",
+            phone="1234567890",
+            email="john@example.com",
+            campsite=1,
+            quantity=2,
+            status="Checked Out"
+        )
+
+    def test_reservation_creation(self):
+        self.assertEqual(self.reservation.name, "John Doe")
+        self.assertEqual(self.reservation.campsite, 1)
+
+class ViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="test@example.com",
+            password="testpass123"
+        )
+
+    def test_login_view(self):
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'login.html')
+
+    def test_main_dashboard_authenticated(self):
+        self.client.login(username="testuser", password="testpass123")
+        response = self.client.get(reverse('main_dashboard'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main-dashboard.html')
+
+    def test_main_dashboard_unauthenticated(self):
+        response = self.client.get(reverse('main_dashboard'))
+        self.assertEqual(response.status_code, 302)  # Redirects to login
+===== END OF: trackalytics/tests.py =====
+
+
+
+===== START OF: trackalytics/urls.py =====
+
+from django.urls import path
+from . import views
+
+app_name = 'trackalytics'
+
+urlpatterns = [
+    path('', views.login_view, name='login'),
+    path('signup/', views.signup_view, name='signup'),
+    path('dashboard/', views.main_dashboard, name='main_dashboard'),
+    path('kpi/', views.kpi_dashboard, name='kpi_dashboard'),
+    path('inventory/', views.inventory, name='inventory'),
+    path('inventory/update/<int:item_id>/', views.update_inventory, name='update_inventory'),
+    path('inventory/delete/<int:item_id>/', views.delete_inventory, name='delete_inventory'),
+    path('reservation/', views.reservation, name='reservation'),
+    path('reservations/update_status/', views.update_reservation_status, name='update_reservation_status'),
+    path('roles/', views.roles, name='roles'),
+    path('roles/update_permissions/', views.update_permissions, name='update_permissions'),
+    path('roles/assign/', views.assign_role, name='assign_role'),
+    path('activity/', views.activity_log, name='activity_log'),
+    path('settings/', views.settings_view, name='settings'),
+    
+    # Export endpoints
+    path('export/csv/', views.export_inventory_csv, name='export_inventory_csv'),
+    path('export/excel/', views.export_inventory_excel, name='export_inventory_excel'),
+    path('export/json/', views.export_inventory_json, name='export_inventory_json'),
+    path('export/pdf/', views.export_inventory_pdf, name='export_inventory_pdf'),
+]
+===== END OF: trackalytics/urls.py =====
+
+
+
+===== START OF: trackalytics/views.py =====
+
+# /trackalytics/views.py
+
+from .views.auth_views import *
+from .views.dashboard_views import *
+from .views.inventory_views import *
+from .views.reservation_views import *
+from .views.role_views import *
+from .views.export_views import *
+from .views.activity_views import *
+
+===== END OF: trackalytics/views.py =====
+
+
+
+===== START OF: trackalytics/views/__init__.py =====
+
+from .auth_views import *
+from .dashboard_views import *
+from .inventory_views import *
+from .reservation_views import *
+from .role_views import *
+from .export_views import *
+from .activity_views import *
+
+===== END OF: trackalytics/views/__init__.py =====
+
+
+
+===== START OF: trackalytics/views/activity_views.py =====
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from ..models import ActivityLog, CustomUser
+
+@login_required
+def activity_log(request):
+    logs = ActivityLog.objects.all()
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        if user_id:
+            logs = logs.filter(user_id=user_id)
+    return render(request, 'activitylog.html', {
+        'logs': logs,
+        'users': CustomUser.objects.all()
+    })
+
+
+@login_required
+def settings(request):
+    return render(request, 'settings.html')
+
+
+@login_required
+def reports(request):
+    return render(request, 'reports.html')
+
+
+def access_denied(request):
+    return render(request, 'access_denied.html')
+
+===== END OF: trackalytics/views/activity_views.py =====
+
+
+
+===== START OF: trackalytics/views/auth_views.py =====
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+from .utils import get_client_ip
+from ..models import ActivityLog
+from ..forms import SignUpForm
+
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('trackalytics:main_dashboard')
+
+    if request.method == 'POST':
+        user = authenticate(request, email=request.POST['email'], password=request.POST['password'])
+        if user:
+            login(request, user)
+            ActivityLog.objects.create(user=user, action="Logged in", ip_address=get_client_ip(request))
+            return redirect('trackalytics:main_dashboard')
+        messages.error(request, 'Invalid email or password.')
+    return render(request, 'login.html')
+
+
+def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect('trackalytics:main_dashboard')
+
+    form = SignUpForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        user = form.save()
+        login(request, user)
+        ActivityLog.objects.create(user=user, action="Signed up", ip_address=get_client_ip(request))
+        return redirect('trackalytics:main_dashboard')
+
+    return render(request, 'signup.html', {'form': form})
+
+
+@login_required
+def logout_view(request):
+    ActivityLog.objects.create(user=request.user, action="Logged out", ip_address=get_client_ip(request))
+    logout(request)
+    return redirect('trackalytics:login')
+
+===== END OF: trackalytics/views/auth_views.py =====
+
+
+
+===== START OF: trackalytics/views/dashboard_views.py =====
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from ..models import InventoryItem, Reservation, CustomUser
+
+
+def portal_redirect(request):
+    return redirect('trackalytics:main_dashboard') if request.user.is_authenticated else redirect('trackalytics:login')
+
+
+@login_required
+def main_dashboard(request):
+    context = {
+        'total_inventory': InventoryItem.objects.count(),
+        'low_stock_items': InventoryItem.objects.filter(quantity__lte=5).count(),
+        'zero_stock_items': InventoryItem.objects.filter(quantity=0).count(),
+    }
+    return render(request, 'main-dashboard.html', context)
+
+
+@login_required
+def kpi_dashboard(request):
+    context = {
+        'total_reservations': Reservation.objects.count(),
+        'active_users': CustomUser.objects.filter(is_active=True).count(),
+        'turnover_rate': InventoryItem.objects.count(),
+    }
+    return render(request, 'kpi-dashboard.html', context)
+
+===== END OF: trackalytics/views/dashboard_views.py =====
+
+
+
+===== START OF: trackalytics/views/export_views.py =====
+
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.decorators import login_required
+from ..models import InventoryItem
+from .utils import get_filtered_inventory
+
+import csv
+from openpyxl import Workbook
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+
+@login_required
+def export_inventory_csv(request):
+    items = get_filtered_inventory(request)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="inventory.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Item Code', 'Item Name', 'Category', 'Quantity', 'Barcode', 'Notes'])
+    for item in items:
+        writer.writerow([item.item_code, item.item_name, item.category_type, item.quantity, item.barcode, item.notes])
+    return response
+
+
+@login_required
+def export_inventory_excel(request):
+    items = get_filtered_inventory(request)
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Inventory"
+    ws.append(['Item Code', 'Item Name', 'Category', 'Quantity', 'Barcode', 'Notes'])
+
+    for item in items:
+        ws.append([item.item_code, item.item_name, item.category_type, item.quantity, item.barcode, item.notes])
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="inventory.xlsx"'
+    wb.save(response)
+    return response
+
+
+@login_required
+def export_inventory_json(request):
+    items = get_filtered_inventory(request)
+    data = [dict(
+        item_code=item.item_code,
+        item_name=item.item_name,
+        category=item.category_type,
+        quantity=item.quantity,
+        barcode=item.barcode,
+        notes=item.notes,
+    ) for item in items]
+    return JsonResponse(data, safe=False)
+
+
+@login_required
+def export_inventory_pdf(request):
+    items = get_filtered_inventory(request)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="inventory.pdf"'
+
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    styles = getSampleStyleSheet()
+    elements = [Paragraph("Trackalytics Inventory Report", styles["Title"])]
+
+    data = [['Item Code', 'Item Name', 'Category', 'Qty', 'Barcode', 'Notes']]
+    for item in items:
+        data.append([
+            item.item_code, item.item_name, item.category_type,
+            str(item.quantity), item.barcode or '', item.notes or ''
+        ])
+
+    table = Table(data, repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+    ]))
+    elements.append(table)
+    doc.build(elements)
+    return response
+
+===== END OF: trackalytics/views/export_views.py =====
+
+
+
+===== START OF: trackalytics/views/inventory_views.py =====
+
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required, permission_required
+
+from ..models import InventoryItem, ActivityLog
+from ..forms import InventoryForm
+from .utils import get_client_ip, serialize_inventory_item
+
+
+@login_required
+@permission_required('trackalytics.can_add_inventory', raise_exception=True)
+def inventory(request):
+    if request.method == 'POST':
+        form = InventoryForm(request.POST)
+        if form.is_valid():
+            item = form.save()
+            ActivityLog.objects.create(
+                user=request.user,
+                action=f"Added inventory item: {item.item_name}",
+                ip_address=get_client_ip(request),
+            )
+            return JsonResponse({'success': True, 'item': serialize_inventory_item(item, request)})
+        return JsonResponse({'success': False, 'errors': form.errors})
+
+    categories = InventoryItem.objects.values_list('category_type', flat=True).distinct()
+    return render(request, 'inventory.html', {
+        'form': InventoryForm(),
+        'items': InventoryItem.objects.all().order_by('item_name'),
+        'categories': categories,
+    })
+
+
+@csrf_exempt
+@require_POST
+@login_required
+@permission_required('trackalytics.can_edit_inventory', raise_exception=True)
+def update_inventory(request, item_id):
+    item = get_object_or_404(InventoryItem, id=item_id)
+    try:
+        quantity = int(request.POST.get("quantity"))
+        item.quantity = quantity
+        item.save()
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f"Updated quantity of {item.item_name} to {quantity}",
+            ip_address=get_client_ip(request),
+        )
+        return JsonResponse({'success': True, 'item': serialize_inventory_item(item, request)})
+    except Exception as e:
+        return JsonResponse({'success': False, 'errors': str(e)}, status=400)
+
+
+@csrf_exempt
+@require_POST
+@login_required
+@permission_required('trackalytics.can_delete_inventory', raise_exception=True)
+def delete_inventory(request, item_id):
+    try:
+        item = InventoryItem.objects.get(id=item_id)
+        item_name = item.item_name
+        item.delete()
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f"Deleted inventory item: {item_name}",
+            ip_address=get_client_ip(request),
+        )
+        return JsonResponse({'success': True, 'message': f"{item_name} deleted."})
+    except InventoryItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Item not found.'}, status=404)
+
+===== END OF: trackalytics/views/inventory_views.py =====
+
+
+
+===== START OF: trackalytics/views/reservation_views.py =====
+
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from ..models import Reservation, ActivityLog
+from ..forms import ReservationForm
+from .utils import get_client_ip
+import json
+
+@login_required
+def reservation(request):
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            if Reservation.objects.filter(campsite=form.cleaned_data['campsite']).exists():
+                return JsonResponse({'success': False, 'error': f"Campsite {form.cleaned_data['campsite']} is already reserved."})
+            reservation = form.save()
+            ActivityLog.objects.create(
+                user=request.user,
+                action=f"Created reservation for {reservation.name}",
+                ip_address=get_client_ip(request),
+            )
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'errors': form.errors})
+    return render(request, 'reservation.html', {'reservations': Reservation.objects.all()})
+
+
+@csrf_exempt
+@login_required
+def update_reservations(request):
+    if request.method == 'POST':
+        updates = json.loads(request.body)
+        for update in updates:
+            reservation = get_object_or_404(Reservation, id=update['id'])
+            reservation.status = update['status']
+            reservation.save()
+            ActivityLog.objects.create(
+                user=request.user,
+                action=f"Updated reservation {reservation.id} status to {reservation.status}",
+                ip_address=get_client_ip(request),
+            )
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+===== END OF: trackalytics/views/reservation_views.py =====
+
+
+
+===== START OF: trackalytics/views/role_views.py =====
+
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group, Permission
+from ..models import CustomUser, ActivityLog
+from .utils import get_client_ip
+import json
+
+@login_required
+def roles(request):
+    if not request.user.has_perm('auth.change_group'):
+        return render(request, 'access_denied.html')
+
+    if request.method == 'POST':
+        user = get_object_or_404(CustomUser, id=request.POST.get('user_id'))
+        role = get_object_or_404(Group, id=request.POST.get('role_id'))
+        user.groups.set([role])
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f"Assigned role {role.name} to {user.email}",
+            ip_address=get_client_ip(request)
+        )
+        return JsonResponse({'success': True})
+
+    return render(request, 'roles.html', {
+        'roles': Group.objects.all(),
+        'permissions': Permission.objects.filter(content_type__app_label='trackalytics'),
+        'users': CustomUser.objects.all(),
+    })
+
+
+@login_required
+def update_permissions(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        role = get_object_or_404(Group, name=data.get('role').capitalize())
+        role.permissions.clear()
+        for code in data.get('permissions', []):
+            permission = get_object_or_404(Permission, codename=code)
+            role.permissions.add(permission)
+        ActivityLog.objects.create(
+            user=request.user,
+            action=f"Updated permissions for role {role.name}",
+            ip_address=get_client_ip(request)
+        )
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+===== END OF: trackalytics/views/role_views.py =====
+
+
+
+===== START OF: trackalytics/views/utils.py =====
+
+from django.utils.dateformat import format
+from ..models import InventoryItem
+
+def get_client_ip(request):
+    return request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR'))
+
+
+def get_filtered_inventory(request):
+    items = InventoryItem.objects.all()
+    category = request.GET.get("category")
+    min_qty = request.GET.get("min_quantity")
+
+    if category:
+        items = items.filter(category_type=category)
+    if min_qty:
+        items = items.filter(quantity__gte=int(min_qty))
+
+    return items
+
+
+def serialize_inventory_item(item, request):
+    return {
+        'id': item.id,
+        'item_code': item.item_code,
+        'item_name': item.item_name,
+        'barcode': item.barcode,
+        'category_type': item.category_type,
+        'quantity': item.quantity,
+        'vendor_price': str(item.vendor_price) if item.vendor_price else None,
+        'retail_price': str(item.retail_price) if item.retail_price else None,
+        'notes': item.notes,
+        'created_at': format(item.created_at, 'YmdHis'),
+        'created_at_display': item.created_at.strftime('%b %d, %Y %I:%M %p'),
+        'user': request.user.get_full_name() or request.user.email,
+    }
+
+===== END OF: trackalytics/views/utils.py =====
+
+
+
+===== START OF: trackalytics/static/css/activitylog.css =====
+
+/* ─────────────────────────────────────────────
+   🎯 ACTIVITY LOG STYLES — Clean + Responsive
+   ───────────────────────────────────────────── */
+
+   .activity-log {
+    padding: 1.5rem;
+    background-color: #f9fafb;
+  }
+  
+  .filter-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .filter-section form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .filter-section select,
+  .filter-section button {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    min-width: 160px;
+  }
+  
+  #activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  #activity-table th,
+  #activity-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+  
+  #activity-table thead {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  #activity-table tbody tr {
+    border-top: 1px solid #f1f1f1;
+  }
+  
+  #activity-table tbody tr:hover {
+    background-color: #f9fafb;
+    transition: background 0.2s ease;
+  }
+  
+  @media (max-width: 768px) {
+    #activity-table th,
+    #activity-table td {
+      padding: 0.5rem;
+    }
+  
+    .filter-section form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  
+===== END OF: trackalytics/static/css/activitylog.css =====
+
+
+
+===== START OF: trackalytics/static/css/dashboard.css =====
+
+/* ─────────────────────────────────────────────
+   📊 DASHBOARD STYLES — KPIs, Charts, Cards
+   ───────────────────────────────────────────── */
+
+   .dashboard-title {
+    margin-bottom: 1.5rem;
+  }
+  
+  .dashboard-title h1 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .dashboard-main-cards,
+  .kpi-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-card {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+  
+  .card-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-inner p {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .font-weight-bold {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+  
+  .text-blue-500 { color: #3b82f6; }
+  .text-red-500 { color: #ef4444; }
+  .text-yellow-500 { color: #f59e0b; }
+  .text-green-500 { color: #10b981; }
+  
+  .charts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .charts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .chart-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .chart-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 1rem;
+  }
+  
+===== END OF: trackalytics/static/css/dashboard.css =====
+
+
+
+===== START OF: trackalytics/static/css/inventory.css =====
+
+/* ─────────────────────────────────────────────
+   📦 INVENTORY PAGE STYLES — Form + Table
+   ───────────────────────────────────────────── */
+
+/* ── Containers ─────────────────────────────── */
+.card {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+  }
+  
+  .card h2,
+  .card h3 {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  /* ── Inventory Form ─────────────────────────── */
+  .inventory-form form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+  
+  .form-actions {
+    grid-column: span 2;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  input,
+  select,
+  textarea {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: 100%;
+    transition: border-color 0.2s ease;
+  }
+  
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  /* ── Buttons ────────────────────────────────── */
+  button {
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn.primary {
+    background-color: #2563eb;
+    color: white;
+  }
+  
+  .btn.primary:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .btn {
+    background-color: #f3f4f6;
+    color: #1f2937;
+  }
+  
+  .btn:hover {
+    background-color: #e5e7eb;
+  }
+  
+  /* ── Inventory List + Table ─────────────────── */
+  .inventory-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+  }
+  
+  .inventory-controls input[type="text"],
+  .inventory-controls select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  
+  .download-csv-btn {
+    background-color: #10b981;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .download-csv-btn:hover {
+    background-color: #059669;
+  }
+  
+  /* ── Inventory Items ────────────────────────── */
+  .inventory-header {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 0;
+    border-bottom: 2px solid #e5e7eb;
+    color: #374151;
+  }
+  
+  .inventory-item {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    padding: 0.75rem 0;
+    align-items: center;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .qty-input {
+    width: 80px;
+    padding: 0.4rem;
+    text-align: center;
+  }
+  
+  /* ── Edit / Save / Delete Controls ─────────── */
+  .edit-btn,
+  .save-btn,
+  .delete-btn {
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .edit-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .edit-actions.hidden {
+    display: none;
+  }
+  
+  /* ── Toast Notification ─────────────────────── */
+  .toast {
+    display: none;
+    background-color: #22c55e;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .toast.show {
+    display: inline-block;
+  }
+  
+===== END OF: trackalytics/static/css/inventory.css =====
+
+
+
+===== START OF: trackalytics/static/css/login.css =====
+
+/* ─────────────────────────────────────────────
+   🔐 AUTH STYLES — Login & Signup Forms
+   ───────────────────────────────────────────── */
+
+   body {
+    background-color: #f3f4f6;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .top-bar {
+    background: #1a1a2e;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .top-bar .logo {
+    width: 40px;
+    margin-right: 10px;
+  }
+  
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+    padding: 2rem;
+  }
+  
+  .login-form {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .login-form h4 {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+  
+  .login-form h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0.25rem 0 1.25rem;
+  }
+  
+  .input {
+    display: block;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+  }
+  
+  .login-btn {
+    background: #1a1a2e;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  
+  .login-btn:hover {
+    background: #162447;
+  }
+  
+  .signup-link {
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .signup-link a {
+    color: #1a1a2e;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+  
+  .options {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+  
+  .options a {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+  
+  .options a:hover {
+    text-decoration: underline;
+  }
+  
+  .error {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+  }
+  
+===== END OF: trackalytics/static/css/login.css =====
+
+
+
+===== START OF: trackalytics/static/css/reservation.css =====
+
+/* ─────────────────────────────────────────────
+   🏕️ RESERVATION PAGE STYLES — Equipment + Modal
+   ───────────────────────────────────────────── */
+
+   .equipment-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    .equipment-form-wrapper {
+      flex-direction: row;
+    }
+  }
+  
+  .equipment-selection {
+    flex: 1;
+  }
+  
+  .equipment-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .equipment-card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  }
+  
+  .equipment-card img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
+  .equipment-card h3 {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  .reservation-section {
+    flex: 1;
+  }
+  
+  #view-reservations-btn {
+    background: #1a1a2e;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+  }
+  
+  .reservation-form-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .reservation-form-card input {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+  
+  .reservation-form-card button {
+    background: #1a1a2e;
+    color: white;
+    padding: 0.75rem;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  
+  .warning-text {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* ──────────────── MODAL ───────────────────── */
+  
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  
+  .modal-content {
+    background: white;
+    margin: auto;
+    padding: 1.5rem;
+    border-radius: 8px;
+    max-width: 900px;
+    position: relative;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+  
+  .filter-sort-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-sort-wrapper input,
+  .filter-sort-wrapper select {
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  
+  /* ──────────────── TABLE ───────────────────── */
+  
+  #reservations-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #reservations-table th,
+  #reservations-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+  }
+  
+  #reservations-table thead {
+    background-color: #f9fafb;
+    font-weight: 600;
+  }
+  
+  .modal-save-btn {
+    background: #1a1a2e;
+    color: white;
+    padding: 0.65rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 1.5rem;
+  }
+  
+===== END OF: trackalytics/static/css/reservation.css =====
+
+
+
+===== START OF: trackalytics/static/css/roles.css =====
+
+/* ─────────────────────────────────────────────
+   👥 ROLES & PERMISSIONS STYLES
+   ───────────────────────────────────────────── */
+
+   .roles-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+  }
+  
+  .roles-card {
+    display: flex;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .roles-list {
+    width: 220px;
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-right: 1px solid #e5e7eb;
+  }
+  
+  .roles-list h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .role-item {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #1f2937;
+  }
+  
+  .role-item:hover,
+  .role-item.active {
+    background-color: #e5e7eb;
+    font-weight: 600;
+  }
+  
+  .roles-content {
+    flex: 1;
+    padding: 1.5rem;
+  }
+  
+  .role-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  #editPermissionsBtn {
+    background: #1a1a2e;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .role-description {
+    color: #4b5563;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* ───────────── PERMISSION DISPLAY ───────────── */
+  
+  .access-lists {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  .granted h4,
+  .denied h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .granted ul,
+  .denied ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+    font-size: 0.9rem;
+    color: #374151;
+  }
+  
+  /* ───────────── MODALS ───────────── */
+  
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    max-width: 700px;
+    margin: auto;
+    position: relative;
+  }
+  
+  .close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+  
+  .permissions {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+  }
+  
+  .permissions label {
+    display: block;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  
+  #savePermissions,
+  #assignConfirmBtn {
+    background: #1a1a2e;
+    color: white;
+    padding: 0.65rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  /* ───────────── USER TABLE ───────────── */
+  
+  #userTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #userTable th,
+  #userTable td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  #userSearch {
+    padding: 0.5rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+===== END OF: trackalytics/static/css/roles.css =====
+
+
+
+===== START OF: trackalytics/static/css/setting.css =====
+
+/* ─────────────────────────────────────────────
+   ⚙️ SETTINGS PAGE STYLES
+   ───────────────────────────────────────────── */
+
+   .settings {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .settings h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+  }
+  
+  .settings form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  
+  @media (min-width: 640px) {
+    .settings form {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem 2rem;
+    }
+  }
+  
+  .settings label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  
+  .settings input,
+  .settings select {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    width: 100%;
+  }
+  
+  .settings input:focus,
+  .settings select:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  .settings button {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    grid-column: span 2;
+  }
+  
+  .settings button:hover {
+    background-color: #162447;
+  }
+  
+===== END OF: trackalytics/static/css/setting.css =====
+
+
+
+===== START OF: trackalytics/static/css/utilities.css =====
+
+/* ─────────────────────────────────────────────
+   🧰 UTILITIES.CSS — Global Helpers & Base UI
+   ───────────────────────────────────────────── */
+
+/* === Layout === */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  .flex { display: flex; }
+  .grid { display: grid; }
+  .hidden { display: none; }
+  .block { display: block; }
+  .inline-block { display: inline-block; }
+  
+  .items-center { align-items: center; }
+  .justify-center { justify-content: center; }
+  .justify-between { justify-content: space-between; }
+  .gap-1 { gap: 0.25rem; }
+  .gap-2 { gap: 0.5rem; }
+  .gap-4 { gap: 1rem; }
+  
+  /* === Typography === */
+  .text-sm { font-size: 0.875rem; }
+  .text-base { font-size: 1rem; }
+  .text-lg { font-size: 1.125rem; }
+  .text-xl { font-size: 1.25rem; }
+  .text-2xl { font-size: 1.5rem; }
+  
+  .text-center { text-align: center; }
+  .text-left { text-align: left; }
+  .text-right { text-align: right; }
+  
+  .font-light { font-weight: 300; }
+  .font-normal { font-weight: 400; }
+  .font-medium { font-weight: 500; }
+  .font-semibold { font-weight: 600; }
+  .font-bold { font-weight: 700; }
+  
+  /* === Colors === */
+  .text-gray-500 { color: #6b7280; }
+  .text-gray-700 { color: #374151; }
+  .text-gray-900 { color: #111827; }
+  
+  .bg-white { background-color: #ffffff; }
+  .bg-gray-100 { background-color: #f3f4f6; }
+  .bg-gray-200 { background-color: #e5e7eb; }
+  .bg-primary { background-color: #1a1a2e; }
+  .bg-success { background-color: #16a34a; }
+  .bg-error { background-color: #dc2626; }
+  
+  /* === Borders & Radius === */
+  .rounded-sm { border-radius: 4px; }
+  .rounded { border-radius: 8px; }
+  .rounded-md { border-radius: 10px; }
+  .rounded-lg { border-radius: 12px; }
+  
+  .border { border: 1px solid #d1d5db; }
+  .border-gray { border-color: #e5e7eb; }
+  .border-primary { border-color: #1a1a2e; }
+  
+  /* === Shadows === */
+  .shadow-sm { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
+  .shadow { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); }
+  .shadow-lg { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); }
+  
+  /* === Buttons === */
+  .btn {
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    transition: background-color 0.2s ease;
+  }
+  
+  .btn-primary {
+    background-color: #2563eb;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .btn-secondary {
+    background-color: #f3f4f6;
+    color: #1f2937;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .btn-danger {
+    background-color: #dc2626;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #b91c1c;
+  }
+  
+===== END OF: trackalytics/static/css/utilities.css =====
+
+
+
+===== START OF: trackalytics/static/js/activitylog.js =====
+
+document.addEventListener('DOMContentLoaded', () => {
+    const filterForm = document.querySelector('.filter-section form');
+    filterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(filterForm);
+        fetch('{% url "activity_log" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector('#activity-table tbody');
+            tableBody.innerHTML = '';
+            if (data.logs.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4">No activity logs available.</td></tr>';
+            } else {
+                data.logs.forEach(log => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${log.user}</td>
+                        <td>${log.action}</td>
+                        <td>${log.ip_address}</td>
+                        <td>${log.timestamp}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+===== END OF: trackalytics/static/js/activitylog.js =====
+
+
+
+===== START OF: trackalytics/static/js/dashboard.js =====
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Bar Chart (Top 5 Products)
+    const barOptions = {
+        chart: {
+            type: 'bar',
+            height: 350,
+        },
+        series: [{
+            name: 'Quantity',
+            data: [30, 40, 35, 50, 49], // Placeholder data
+        }],
+        xaxis: {
+            categories: ['Tents', 'Kayaks', 'Camping Gear', 'Tools', 'Others'],
+        },
+        colors: ['#1a1a2e'],
+    };
+    const barChart = new ApexCharts(document.querySelector('#bar-chart'), barOptions);
+    barChart.render();
+
+    // Area Chart (Overall Inventory)
+    const areaOptions = {
+        chart: {
+            type: 'area',
+            height: 350,
+        },
+        series: [{
+            name: 'Inventory',
+            data: [100, 120, 90, 130, 110, 140], // Placeholder data
+        }],
+        xaxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        },
+        colors: ['#162447'],
+        fill: {
+            opacity: 0.5,
+        },
+    };
+    const areaChart = new ApexCharts(document.querySelector('#area-chart'), areaOptions);
+    areaChart.render();
+
+    // Line Chart (Reservation Trends)
+    const lineOptions = {
+        chart: {
+            type: 'line',
+            height: 350,
+        },
+        series: [{
+            name: 'Reservations',
+            data: [10, 15, 12, 20, 18, 25], // Placeholder data
+        }],
+        xaxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        },
+        colors: ['#1a1a2e'],
+    };
+    if (document.querySelector('#line-chart')) {
+        const lineChart = new ApexCharts(document.querySelector('#line-chart'), lineOptions);
+        lineChart.render();
+    }
+
+    // Pie Chart (Inventory Usage)
+    const pieOptions = {
+        chart: {
+            type: 'pie',
+            height: 350,
+        },
+        series: [44, 55, 13, 33], // Placeholder data
+        labels: ['Tents', 'Kayaks', 'Gear', 'Others'],
+        colors: ['#1a1a2e', '#162447', '#4e4e8e', '#a1a1d6'],
+    };
+    if (document.querySelector('#pie-chart')) {
+        const pieChart = new ApexCharts(document.querySelector('#pie-chart'), pieOptions);
+        pieChart.render();
+    }
+});
+===== END OF: trackalytics/static/js/dashboard.js =====
+
+
+
+===== START OF: trackalytics/static/js/inventory.js =====
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("inventoryForm");
+    const toast = document.getElementById("toast");
+    const clearBtn = document.getElementById("clearForm");
+  
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+  
+    if (form) {
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const response = await fetch(this.action || window.location.href, {
+          method: "POST",
+          body: formData,
+          headers: {
+            "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+          }
+        });
+  
+        const data = await response.json();
+        if (data.success) {
+          showToast("Item saved!");
+          renderItem(data.item);
+          form.reset();
+          sortInventory();
+        } else {
+          alert("Error saving item.");
+        }
+      });
+    }
+  
+    clearBtn?.addEventListener("click", () => {
+      form?.reset();
+    });
+  
+    // 🔍 Filter
+    document.getElementById("searchInput").addEventListener("input", function () {
+      const query = this.value.trim().toLowerCase();
+      document.querySelectorAll(".inventory-item").forEach(item => {
+        const name = (item.dataset.name || "").toLowerCase();
+        const barcode = (item.dataset.barcode || "").toLowerCase();
+        item.style.display = name.includes(query) || barcode.includes(query) ? "grid" : "none";
+      });
+    });
+  
+    const sortBy = document.getElementById("sortBy");
+    const sortOrder = document.getElementById("sortOrder");
+  
+    function sortInventory() {
+      const field = sortBy.value;
+      const order = sortOrder.value;
+      const items = Array.from(document.querySelectorAll(".inventory-item"));
+  
+      items.sort((a, b) => {
+        let valA = a.dataset[field] || "";
+        let valB = b.dataset[field] || "";
+        const numA = parseFloat(valA);
+        const numB = parseFloat(valB);
+  
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return order === "asc" ? numA - numB : numB - numA;
+        }
+  
+        valA = valA.toLowerCase();
+        valB = valB.toLowerCase();
+        return order === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      });
+  
+      const ul = document.getElementById("inventoryItems");
+      ul.innerHTML = "";
+      items.forEach(item => ul.appendChild(item));
+    }
+  
+    sortBy.addEventListener("change", sortInventory);
+    sortOrder.addEventListener("change", sortInventory);
+    sortInventory();
+  
+    function renderItem(item) {
+      const ul = document.getElementById("inventoryItems");
+      const li = document.createElement("li");
+      li.className = "inventory-item";
+      li.dataset.id = item.id;
+      li.dataset.name = item.item_name.toLowerCase();
+      li.dataset.barcode = item.barcode || "";
+      li.dataset.quantity = item.quantity;
+      li.dataset.created = item.created_at;
+  
+      li.innerHTML = `
+        <span>${item.item_code}</span>
+        <span>${item.item_name}</span>
+        <span>${item.category_type}</span>
+        <span><input type="number" class="qty-input" value="${item.quantity}" min="0"></span>
+        <span>
+          <button class="edit-btn btn btn-secondary">Edit</button>
+          <span class="edit-actions hidden">
+            <button class="save-btn btn btn-primary">Save</button>
+            <button class="delete-btn btn btn-danger">Delete</button>
+          </span>
+        </span>
+      `;
+      ul.appendChild(li);
+      attachItemEvents(li);
+    }
+  
+    function attachItemEvents(item) {
+      const id = item.dataset.id;
+      const qtyInput = item.querySelector(".qty-input");
+      const saveBtn = item.querySelector(".save-btn");
+      const deleteBtn = item.querySelector(".delete-btn");
+      const editBtn = item.querySelector(".edit-btn");
+      const editActions = item.querySelector(".edit-actions");
+  
+      qtyInput?.addEventListener("change", () => {
+        if (qtyInput.value < 0) qtyInput.value = 0;
+      });
+  
+      editBtn?.addEventListener("click", () => {
+        editActions.classList.remove("hidden");
+      });
+  
+      saveBtn?.addEventListener("click", async () => {
+        const quantity = parseInt(qtyInput.value);
+        const response = await fetch(`/inventory/update/${id}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": getCSRFToken(),
+          },
+          body: new URLSearchParams({ quantity }),
+        });
+  
+        const data = await response.json();
+        if (data.success) {
+          showToast("Item updated.");
+          editActions.classList.add("hidden");
+          item.dataset.quantity = quantity;
+        } else {
+          alert("Error saving item.");
+        }
+      });
+  
+      deleteBtn?.addEventListener("click", async () => {
+        if (!confirm("Delete this item?")) return;
+        const response = await fetch(`/inventory/delete/${id}/`, {
+          method: "POST",
+          headers: { "X-CSRFToken": getCSRFToken() },
+        });
+  
+        const data = await response.json();
+        if (data.success) {
+          item.remove();
+          showToast("Item deleted.");
+        } else {
+          alert("Error deleting item.");
+        }
+      });
+    }
+  
+    function getCSRFToken() {
+      return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+  
+    document.querySelectorAll(".inventory-item").forEach(attachItemEvents);
+  });
+  
+===== END OF: trackalytics/static/js/inventory.js =====
+
+
+
+===== START OF: trackalytics/static/js/reservation.js =====
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("reservation-form");
+    const modal = document.getElementById("reservation-modal");
+    const viewBtn = document.getElementById("view-reservations-btn");
+    const closeBtn = document.getElementById("close-modal");
+    const saveBtn = document.getElementById("save-reservation-status");
+  
+    // 🧾 Form Submission
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+  
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: { "X-CSRFToken": data.get("csrfmiddlewaretoken") }
+      });
+  
+      if (res.ok) {
+        alert("Reservation submitted.");
+        form.reset();
+      } else {
+        alert("Something went wrong.");
+      }
+    });
+  
+    // 📅 Modal open
+    viewBtn?.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+    });
+  
+    // ❌ Modal close
+    closeBtn?.addEventListener("click", () => {
+      modal.classList.add("hidden");
+    });
+  
+    // 🔄 Save updated statuses
+    saveBtn?.addEventListener("click", async () => {
+      const rows = document.querySelectorAll("#reservations-table tbody tr");
+      const updates = [];
+  
+      rows.forEach((row) => {
+        const id = row.querySelector("select")?.dataset.id;
+        const status = row.querySelector("select")?.value;
+        if (id && status) {
+          updates.push({ id, status });
+        }
+      });
+  
+      const res = await fetch("/reservations/update_status/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify({ updates })
+      });
+  
+      if (res.ok) {
+        alert("Statuses updated.");
+        modal.classList.add("hidden");
+      } else {
+        alert("Failed to save.");
+      }
+    });
+  
+    // 🔎 Filter
+    const filterInput = document.getElementById("filter-input");
+    filterInput?.addEventListener("input", () => {
+      const query = filterInput.value.toLowerCase();
+      document.querySelectorAll("#reservations-table tbody tr").forEach((row) => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(query) ? "table-row" : "none";
+      });
+    });
+  
+    // ↕ Sort
+    const sortSelect = document.getElementById("sort-select");
+    sortSelect?.addEventListener("change", () => {
+      const rows = Array.from(document.querySelectorAll("#reservations-table tbody tr"));
+      const fieldIndex = sortSelect.value.includes("item") ? 0 : 1;
+      const reverse = sortSelect.value.includes("desc");
+  
+      rows.sort((a, b) => {
+        const textA = a.children[fieldIndex]?.textContent.trim().toLowerCase();
+        const textB = b.children[fieldIndex]?.textContent.trim().toLowerCase();
+        return reverse ? textB.localeCompare(textA) : textA.localeCompare(textB);
+      });
+  
+      const tbody = document.querySelector("#reservations-table tbody");
+      tbody.innerHTML = "";
+      rows.forEach((row) => tbody.appendChild(row));
+    });
+  
+    function getCSRFToken() {
+      return document.querySelector("[name=csrfmiddlewaretoken]")?.value;
+    }
+  });
+  
+===== END OF: trackalytics/static/js/reservation.js =====
+
+
+
+===== START OF: trackalytics/static/js/role.js =====
+
+document.addEventListener("DOMContentLoaded", () => {
+    const permissionsModal = document.getElementById("permissionsModal");
+    const assignModal = document.getElementById("assignRoleModal");
+    const assignBtn = document.getElementById("assignConfirmBtn");
+  
+    // Open Permission Modal
+    document.getElementById("editPermissionsBtn")?.addEventListener("click", () => {
+      permissionsModal.classList.remove("hidden");
+    });
+  
+    // Close Permission Modal
+    document.getElementById("closePermissionsModal")?.addEventListener("click", () => {
+      permissionsModal.classList.add("hidden");
+    });
+  
+    // Save Permissions
+    document.getElementById("savePermissions")?.addEventListener("click", async () => {
+      const checked = document.querySelectorAll(".perm:checked");
+      const permissions = Array.from(checked).map((input) => input.value);
+  
+      const res = await fetch("/roles/update_permissions/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify({ permissions })
+      });
+  
+      if (res.ok) {
+        alert("Permissions updated.");
+        permissionsModal.classList.add("hidden");
+      } else {
+        alert("Failed to update permissions.");
+      }
+    });
+  
+    // Open Assign Modal
+    document.querySelector("[data-role='assign']")?.addEventListener("click", () => {
+      assignModal.classList.remove("hidden");
+    });
+  
+    // Close Assign Modal
+    document.getElementById("assignClose")?.addEventListener("click", () => {
+      assignModal.classList.add("hidden");
+    });
+  
+    // Confirm Assign
+    assignBtn?.addEventListener("click", async () => {
+      const userId = document.querySelector("input[name='selectedUser']:checked")?.value;
+      const roleSelect = document.querySelector(`input[name='selectedUser']:checked`)?.closest("tr")?.querySelector(".roleSelector");
+      const role = roleSelect?.value;
+  
+      if (!userId || !role) {
+        alert("Select a user and role.");
+        return;
+      }
+  
+      const res = await fetch("/roles/assign/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify({ user_id: userId, role })
+      });
+  
+      if (res.ok) {
+        alert("Role assigned.");
+        assignModal.classList.add("hidden");
+      } else {
+        alert("Failed to assign role.");
+      }
+    });
+  
+    // Simple name filter
+    document.getElementById("userSearch")?.addEventListener("input", function () {
+      const term = this.value.toLowerCase();
+      document.querySelectorAll("#userTable tbody tr").forEach((row) => {
+        const name = row.children[1]?.textContent.toLowerCase();
+        row.style.display = name.includes(term) ? "table-row" : "none";
+      });
+    });
+  
+    function getCSRFToken() {
+      return document.querySelector("[name=csrfmiddlewaretoken]")?.value;
+    }
+  });
+  
+===== END OF: trackalytics/static/js/role.js =====
+
+
+
+===== START OF: trackalytics/templates/access_denied.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Access Denied{% endblock %}
+
+{% block content %}
+<div class="flex flex-col justify-center items-center text-center h-[calc(100vh-80px)]">
+  <h1 class="text-4xl font-bold text-red-600 mb-3">🚫 Access Denied</h1>
+  <p class="text-gray-700 mb-6 text-lg">You do not have permission to access this page.</p>
+  <a href="{% url 'trackalytics:main_dashboard' %}" class="btn btn-primary">Return to Dashboard</a>
+</div>
+{% endblock %}
+
+===== END OF: trackalytics/templates/access_denied.html =====
+
+
+
+===== START OF: trackalytics/templates/activitylog.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Activity Log{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/activitylog.css' %}">
+<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Activity Log</h1>
+</div>
+
+<div class="mb-6">
+  <form method="post" class="flex flex-wrap gap-4 items-center">
+    {% csrf_token %}
+    <label for="user-filter" class="text-sm font-medium">Filter by User:</label>
+    <select id="user-filter" name="user_id" class="input">
+      <option value="">All Users</option>
+      {% for user in users %}
+      <option value="{{ user.id }}">{{ user.get_full_name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </form>
+</div>
+
+<div class="overflow-x-auto">
+  <table id="activity-table" class="w-full text-sm bg-white shadow rounded overflow-hidden">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-2 text-left">User</th>
+        <th>Action</th>
+        <th>IP Address</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr class="border-t">
+        <td class="px-4 py-2">{{ log.user.get_full_name }}</td>
+        <td>{{ log.action }}</td>
+        <td>{{ log.ip_address }}</td>
+        <td>{{ log.timestamp|date:"Y-m-d H:i:s" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-center py-4 text-gray-500">No activity logs available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/activitylog.js' %}"></script>
+{% endblock %}
+
+===== END OF: trackalytics/templates/activitylog.html =====
+
+
+
+===== START OF: trackalytics/templates/base.html =====
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trackalytics | {% block title %}Dashboard{% endblock %}</title>
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+  <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+  {% block css %}{% endblock %}
+</head>
+<body class="font-inter bg-gray-100 text-gray-800">
+
+  <!-- Topbar -->
+  <header class="bg-white shadow-md px-6 py-4 flex justify-between items-center fixed top-0 left-0 w-full z-40">
+    <h1 class="text-2xl font-semibold tracking-tight text-[#1a1a2e]">Trackalytics</h1>
+    <div class="flex items-center gap-4">
+      <a href="{% url 'trackalytics:main_dashboard' %}" class="hover:text-blue-600 transition">Dashboard</a>
+      <a href="{% url 'trackalytics:inventory' %}" class="hover:text-blue-600 transition">Inventory</a>
+      <a href="{% url 'trackalytics:reports' %}" class="hover:text-blue-600 transition">Reports</a>
+      <a href="{% url 'trackalytics:logout' %}" class="hover:text-red-600 transition">
+        <span class="material-symbols-outlined align-middle">logout</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="fixed top-[64px] left-0 h-full w-60 bg-[#1a1a2e] text-white shadow-lg z-30 hidden md:block">
+    <nav class="pt-6 px-4 space-y-2">
+      <a href="{% url 'trackalytics:main_dashboard' %}" class="flex items-center gap-2 py-2 px-3 hover:bg-[#162447] rounded">
+        <span class="material-symbols-outlined">space_dashboard</span> Main Dashboard
+      </a>
+      <a href="{% url 'trackalytics:kpi_dashboard' %}" class="flex items-center gap-2 py-2 px-3 hover:bg-[#162447] rounded">
+        <span class="material-symbols-outlined">speed</span> KPI Dashboard
+      </a>
+      <a href="{% url 'trackalytics:inventory' %}" class="flex items-center gap-2 py-2 px-3 hover:bg-[#162447] rounded">
+        <span class="material-symbols-outlined">inventory</span> Inventory
+      </a>
+      <a href="{% url 'trackalytics:reservation' %}" class="flex items-center gap-2 py-2 px-3 hover:bg-[#162447] rounded">
+        <span class="material-symbols-outlined">event_available</span> Reservations
+      </a>
+      <a href="{% url 'trackalytics:roles' %}" class="flex items-center gap-2 py-2 px-3 hover:bg-[#162447] rounded">
+        <span class="material-symbols-outlined">groups</span> User Roles
+      </a>
+      <a href="{% url 'trackalytics:activity_log' %}" class="flex items-center gap-2 py-2 px-3 hover:bg-[#162447] rounded">
+        <span class="material-symbols-outlined">history</span> Activity Logs
+      </a>
+      <a href="{% url 'trackalytics:settings' %}" class="flex items-center gap-2 py-2 px-3 hover:bg-[#162447] rounded">
+        <span class="material-symbols-outlined">settings</span> Settings
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="pt-[88px] px-6 md:ml-60 transition-all">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block js %}{% endblock %}
+</body>
+</html>
+
+===== END OF: trackalytics/templates/base.html =====
+
+
+
+===== START OF: trackalytics/templates/inventory.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Inventory</h1>
+  <div class="flex items-center gap-2">
+    <div class="relative group">
+      <button class="btn btn-primary flex items-center gap-1">
+        <span class="material-symbols-outlined">create_new_folder</span> New
+      </button>
+      <div class="absolute hidden group-hover:block bg-white shadow rounded w-56 mt-2 z-20">
+        <a href="{% url 'trackalytics:inventory' %}" class="block px-4 py-2 hover:bg-gray-100">➕ New Inventory Item</a>
+        <a href="{% url 'trackalytics:reservation' %}" class="block px-4 py-2 hover:bg-gray-100">📅 Reservation</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100">📋 Rental Inquiry</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Inventory Form -->
+<div class="card">
+  <h2 class="text-xl font-semibold mb-4">Add Inventory Item</h2>
+  <form method="post" id="inventoryForm" class="grid gap-4 md:grid-cols-2">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-actions md:col-span-2 flex justify-end gap-3 mt-2">
+      <button type="submit" class="btn btn-primary">
+        <span class="material-symbols-outlined">save</span> Save
+      </button>
+      <button type="button" id="clearForm" class="btn btn-secondary">
+        <span class="material-symbols-outlined">delete</span> Clear
+      </button>
+    </div>
+  </form>
+  <div id="toast" class="toast mt-2">Item saved successfully!</div>
+</div>
+
+<!-- Filters + Inventory Table -->
+<div class="card">
+  <div class="inventory-controls flex flex-wrap items-center gap-4 mb-4">
+    <input type="text" id="searchInput" class="input" placeholder="Search by name or barcode">
+
+    <select id="categoryFilter" class="input">
+      <option value="">All Categories</option>
+      {% for category in categories %}
+      <option value="{{ category }}">{{ category }}</option>
+      {% endfor %}
+    </select>
+
+    <select id="sortBy" class="input">
+      <option value="item_name">Sort by Name</option>
+      <option value="quantity">Sort by Quantity</option>
+      <option value="created">Sort by Date</option>
+    </select>
+
+    <select id="sortOrder" class="input">
+      <option value="asc">Ascending</option>
+      <option value="desc">Descending</option>
+    </select>
+
+    <div class="relative group">
+      <button class="download-csv-btn btn btn-primary flex items-center gap-1">
+        <span class="material-symbols-outlined">download</span> Export
+      </button>
+      <div class="absolute hidden group-hover:block bg-white shadow rounded w-44 mt-2 z-10">
+        <a href="{% url 'trackalytics:export_inventory_csv' %}" class="block px-4 py-2 hover:bg-gray-100">CSV</a>
+        <a href="{% url 'trackalytics:export_inventory_excel' %}" class="block px-4 py-2 hover:bg-gray-100">Excel</a>
+        <a href="{% url 'trackalytics:export_inventory_json' %}" class="block px-4 py-2 hover:bg-gray-100">JSON</a>
+        <a href="{% url 'trackalytics:export_inventory_pdf' %}" class="block px-4 py-2 hover:bg-gray-100">PDF</a>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="text-lg font-semibold mb-3">Current Inventory</h3>
+  <div class="inventory-table">
+    <div class="inventory-header">
+      <span>Item Code</span>
+      <span>Item Name</span>
+      <span>Category</span>
+      <span>Quantity</span>
+      <span>Actions</span>
+    </div>
+    <ul id="inventoryItems">
+      {% for item in items %}
+      <li class="inventory-item"
+          data-id="{{ item.id }}"
+          data-name="{{ item.item_name|lower }}"
+          data-barcode="{{ item.barcode }}"
+          data-quantity="{{ item.quantity }}"
+          data-created="{{ item.created_at }}"
+          data-category="{{ item.category_type }}">
+        <span>{{ item.item_code }}</span>
+        <span>{{ item.item_name }}</span>
+        <span>{{ item.category_type }}</span>
+        <span>
+          <input type="number" class="qty-input" value="{{ item.quantity }}" min="0">
+        </span>
+        <span>
+          <button class="edit-btn btn btn-secondary">Edit</button>
+          <span class="edit-actions hidden">
+            <button class="save-btn btn btn-primary">Save</button>
+            <button class="delete-btn btn btn-danger">Delete</button>
+          </span>
+        </span>
+      </li>
+      {% empty %}
+      <li class="text-gray-500 text-sm">No inventory items found.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/inventory.js' %}"></script>
+{% endblock %}
+
+===== END OF: trackalytics/templates/inventory.html =====
+
+
+
+===== START OF: trackalytics/templates/kpi-dashboard.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}KPI Dashboard{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-title flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-semibold text-gray-800">KPI Dashboard</h1>
+</div>
+
+<div class="kpi-cards grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+  <div class="dashboard-card text-center">
+    <div class="card-inner flex justify-between items-center">
+      <p class="text-sm text-gray-500">Total Reservations</p>
+      <span class="material-symbols-outlined text-blue-500">event</span>
+    </div>
+    <p class="text-2xl font-bold text-gray-800">{{ total_reservations }}</p>
+  </div>
+
+  <div class="dashboard-card text-center">
+    <div class="card-inner flex justify-between items-center">
+      <p class="text-sm text-gray-500">Active Users</p>
+      <span class="material-symbols-outlined text-green-500">group</span>
+    </div>
+    <p class="text-2xl font-bold text-gray-800">{{ active_users }}</p>
+  </div>
+
+  <div class="dashboard-card text-center">
+    <div class="card-inner flex justify-between items-center">
+      <p class="text-sm text-gray-500">Inventory Turnover</p>
+      <span class="material-symbols-outlined text-yellow-500">autorenew</span>
+    </div>
+    <p class="text-2xl font-bold text-gray-800">{{ turnover_rate }}</p>
+  </div>
+</div>
+
+<div class="charts grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="chart-card">
+    <p class="chart-title font-medium mb-3">Reservation Trends</p>
+    <div id="line-chart"></div>
+  </div>
+  <div class="chart-card">
+    <p class="chart-title font-medium mb-3">Inventory Usage</p>
+    <div id="pie-chart"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}
+
+===== END OF: trackalytics/templates/kpi-dashboard.html =====
+
+
+
+===== START OF: trackalytics/templates/login.html =====
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | Trackalytics</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+</head>
+<body class="bg-gray-100 font-inter">
+
+  <!-- Top Bar -->
+  <div class="top-bar bg-primary text-white px-6 py-4 flex items-center">
+    <img src="{% static 'images/logo.png' %}" alt="Trackalytics Logo" class="logo w-8 mr-3" />
+    <h2 class="text-xl font-semibold">Trackalytics</h2>
+  </div>
+
+  <!-- Login Form -->
+  <div class="login-container flex justify-center items-center h-[calc(100vh-80px)] px-4">
+    <form class="login-form bg-white p-10 rounded-lg shadow w-full max-w-md text-center" method="post" action="{% url 'trackalytics:login' %}">
+      {% csrf_token %}
+      <h4 class="text-sm text-gray-500 mb-1">Welcome Back</h4>
+      <h1 class="text-2xl font-bold text-primary mb-6">Sign In</h1>
+
+      {% if messages %}
+        {% for message in messages %}
+          <p class="text-red-600 text-sm mb-2">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <input type="email" name="email" placeholder="Email" required class="input" />
+      <input type="password" name="password" placeholder="Password" required class="input" />
+
+      <div class="options flex justify-end text-sm text-gray-500 mb-4">
+        <a href="{% url 'trackalytics:password_reset' %}" class="hover:underline">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full">Sign In</button>
+
+      <p class="signup-link text-sm text-gray-600 mt-6">
+        Don’t have an account?
+        <a href="{% url 'trackalytics:signup' %}" class="text-primary font-medium hover:underline">Sign up</a>
+      </p>
+    </form>
+  </div>
+</body>
+</html>
+
+===== END OF: trackalytics/templates/login.html =====
+
+
+
+===== START OF: trackalytics/templates/main-dashboard.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Main Dashboard{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+  <div class="dashboard-card p-6 bg-white rounded shadow text-center">
+    <div class="card-inner flex justify-between items-center mb-2">
+      <p class="text-sm text-gray-500">Total Inventory</p>
+      <span class="material-symbols-outlined text-blue-500">inventory_2</span>
+    </div>
+    <p class="text-2xl font-bold">{{ total_inventory }}</p>
+  </div>
+
+  <div class="dashboard-card p-6 bg-white rounded shadow text-center">
+    <div class="card-inner flex justify-between items-center mb-2">
+      <p class="text-sm text-gray-500">Low Stock Items</p>
+      <span class="material-symbols-outlined text-red-500">e911_emergency</span>
+    </div>
+    <p class="text-2xl font-bold">{{ low_stock_items }}</p>
+  </div>
+
+  <div class="dashboard-card p-6 bg-white rounded shadow text-center">
+    <div class="card-inner flex justify-between items-center mb-2">
+      <p class="text-sm text-gray-500">Zero Stock Items</p>
+      <span class="material-symbols-outlined text-yellow-500">block</span>
+    </div>
+    <p class="text-2xl font-bold">{{ zero_stock_items }}</p>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="chart-card p-6 bg-white rounded shadow">
+    <p class="chart-title font-medium mb-3">Top 5 Products</p>
+    <div id="bar-chart"></div>
+  </div>
+
+  <div class="chart-card p-6 bg-white rounded shadow">
+    <p class="chart-title font-medium mb-3">Overall Inventory</p>
+    <div id="area-chart"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}
+
+===== END OF: trackalytics/templates/main-dashboard.html =====
+
+
+
+===== START OF: trackalytics/templates/password_reset_complete.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Password Reset Complete{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center h-[calc(100vh-80px)]">
+  <div class="login-form bg-white p-10 rounded shadow-lg w-full max-w-md text-center">
+    <h4 class="text-sm text-gray-500 mb-1">Password Reset</h4>
+    <h1 class="text-2xl font-bold text-[#1a1a2e] mb-4">Password Changed</h1>
+    <p class="text-gray-700 mb-6">Your password has been successfully reset.</p>
+    <a href="{% url 'trackalytics:login' %}" class="text-blue-600 font-medium hover:underline">Sign in with your new password</a>
+  </div>
+</div>
+{% endblock %}
+
+===== END OF: trackalytics/templates/password_reset_complete.html =====
+
+
+
+===== START OF: trackalytics/templates/password_reset_confirm.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Set New Password{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center h-[calc(100vh-80px)]">
+  <form method="post" class="login-form bg-white p-10 rounded shadow-lg w-full max-w-md text-center">
+    {% csrf_token %}
+    <h4 class="text-sm text-gray-500 mb-1">Password Reset</h4>
+    <h1 class="text-2xl font-bold text-[#1a1a2e] mb-4">Set New Password</h1>
+
+    {% if validlink %}
+      <p class="text-gray-700 mb-4">Enter your new password below.</p>
+
+      {% if form.errors %}
+        <div class="text-red-600 text-sm mb-2">
+          <p>Please correct the errors below:</p>
+          {{ form.errors }}
+        </div>
+      {% endif %}
+
+      <input type="password" name="new_password1" placeholder="New Password" required class="input mb-4">
+      <input type="password" name="new_password2" placeholder="Confirm New Password" required class="input mb-6">
+
+      <button type="submit" class="login-btn w-full bg-[#1a1a2e] text-white py-2 rounded hover:bg-[#162447]">Change Password</button>
+
+    {% else %}
+      <p class="text-red-600">The password reset link is invalid or has expired.</p>
+      <a href="{% url 'trackalytics:password_reset' %}" class="text-blue-600 hover:underline">Request a new one</a>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}
+
+===== END OF: trackalytics/templates/password_reset_confirm.html =====
+
+
+
+===== START OF: trackalytics/templates/password_reset_done.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Password Reset Sent{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center h-[calc(100vh-80px)]">
+  <div class="login-form bg-white p-10 rounded shadow-lg w-full max-w-md text-center">
+    <h4 class="text-sm text-gray-500 mb-1">Password Reset</h4>
+    <h1 class="text-2xl font-bold text-[#1a1a2e] mb-4">Check Your Email</h1>
+    <p class="text-gray-700 mb-6">
+      We've sent you an email with instructions to reset your password.
+      If you don't receive it, please check your spam folder.
+    </p>
+    <a href="{% url 'trackalytics:login' %}" class="text-blue-600 font-medium hover:underline">Return to Login</a>
+  </div>
+</div>
+{% endblock %}
+
+===== END OF: trackalytics/templates/password_reset_done.html =====
+
+
+
+===== START OF: trackalytics/templates/password_reset_email.html =====
+
+Someone requested a password reset for your Trackalytics account ({{ email }}).
+
+To reset your password, click the link below:
+{{ protocol }}://{{ domain }}{% url 'trackalytics:password_reset_confirm' uidb64=uid token=token %}
+
+If you didn’t request this, you can safely ignore this email.
+
+— The Trackalytics Team
+
+===== END OF: trackalytics/templates/password_reset_email.html =====
+
+
+
+===== START OF: trackalytics/templates/password_reset_form.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Reset Your Password{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center h-[calc(100vh-80px)]">
+  <form method="post" action="{% url 'trackalytics:password_reset' %}" class="login-form bg-white p-10 rounded shadow-lg w-full max-w-md text-center">
+    {% csrf_token %}
+    <h4 class="text-sm text-gray-500 mb-1">Password Reset</h4>
+    <h1 class="text-2xl font-bold text-[#1a1a2e] mb-4">Reset Your Password</h1>
+    <p class="text-gray-700 mb-6">Enter your email address and we'll send you a link to reset your password.</p>
+
+    {% if form.errors %}
+      <div class="text-red-600 text-sm mb-4">
+        <p>Please correct the error below:</p>
+        {{ form.errors }}
+      </div>
+    {% endif %}
+
+    <input type="email" name="email" placeholder="Email address" required class="input mb-6">
+
+    <button type="submit" class="login-btn w-full bg-[#1a1a2e] text-white py-2 rounded hover:bg-[#162447]">Send Reset Link</button>
+
+    <div class="signup-link text-sm mt-6 text-gray-600">
+      Remembered your password?
+      <a href="{% url 'trackalytics:login' %}" class="text-[#1a1a2e] font-medium hover:underline">Sign in</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+===== END OF: trackalytics/templates/password_reset_form.html =====
+
+
+
+===== START OF: trackalytics/templates/password_reset_subject.txt =====
+
+Reset Your Trackalytics Password
+
+===== END OF: trackalytics/templates/password_reset_subject.txt =====
+
+
+
+===== START OF: trackalytics/templates/reservation.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Campground Reservations{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/reservation.css' %}">
+<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Reservation Overview</h1>
+</div>
+
+<div class="equipment-form-wrapper flex flex-col md:flex-row gap-6">
+  <!-- Equipment Card -->
+  <div class="equipment-selection flex-1 space-y-4">
+    <label class="equipment-card block cursor-pointer hover:shadow transition">
+      <img src="{% static 'images/tent.jpg' %}" alt="Tent" class="w-full h-32 object-cover rounded mb-2">
+      <h3 class="text-lg font-semibold">Tent</h3>
+      <p class="text-sm text-gray-600">Standard camping tent</p>
+      <div class="checkbox-container mt-2 flex items-center gap-2">
+        <input type="radio" name="equipment" value="Tent" id="tent-radio">
+        <label for="tent-radio" class="text-sm">Select for reservation</label>
+      </div>
+    </label>
+  </div>
+
+  <!-- Reservation Form -->
+  <div class="reservation-section flex-1">
+    <button id="view-reservations-btn" class="btn btn-primary mb-4">View Current Reservations</button>
+
+    <div class="reservation-form-card p-6 bg-white rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Reservation Form</h2>
+      <form id="reservation-form" method="post" action="{% url 'trackalytics:reservation' %}" class="space-y-4">
+        {% csrf_token %}
+        <input type="text" name="customer_name" placeholder="Customer Name" required class="input">
+        <input type="tel" name="customer_phone" placeholder="Phone Number" required class="input">
+        <input type="email" name="customer_email" placeholder="Email" required class="input">
+        <input type="number" name="campsite_number" placeholder="Campsite Number (1–10)" min="1" max="10" required class="input">
+        <input type="number" name="quantity" placeholder="Quantity" min="1" max="5" required class="input">
+        <button type="submit" class="btn btn-primary w-full">Reserve Equipment</button>
+      </form>
+      <p id="campsite-warning" class="text-red-600 text-sm mt-2"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="reservation-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 z-50">
+  <div class="modal-content bg-white p-6 rounded max-w-5xl mx-auto mt-20 relative">
+    <span id="close-modal" class="close-btn absolute top-4 right-6 text-xl cursor-pointer">&times;</span>
+    <h2 class="text-xl font-semibold mb-4">Current Reservations</h2>
+
+    <div class="filter-sort-wrapper flex flex-wrap gap-4 mb-4">
+      <input type="text" id="filter-input" placeholder="Search by name or item..." class="input flex-1">
+      <select id="sort-select" class="input">
+        <option value="">Sort by</option>
+        <option value="name-asc">Name (A → Z)</option>
+        <option value="name-desc">Name (Z → A)</option>
+        <option value="item-asc">Item (A → Z)</option>
+        <option value="item-desc">Item (Z → A)</option>
+      </select>
+    </div>
+
+    <table id="reservations-table" class="min-w-full border text-sm">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left">Item</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Campsite #</th>
+          <th>Quantity</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reservation in reservations %}
+        <tr class="border-t">
+          <td class="px-4 py-2">{{ reservation.item }}</td>
+          <td>{{ reservation.name }}</td>
+          <td>{{ reservation.phone }}</td>
+          <td>{{ reservation.email }}</td>
+          <td>{{ reservation.campsite }}</td>
+          <td>{{ reservation.quantity }}</td>
+          <td>
+            <select data-id="{{ reservation.id }}" class="input text-sm">
+              <option value="Checked Out" {% if reservation.status == 'Checked Out' %}selected{% endif %}>Checked Out</option>
+              <option value="Returned" {% if reservation.status == 'Returned' %}selected{% endif %}>Returned</option>
+              <option value="Missing" {% if reservation.status == 'Missing' %}selected{% endif %}>Missing</option>
+            </select>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="text-right mt-4">
+      <button id="save-reservation-status" class="btn btn-primary">Save Changes</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/reservation.js' %}"></script>
+{% endblock %}
+
+===== END OF: trackalytics/templates/reservation.html =====
+
+
+
+===== START OF: trackalytics/templates/roles.html =====
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Management{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/roles.css' %}">
+<link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold text-gray-800 mb-6">Roles & Permissions</h1>
+
+<div class="roles-card flex rounded shadow overflow-hidden">
+  <!-- Sidebar -->
+  <div class="roles-list bg-gray-100 p-6 w-60 border-r border-gray-200">
+    <h3 class="font-semibold mb-4">Select Role</h3>
+    <ul class="space-y-2">
+      <li class="role-item active cursor-pointer" data-role="admin">Admin</li>
+      <li class="role-item cursor-pointer" data-role="editor">Editor</li>
+      <li class="role-item cursor-pointer" data-role="viewer">Viewer</li>
+      <li class="role-item cursor-pointer" data-role="assign">Assign User Role's</li>
+    </ul>
+  </div>
+
+  <!-- Main Panel -->
+  <div class="roles-content flex-1 p-6">
+    <div class="role-header flex justify-between items-center mb-4">
+      <h3 class="text-xl font-semibold">Admin Role</h3>
+      <button id="editPermissionsBtn" class="btn btn-primary">Edit Permissions</button>
+    </div>
+
+    <p class="text-gray-600 mb-6">Has access to all resources, including dashboards, users, and settings.</p>
+
+    <div class="access-lists grid md:grid-cols-2 gap-6">
+      <div class="granted">
+        <h4 class="text-md font-semibold mb-2">✅ What this role can access</h4>
+        <ul id="granted-list" class="list-disc list-inside text-sm text-gray-700"></ul>
+      </div>
+      <div class="denied">
+        <h4 class="text-md font-semibold mb-2">🚫 What this role can't access</h4>
+        <ul id="denied-list" class="list-disc list-inside text-sm text-gray-700"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Permissions Modal -->
+<div id="permissionsModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+  <div class="modal-content bg-white p-6 rounded shadow-lg max-w-lg w-full relative">
+    <span id="closePermissionsModal" class="close absolute top-4 right-6 text-xl cursor-pointer">&times;</span>
+    <h3 class="text-lg font-semibold mb-4">Edit Permissions</h3>
+    <div class="permissions max-h-60 overflow-y-auto mb-4">
+      {% for perm in permissions %}
+      <label class="block mb-2">
+        <input type="checkbox" class="perm mr-2" value="{{ perm.codename }}" {% if perm in role_permissions %}checked{% endif %}>
+        {{ perm.name }}
+      </label>
+      {% endfor %}
+    </div>
+    <button id="savePermissions" class="btn btn-primary">Save</button>
+  </div>
+</div>
+
+<!-- Assign Role Modal -->
+<div id="assignRoleModal" class="modal hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+  <div class="modal-content bg-white p-6 rounded shadow-lg max-w-3xl w-full relative">
+    <span id="assignClose" class="close absolute top-4 right-6 text-xl cursor-pointer">&times;</span>
+    <h3 class="text-lg font-semibold mb-4">Assign Role to User</h3>
+
+    <div class="mb-4">
+      <label for="userSearch" class="text-sm font-medium text-gray-700 block mb-2">Search by name</label>
+      <input type="text" id="userSearch" class="input w-full" placeholder="e.g. Alice">
+    </div>
+
+    <table id="userTable" class="w-full text-sm border">
+      <thead class="bg-gray-100 text-left">
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        {% for user in users %}
+        <tr class="border-t">
+          <td><input type="radio" name="selectedUser" value="{{ user.id }}"></td>
+          <td>{{ user.username }}</td>
+          <td>
+            <select class="roleSelector input" data-user-id="{{ user.id }}">
+              <option value="">Unassigned</option>
+              {% for role in roles %}
+              <option value="{{ role.name }}" {% if user.groups.all.0.name == role.name %}selected{% endif %}>{{ role.name }}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="text-right mt-4">
+      <button id="assignConfirmBtn" class="btn btn-primary">Assign</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/role.js' %}"></script>
+{% endblock %}
+
+===== END OF: trackalytics/templates/roles.html =====
+
+
+
+===== START OF: trackalytics/templates/signup.html =====
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | Trackalytics</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+</head>
+<body class="bg-gray-100 font-inter">
+
+  <!-- Top Bar -->
+  <div class="top-bar bg-primary text-white px-6 py-4 flex items-center">
+    <img src="{% static 'images/logo.png' %}" alt="Trackalytics Logo" class="logo w-8 mr-3" />
+    <h2 class="text-xl font-semibold">Trackalytics</h2>
+  </div>
+
+  <!-- Signup Form -->
+  <div class="login-container flex justify-center items-center h-[calc(100vh-80px)] px-4">
+    <form class="login-form bg-white p-10 rounded-lg shadow w-full max-w-md text-center" method="post" action="{% url 'trackalytics:signup' %}">
+      {% csrf_token %}
+      <h4 class="text-sm text-gray-500 mb-1">Get started with us</h4>
+      <h1 class="text-2xl font-bold text-primary mb-6">Create an account</h1>
+
+      {% if form.non_field_errors %}
+        <p class="text-red-600 text-sm mb-3">{{ form.non_field_errors.0 }}</p>
+      {% endif %}
+
+      <input type="text" name="full_name" placeholder="Full name" value="{{ form.full_name.value|default:'' }}" required class="input" />
+      {% if form.full_name.errors %}
+        <p class="text-red-600 text-sm">{{ form.full_name.errors.0 }}</p>
+      {% endif %}
+
+      <input type="email" name="email" placeholder="Email address" value="{{ form.email.value|default:'' }}" required class="input" />
+      {% if form.email.errors %}
+        <p class="text-red-600 text-sm">{{ form.email.errors.0 }}</p>
+      {% endif %}
+
+      <input type="text" name="username" placeholder="Username" value="{{ form.username.value|default:'' }}" required class="input" />
+      {% if form.username.errors %}
+        <p class="text-red-600 text-sm">{{ form.username.errors.0 }}</p>
+      {% endif %}
+
+      <input type="password" name="password1" placeholder="Password" required class="input" />
+      {% if form.password1.errors %}
+        <p class="text-red-600 text-sm">{{ form.password1.errors.0 }}</p>
+      {% endif %}
+
+      <input type="password" name="password2" placeholder="Confirm password" required class="input" />
+      {% if form.password2.errors %}
+        <p class="text-red-600 text-sm">{{ form.password2.errors.0 }}</p>
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary w-full">Sign up</button>
+
+      <p class="signup-link text-sm text-gray-600 mt-6">
+        Already have an account?
+        <a href="{% url 'trackalytics:login' %}" class="text-primary font-medium hover:underline">Sign in</a>
+      </p>
+    </form>
+  </div>
+</body>
+</html>
+
+===== END OF: trackalytics/templates/signup.html =====
+
+
+
+===== START OF: trackalytics_project/asgi.py =====
+
+import os
+from channels.routing import ProtocolTypeRouter, URLRouter
+from django.core.asgi import get_asgi_application
+from channels.auth import AuthMiddlewareStack
+from trackalytics.routing import websocket_urlpatterns
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "trackalytics_project.settings")
+
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    "websocket": AuthMiddlewareStack(
+        URLRouter(websocket_urlpatterns)
+    ),
+})
+
+===== END OF: trackalytics_project/asgi.py =====
+
+
+
+===== START OF: trackalytics_project/settings.py =====
+
+from pathlib import Path
+import os
+
+# ─────────────────────────────────────────────
+#               Base Directory
+# ─────────────────────────────────────────────
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# ─────────────────────────────────────────────
+#               Security Settings
+# ─────────────────────────────────────────────
+
+SECRET_KEY = 'django-insecure-please-replace-this-with-a-secure-key'
+DEBUG = True
+ALLOWED_HOSTS = ['*', '.app.github.dev']
+
+
+# ─────────────────────────────────────────────
+#               Installed Applications
+# ─────────────────────────────────────────────
+
+INSTALLED_APPS = [
+    # Django core apps
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    # Project app
+    'trackalytics.apps.TrackalyticsConfig',
+
+    # Real-time support
+    'channels',
+]
+
+
+# ─────────────────────────────────────────────
+#                   Middleware
+# ─────────────────────────────────────────────
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # For serving static files in production
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+
+# ─────────────────────────────────────────────
+#               URL Configuration
+# ─────────────────────────────────────────────
+
+ROOT_URLCONF = 'trackalytics_project.urls'
+
+
+# ─────────────────────────────────────────────
+#                   Templates
+# ─────────────────────────────────────────────
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'trackalytics/templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+
+# ─────────────────────────────────────────────
+#               WSGI / ASGI Config
+# ─────────────────────────────────────────────
+
+WSGI_APPLICATION = 'trackalytics_project.wsgi.application'
+ASGI_APPLICATION = 'trackalytics_project.asgi.application'
+
+
+# ─────────────────────────────────────────────
+#              Channels Layer (Realtime)
+# ─────────────────────────────────────────────
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
+
+
+# ─────────────────────────────────────────────
+#                  Database
+# ─────────────────────────────────────────────
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+# ─────────────────────────────────────────────
+#           Password Validation
+# ─────────────────────────────────────────────
+
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
+
+# ─────────────────────────────────────────────
+#             Internationalization
+# ─────────────────────────────────────────────
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
+
+
+# ─────────────────────────────────────────────
+#                Static Files
+# ─────────────────────────────────────────────
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'trackalytics/static']
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+# ─────────────────────────────────────────────
+#        Default Primary Key Field Type
+# ─────────────────────────────────────────────
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# ─────────────────────────────────────────────
+#           Custom User Authentication
+# ─────────────────────────────────────────────
+
+AUTH_USER_MODEL = 'trackalytics.CustomUser'
+
+LOGIN_URL = 'trackalytics:login'
+LOGIN_REDIRECT_URL = 'trackalytics:main_dashboard'
+LOGOUT_REDIRECT_URL = 'trackalytics:login'
+
+
+# ─────────────────────────────────────────────
+#                Email Backend
+# ─────────────────────────────────────────────
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'noreply@trackalytics.com'
+
+
+# ─────────────────────────────────────────────
+#             CSRF Trusted Origins
+# ─────────────────────────────────────────────
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.app.github.dev',
+    'http://localhost:8000',
+    'https://localhost:8000',
+]
+
+
+# ─────────────────────────────────────────────
+#                Session Settings
+# ─────────────────────────────────────────────
+
+SESSION_COOKIE_AGE = 7200  # 2 hours
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+===== END OF: trackalytics_project/settings.py =====
+
+
+
+===== START OF: trackalytics_project/urls.py =====
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('trackalytics.urls', namespace='trackalytics')),
+]
+===== END OF: trackalytics_project/urls.py =====
+
+
+
+===== START OF: trackalytics_project/wsgi.py =====
+
+import os
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "trackalytics_project.settings")
+
+application = get_wsgi_application()
+===== END OF: trackalytics_project/wsgi.py =====
+

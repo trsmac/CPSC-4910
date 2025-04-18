@@ -8,45 +8,46 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-title">
-    <h1 class="dashboard-title-text">Dashboard Overview</h1>
+<div class="mb-8">
+  <h1 class="text-3xl font-semibold tracking-tight text-gray-800">Dashboard Overview</h1>
 </div>
 
-<div class="dashboard-main-cards">
-    <div class="dashboard-card">
-        <div class="card-inner">
-            <p class="text-primary">Total Inventory</p>
-            <span class="material-symbols-outlined text-blue">inventory_2</span>
-        </div>
-        <span class="text-primary font-weight-bold">{{ total_inventory }}</span>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+  <div class="kpi-card bg-white border border-gray-200 rounded shadow-sm p-6 flex items-center justify-between">
+    <div>
+      <p class="text-sm text-gray-500 mb-1">Total Inventory</p>
+      <p class="text-2xl font-bold text-gray-800">{{ total_inventory }}</p>
     </div>
+    <span class="material-symbols-outlined text-3xl text-blue-500">inventory_2</span>
+  </div>
 
-    <div class="dashboard-card">
-        <div class="card-inner">
-            <p class="text-primary">Low Stock Items</p>
-            <span class="material-symbols-outlined text-red">e911_emergency</span>
-        </div>
-        <span class="text-primary font-weight-bold">{{ low_stock_items }}</span>
+  <div class="kpi-card bg-white border border-gray-200 rounded shadow-sm p-6 flex items-center justify-between">
+    <div>
+      <p class="text-sm text-gray-500 mb-1">Low Stock Items</p>
+      <p class="text-2xl font-bold text-yellow-600">{{ low_stock_items }}</p>
     </div>
+    <span class="material-symbols-outlined text-3xl text-yellow-500">warning</span>
+  </div>
 
-    <div class="dashboard-card">
-        <div class="card-inner">
-            <p class="text-primary">Zero Stock Items</p>
-            <span class="material-symbols-outlined text-yellow">block</span>
-        </div>
-        <span class="text-primary font-weight-bold">{{ zero_stock_items }}</span>
+  <div class="kpi-card bg-white border border-gray-200 rounded shadow-sm p-6 flex items-center justify-between">
+    <div>
+      <p class="text-sm text-gray-500 mb-1">Zero Stock Items</p>
+      <p class="text-2xl font-bold text-red-600">{{ zero_stock_items }}</p>
     </div>
+    <span class="material-symbols-outlined text-3xl text-red-500">block</span>
+  </div>
 </div>
-<div class="charts">
-    <div class="chart-card">
-        <p class="chart-title">Top 5 Products</p>
-        <div id="bar-chart"></div>
-    </div>
 
-    <div class="chart-card">
-        <p class="chart-title">Overall Inventory</p>
-        <div id="area-chart"></div>
-    </div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="bg-white border border-gray-200 rounded shadow-sm p-4">
+    <h2 class="text-lg font-medium text-gray-700 mb-4">Top 5 Products</h2>
+    <div id="bar-chart" class="w-full h-[300px]"></div>
+  </div>
+
+  <div class="bg-white border border-gray-200 rounded shadow-sm p-4">
+    <h2 class="text-lg font-medium text-gray-700 mb-4">Overall Inventory</h2>
+    <div id="area-chart" class="w-full h-[300px]"></div>
+  </div>
 </div>
 {% endblock %}
 

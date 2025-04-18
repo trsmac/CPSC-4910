@@ -8,41 +8,45 @@
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-title">
-    <h1 class="dashboard-title-text">KPI Dashboard</h1>
+<div class="dashboard-title flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-semibold text-gray-800">KPI Dashboard</h1>
 </div>
-<div class="kpi-cards">
-    <div class="dashboard-card">
-        <div class="card-inner">
-            <p class="text-primary">Total Reservations</p>
-            <span class="material-symbols-outlined text-blue">event</span>
-        </div>
-        <span class="text-primary font-weight-bold">{{ total_reservations }}</span>
+
+<div class="kpi-cards grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+  <div class="dashboard-card text-center">
+    <div class="card-inner flex justify-between items-center">
+      <p class="text-sm text-gray-500">Total Reservations</p>
+      <span class="material-symbols-outlined text-blue-500">event</span>
     </div>
-    <div class="dashboard-card">
-        <div class="card-inner">
-            <p class="text-primary">Active Users</p>
-            <span class="material-symbols-outlined text-green">group</span>
-        </div>
-        <span class="text-primary font-weight-bold">{{ active_users }}</span>
+    <p class="text-2xl font-bold text-gray-800">{{ total_reservations }}</p>
+  </div>
+
+  <div class="dashboard-card text-center">
+    <div class="card-inner flex justify-between items-center">
+      <p class="text-sm text-gray-500">Active Users</p>
+      <span class="material-symbols-outlined text-green-500">group</span>
     </div>
-    <div class="dashboard-card">
-        <div class="card-inner">
-            <p class="text-primary">Inventory Turnover</p>
-            <span class="material-symbols-outlined text-yellow">autorenew</span>
-        </div>
-        <span class="text-primary font-weight-bold">{{ turnover_rate }}</span>
+    <p class="text-2xl font-bold text-gray-800">{{ active_users }}</p>
+  </div>
+
+  <div class="dashboard-card text-center">
+    <div class="card-inner flex justify-between items-center">
+      <p class="text-sm text-gray-500">Inventory Turnover</p>
+      <span class="material-symbols-outlined text-yellow-500">autorenew</span>
     </div>
+    <p class="text-2xl font-bold text-gray-800">{{ turnover_rate }}</p>
+  </div>
 </div>
-<div class="charts">
-    <div class="chart-card">
-        <p class="chart-title">Reservation Trends</p>
-        <div id="line-chart"></div>
-    </div>
-    <div class="chart-card">
-        <p class="chart-title">Inventory Usage</p>
-        <div id="pie-chart"></div>
-    </div>
+
+<div class="charts grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="chart-card">
+    <p class="chart-title font-medium mb-3">Reservation Trends</p>
+    <div id="line-chart"></div>
+  </div>
+  <div class="chart-card">
+    <p class="chart-title font-medium mb-3">Inventory Usage</p>
+    <div id="pie-chart"></div>
+  </div>
 </div>
 {% endblock %}
 

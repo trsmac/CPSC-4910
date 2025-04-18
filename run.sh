@@ -7,10 +7,15 @@ echo "=============================================="
 echo ""
 
 # Navigate to Django project directory
-cd /workspaces/CPSC-4910/trackalytics_project || {
+echo -e "\033[1;34m📁 Attempting to access Django project directory: /workspaces/CPSC-4910/trackalytics_project\033[0m"
+
+cd /workspaces/CPSC-4910/trackalytics_project && {
+  echo -e "\033[1;32m✅ Successfully entered: /workspaces/CPSC-4910/trackalytics_project\033[0m"
+} || {
   echo -e "\033[1;31m❌ Directory not found: /workspaces/CPSC-4910/trackalytics_project\033[0m"
   exit 1
 }
+
 
 # Install dependencies
 echo -e "\033[1;34m📦 Installing Dependencies...\033[0m"
@@ -48,25 +53,19 @@ echo "========================================="
 
 
 # Create superuser automatically
-echo -e "\033[1;36m🔐 Creating Django superuser (auto)...\033[0m"
-python <<EOF
-import os
-import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "trackalytics_project.settings")
-django.setup()
-
-from trackalytics.models import CustomUser
-
-email = "morrowchristian@icloud.com"
-password = "Dojacat1!"
-
-if not CustomUser.objects.filter(email=email).exists():
-    CustomUser.objects.create_superuser(email=email, password=password)
-    print(f"✅ Superuser created: {email}")
+echo "🔐 Creating Django superuser (auto)..."
+python manage.py shell << END
+from django.contrib.auth import get_user_model
+User = get_user_model()
+email = "admin@admin.com"
+password = "adminpass"
+if not User.objects.filter(email=email).exists():
+    User.objects.create_superuser(email=email, password=password)
+    print("✅ Superuser created.")
 else:
-    print(f"⚠️ Superuser already exists: {email}")
-EOF
-echo "========================================="
+    print("ℹ️ Superuser already exists.")
+END
+
 
 # Verify DB
 echo -e "\033[1;36m🔍 Verifying database tables...\033[0m"

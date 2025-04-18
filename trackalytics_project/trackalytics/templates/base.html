@@ -2,89 +2,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trackalytics | {% block title %}Dashboard{% endblock %}</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trackalytics | {% block title %}Dashboard{% endblock %}</title>
 
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@700&display=swap" rel="stylesheet">
-
-    <!-- Global Dashboard Styles -->
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
-    <!-- Page-specific styles -->
-    {% block css %}{% endblock %}
+  <!-- Styles -->
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
+  {% block css %}{% endblock %}
 </head>
-<body>
-    <div class="container">
-        <!-- Sidebar -->
-        <aside>
-            <div class="menu">
-                <div class="logo">
-                    <img src="{% static 'images/logo.png' %}" alt="logo">
-                    <h2>Trackalytics</h2>
-                </div>
-                <div class="close" id="close-btn">
-                    <span class="material-symbols-outlined">close</span>
-                </div>
-            </div>
+<body class="bg-gray-100 font-inter text-gray-800 flex">
 
-            <div class="sidebar">
-                <h3>Dashboards</h3>
-                <a href="{% url 'trackalytics:main_dashboard' %}">
-                    <span class="material-symbols-outlined">space_dashboard</span>
-                    <h3>Main Dashboard</h3>
-                </a>
-                <a href="{% url 'trackalytics:kpi_dashboard' %}">
-                    <span class="material-symbols-outlined">speed</span>
-                    <h3>KPI Dashboard</h3>
-                </a>
-
-                <h3>Inventory</h3>
-                <a href="{% url 'trackalytics:inventory' %}">
-                    <span class="material-symbols-outlined">inventory</span>
-                    <h3>View Inventory</h3>
-                </a>
-                <a href="{% url 'trackalytics:reservation' %}">
-                    <span class="material-symbols-outlined">event_available</span>
-                    <h3>View Reservations</h3>
-                </a>
-
-                <h3>Admin</h3>
-                <a href="{% url 'trackalytics:roles' %}">
-                    <span class="material-symbols-outlined">groups</span>
-                    <h3>User Management</h3>
-                </a>
-                <a href="{% url 'trackalytics:reports' %}">
-                    <span class="material-symbols-outlined">folder</span>
-                    <h3>Reports & Exports</h3>
-                </a>
-                <a href="{% url 'trackalytics:activity_log' %}">
-                    <span class="material-symbols-outlined">history</span>
-                    <h3>Activity Log</h3>
-                </a>
-                <a href="{% url 'trackalytics:settings' %}">
-                    <span class="material-symbols-outlined">tune</span>
-                    <h3>Settings</h3>
-                </a>
-                <a href="{% url 'trackalytics:logout' %}">
-                    <span class="material-symbols-outlined">logout</span>
-                    <h3>Logout</h3>
-                </a>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="dashboard-container">
-            {% block content %}
-            {% endblock %}
-        </main>
+  <!-- Sidebar -->
+  <aside class="w-64 min-h-screen bg-[#1a1a2e] text-white flex flex-col justify-between shadow-lg">
+    <div>
+      <div class="px-6 py-6 text-2xl font-bold">Trackalytics</div>
+      <nav class="px-4 space-y-1 text-sm">
+        <a href="{% url 'trackalytics:main_dashboard' %}" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-[#162447]">
+          <span class="material-symbols-outlined">space_dashboard</span> Main Dashboard
+        </a>
+        <a href="{% url 'trackalytics:kpi_dashboard' %}" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-[#162447]">
+          <span class="material-symbols-outlined">speed</span> KPI Dashboard
+        </a>
+        <a href="{% url 'trackalytics:inventory' %}" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-[#162447]">
+          <span class="material-symbols-outlined">inventory</span> Inventory
+        </a>
+        <a href="{% url 'trackalytics:reservation' %}" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-[#162447]">
+          <span class="material-symbols-outlined">event_available</span> Reservations
+        </a>
+        <a href="{% url 'trackalytics:roles' %}" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-[#162447]">
+          <span class="material-symbols-outlined">groups</span> User Roles
+        </a>
+        <a href="{% url 'trackalytics:activity_log' %}" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-[#162447]">
+          <span class="material-symbols-outlined">history</span> Activity Logs
+        </a>
+        <a href="{% url 'trackalytics:settings' %}" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-[#162447]">
+          <span class="material-symbols-outlined">settings</span> Settings
+        </a>
+      </nav>
     </div>
+    <div class="p-4">
+      <a href="{% url 'trackalytics:logout' %}" class="flex items-center gap-2 py-2 px-3 text-red-400 hover:bg-[#162447] rounded">
+        <span class="material-symbols-outlined">logout</span> Logout
+      </a>
+    </div>
+  </aside>
 
-    <!-- Page-specific JavaScript -->
-    {% block js %}{% endblock %}
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block js %}{% endblock %}
 </body>
 </html>

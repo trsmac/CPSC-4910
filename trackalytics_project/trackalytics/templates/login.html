@@ -2,36 +2,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login | Trackalytics</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <meta charset="UTF-8" />
+  <title>Login | Trackalytics</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
 </head>
-<body>
-<div class="top-bar">
-    <img src="{% static 'images/logo.png' %}" alt="Trackalytics Logo" class="logo" />
-    <h2 class="brand-name">Trackalytics</h2>
-</div>
+<body class="bg-gray-100 font-inter">
 
-<div class="login-container">
-    <form class="login-form" method="post" action="{% url 'trackalytics:login' %}">
-        {% csrf_token %}
-        <h4>Welcome Back</h4>
-        <h1>Sign In</h1>
-        {% if messages %}
-            {% for message in messages %}
-                <p class="error">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <div class="options">
-            <a href="{% url 'trackalytics:password_reset' %}">Forgot password</a>
-        </div>
-        <button type="submit" class="login-btn">Sign In</button>
-        <div class="signup-link">
-            <p>Don't have an account? <a href="{% url 'trackalytics:signup' %}">Sign up</a></p>
-        </div>
+  <!-- Top Bar -->
+  <div class="top-bar bg-primary text-white px-6 py-4 flex items-center">
+    <img src="{% static 'images/logo.png' %}" alt="Trackalytics Logo" class="logo w-8 mr-3" />
+    <h2 class="text-xl font-semibold">Trackalytics</h2>
+  </div>
+
+  <!-- Login Form -->
+  <div class="login-container flex justify-center items-center h-[calc(100vh-80px)] px-4">
+    <form class="login-form bg-white p-10 rounded-lg shadow w-full max-w-md text-center" method="post" action="{% url 'trackalytics:login' %}">
+      {% csrf_token %}
+      <h4 class="text-sm text-gray-500 mb-1">Welcome Back</h4>
+      <h1 class="text-2xl font-bold text-primary mb-6">Sign In</h1>
+
+      {% if messages %}
+        {% for message in messages %}
+          <p class="text-red-600 text-sm mb-2">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <input type="email" name="email" placeholder="Email" required class="input" />
+      <input type="password" name="password" placeholder="Password" required class="input" />
+
+      <div class="options flex justify-end text-sm text-gray-500 mb-4">
+        <a href="{% url 'trackalytics:password_reset' %}" class="hover:underline">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full">Sign In</button>
+
+      <p class="signup-link text-sm text-gray-600 mt-6">
+        Don’t have an account?
+        <a href="{% url 'trackalytics:signup' %}" class="text-primary font-medium hover:underline">Sign up</a>
+      </p>
     </form>
-</div>
+  </div>
 </body>
 </html>

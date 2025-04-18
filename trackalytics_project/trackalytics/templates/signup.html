@@ -2,62 +2,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Sign Up | Trackalytics</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <style>
-        .error {
-            color: red;
-            font-size: 14px;
-            margin: 5px 0;
-            text-align: left;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Sign Up | Trackalytics</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
 </head>
-<body>
-<div class="top-bar">
-    <img src="{% static 'images/logo.png' %}" alt="Trackalytics Logo" class="logo" />
-    <h2 class="brand-name">Trackalytics</h2>
-</div>
+<body class="bg-gray-100 font-inter">
 
-<div class="login-container">
-    <form class="login-form" method="post" action="{% url 'trackalytics:signup' %}">
-        {% csrf_token %}
-        <h4>Get started with us</h4>
-        <h1>Create an account</h1>
+  <!-- Top Bar -->
+  <div class="top-bar bg-primary text-white px-6 py-4 flex items-center">
+    <img src="{% static 'images/logo.png' %}" alt="Trackalytics Logo" class="logo w-8 mr-3" />
+    <h2 class="text-xl font-semibold">Trackalytics</h2>
+  </div>
 
-        {% if form.non_field_errors %}
-            <p class="error">{{ form.non_field_errors.0 }}</p>
-        {% endif %}
+  <!-- Signup Form -->
+  <div class="login-container flex justify-center items-center h-[calc(100vh-80px)] px-4">
+    <form class="login-form bg-white p-10 rounded-lg shadow w-full max-w-md text-center" method="post" action="{% url 'trackalytics:signup' %}">
+      {% csrf_token %}
+      <h4 class="text-sm text-gray-500 mb-1">Get started with us</h4>
+      <h1 class="text-2xl font-bold text-primary mb-6">Create an account</h1>
 
-        <input type="text" name="full_name" placeholder="Full name" value="{{ form.full_name.value|default:'' }}" required>
-        {% if form.full_name.errors %}
-            <p class="error">{{ form.full_name.errors.0 }}</p>
-        {% endif %}
+      {% if form.non_field_errors %}
+        <p class="text-red-600 text-sm mb-3">{{ form.non_field_errors.0 }}</p>
+      {% endif %}
 
-        <input type="email" name="email" placeholder="Email address" value="{{ form.email.value|default:'' }}" required>
-        {% if form.email.errors %}
-            <p class="error">{{ form.email.errors.0 }}</p>
-        {% endif %}
+      <input type="text" name="full_name" placeholder="Full name" value="{{ form.full_name.value|default:'' }}" required class="input" />
+      {% if form.full_name.errors %}
+        <p class="text-red-600 text-sm">{{ form.full_name.errors.0 }}</p>
+      {% endif %}
 
-        <input type="text" name="username" placeholder="Username" value="{{ form.username.value|default:'' }}" required>
-        {% if form.username.errors %}
-            <p class="error">{{ form.username.errors.0 }}</p>
-        {% endif %}
+      <input type="email" name="email" placeholder="Email address" value="{{ form.email.value|default:'' }}" required class="input" />
+      {% if form.email.errors %}
+        <p class="text-red-600 text-sm">{{ form.email.errors.0 }}</p>
+      {% endif %}
 
-        <input type="password" name="password1" placeholder="Password" required>
-        {% if form.password1.errors %}
-            <p class="error">{{ form.password1.errors.0 }}</p>
-        {% endif %}
+      <input type="text" name="username" placeholder="Username" value="{{ form.username.value|default:'' }}" required class="input" />
+      {% if form.username.errors %}
+        <p class="text-red-600 text-sm">{{ form.username.errors.0 }}</p>
+      {% endif %}
 
-        <input type="password" name="password2" placeholder="Confirm password" required>
-        {% if form.password2.errors %}
-            <p class="error">{{ form.password2.errors.0 }}</p>
-        {% endif %}
+      <input type="password" name="password1" placeholder="Password" required class="input" />
+      {% if form.password1.errors %}
+        <p class="text-red-600 text-sm">{{ form.password1.errors.0 }}</p>
+      {% endif %}
 
-        <button type="submit" class="login-btn">Sign up</button>
-        <p class="signup-link">Already have an account? <a href="{% url 'trackalytics:login' %}">Sign in</a></p>
+      <input type="password" name="password2" placeholder="Confirm password" required class="input" />
+      {% if form.password2.errors %}
+        <p class="text-red-600 text-sm">{{ form.password2.errors.0 }}</p>
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary w-full">Sign up</button>
+
+      <p class="signup-link text-sm text-gray-600 mt-6">
+        Already have an account?
+        <a href="{% url 'trackalytics:login' %}" class="text-primary font-medium hover:underline">Sign in</a>
+      </p>
     </form>
-</div>
+  </div>
 </body>
 </html>

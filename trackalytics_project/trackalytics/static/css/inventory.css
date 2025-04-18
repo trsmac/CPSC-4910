@@ -1,210 +1,180 @@
-/* ========== Layout Containers ========== */
+/* ─────────────────────────────────────────────
+   📦 INVENTORY PAGE STYLES — Form + Table
+   ───────────────────────────────────────────── */
+
+/* ── Containers ─────────────────────────────── */
 .card {
     background-color: #ffffff;
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     margin-bottom: 2rem;
-}
-
-.card h2,
-.card h3 {
-    margin-bottom: 1.5rem;
-    font-size: 1.4rem;
-    color: #1e1e2d;
-}
-
-/* ========== Grid-Based Form ========== */
-.inventory-grid {
+  }
+  
+  .card h2,
+  .card h3 {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  /* ── Inventory Form ─────────────────────────── */
+  .inventory-form form {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.25rem;
-}
-
-.form-row {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-row label {
-    font-weight: 600;
-    margin-bottom: 0.4rem;
-    font-size: 0.9rem;
-    color: #333;
-}
-
-.full-width {
+  }
+  
+  .form-actions {
     grid-column: span 2;
-}
-
-/* ========== Inputs & Textareas ========== */
-input,
-select,
-textarea {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  input,
+  select,
+  textarea {
     padding: 0.6rem 0.75rem;
-    border: 1px solid #ccc;
+    border: 1px solid #d1d5db;
     border-radius: 8px;
     font-size: 0.95rem;
-    font-family: 'Inter', sans-serif;
-    box-sizing: border-box;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+    width: 100%;
+    transition: border-color 0.2s ease;
+  }
+  
+  input:focus,
+  select:focus,
+  textarea:focus {
     outline: none;
-}
-
-textarea {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+  
+  textarea {
     resize: vertical;
-}
-
-/* ========== Form Buttons ========== */
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: flex-end;
-    grid-column: span 2;
-}
-
-button {
-    font-family: inherit;
-    padding: 0.6rem 1.2rem;
+  }
+  
+  /* ── Buttons ────────────────────────────────── */
+  button {
+    font-size: 0.95rem;
     font-weight: 600;
+    padding: 0.6rem 1.2rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.btn.primary {
-    background-color: #1e40af;
+  }
+  
+  .btn.primary {
+    background-color: #2563eb;
     color: white;
-}
-
-.btn.primary:hover {
-    background-color: #1e3a8a;
-}
-
-.btn {
+  }
+  
+  .btn.primary:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .btn {
     background-color: #f3f4f6;
-    color: #1e1e2d;
-}
-
-.btn:hover {
+    color: #1f2937;
+  }
+  
+  .btn:hover {
     background-color: #e5e7eb;
-}
-
-/* ========== Inventory Item List ========== */
-.inventory-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.inventory-item {
-    background-color: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.inventory-item .item-name {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #111827;
-}
-
-.inventory-item .item-info {
-    color: #4b5563;
-    font-size: 0.95rem;
-}
-
-/* ========== Controls and Filter Bar ========== */
-.inventory-controls {
+  }
+  
+  /* ── Inventory List + Table ─────────────────── */
+  .inventory-controls {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 1.5rem;
     align-items: center;
-}
-
-.inventory-controls input[type="text"],
-.inventory-controls select {
+  }
+  
+  .inventory-controls input[type="text"],
+  .inventory-controls select {
     padding: 0.5rem 0.75rem;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 0.9rem;
-}
-
-.download-csv-btn {
+  }
+  
+  .download-csv-btn {
+    background-color: #10b981;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    background-color: #2563eb;
-    color: white;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-}
-
-.download-csv-btn:hover {
-    background-color: #1d4ed8;
-}
-
-/* ========== Toast Notification ========== */
-.toast {
-    display: none;
-    margin-top: 1rem;
-    background-color: #16a34a;
-    color: white;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
+    gap: 0.5rem;
+  }
+  
+  .download-csv-btn:hover {
+    background-color: #059669;
+  }
+  
+  /* ── Inventory Items ────────────────────────── */
+  .inventory-header {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    font-weight: 600;
     font-size: 0.9rem;
-}
-
-.toast.show {
-    display: inline-block;
-}
-
-/* ========== Tooltip ========== */
-.tooltip-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltip-text {
-    visibility: hidden;
-    background-color: #1e1e2d;
-    color: #fff;
+    padding: 0.75rem 0;
+    border-bottom: 2px solid #e5e7eb;
+    color: #374151;
+  }
+  
+  .inventory-item {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    padding: 0.75rem 0;
+    align-items: center;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  
+  .qty-input {
+    width: 80px;
+    padding: 0.4rem;
     text-align: center;
+  }
+  
+  /* ── Edit / Save / Delete Controls ─────────── */
+  .edit-btn,
+  .save-btn,
+  .delete-btn {
     padding: 4px 8px;
-    border-radius: 4px;
-    position: absolute;
-    z-index: 10;
-    bottom: 125%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.75rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    white-space: nowrap;
-}
-
-.tooltip-wrapper:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* ========== Icons ========== */
-.material-symbols-outlined {
-    vertical-align: middle;
-    font-size: 20px;
-}
+    font-size: 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .edit-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .edit-actions.hidden {
+    display: none;
+  }
+  
+  /* ── Toast Notification ─────────────────────── */
+  .toast {
+    display: none;
+    background-color: #22c55e;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .toast.show {
+    display: inline-block;
+  }
+  
