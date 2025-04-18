@@ -1,142 +1,172 @@
-/* ========== Card Container ========== */
+/* ========== Layout Containers ========== */
 .card {
-    background: white;
+    background-color: #ffffff;
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     margin-bottom: 2rem;
 }
 
-/* ========== Headings ========== */
 .card h2,
 .card h3 {
     margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    color: #1e1e2d;
 }
 
-/* ========== Grid-based Form Layout ========== */
-.input-row {
+/* ========== Grid-Based Form ========== */
+.inventory-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.2rem;
-    margin-bottom: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
 }
 
-.form-group {
+.form-row {
     display: flex;
     flex-direction: column;
 }
 
-.form-group label {
-    font-size: 0.85rem;
-    margin-bottom: 0.35rem;
-    font-weight: 500;
+.form-row label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
     color: #333;
 }
 
-.form-group.full-width {
-    grid-column: span 4;
+.full-width {
+    grid-column: span 2;
 }
 
 /* ========== Inputs & Textareas ========== */
 input,
+select,
 textarea {
-    width: 100%;
-    padding: 0.5rem 0.75rem;
+    padding: 0.6rem 0.75rem;
     border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+    outline: none;
 }
 
 textarea {
-    min-height: 2.8rem;
     resize: vertical;
 }
 
-/* ========== Inventory List ========== */
+/* ========== Form Buttons ========== */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-end;
+    grid-column: span 2;
+}
+
+button {
+    font-family: inherit;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn.primary {
+    background-color: #1e40af;
+    color: white;
+}
+
+.btn.primary:hover {
+    background-color: #1e3a8a;
+}
+
+.btn {
+    background-color: #f3f4f6;
+    color: #1e1e2d;
+}
+
+.btn:hover {
+    background-color: #e5e7eb;
+}
+
+/* ========== Inventory Item List ========== */
 .inventory-list ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .inventory-item {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
     padding: 1rem;
     margin-bottom: 1rem;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background: #fafafa;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .inventory-item .item-name {
     font-weight: bold;
     font-size: 1.1rem;
+    color: #111827;
 }
 
 .inventory-item .item-info {
-    color: #666;
+    color: #4b5563;
     font-size: 0.95rem;
 }
 
-/* ========== Form + Button Styles ========== */
-button {
-    font-family: inherit;
-}
-
-.inventory-form button,
-.action-buttons button {
-    padding: 0.6rem 1.2rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.inventory-form button {
-    background-color: #1e1e2d;
-    color: white;
-}
-
-.inventory-form button:hover {
-    background-color: #34344e;
-}
-
-.action-buttons {
+/* ========== Controls and Filter Bar ========== */
+.inventory-controls {
     display: flex;
-    justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
 }
 
-.save-btn {
-    background-color: #28a745;
+.inventory-controls input[type="text"],
+.inventory-controls select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.download-csv-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #2563eb;
     color: white;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
 }
 
-.save-btn:hover {
-    background-color: #218838;
+.download-csv-btn:hover {
+    background-color: #1d4ed8;
 }
 
-.cancel-btn {
-    background-color: #dc3545;
-    color: white;
-}
-
-.cancel-btn:hover {
-    background-color: #c82333;
-}
-
-/* ========== Toast ========== */
+/* ========== Toast Notification ========== */
 .toast {
     display: none;
     margin-top: 1rem;
-    background-color: #28a745;
+    background-color: #16a34a;
     color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
     font-size: 0.9rem;
 }
 
@@ -144,36 +174,7 @@ button {
     display: inline-block;
 }
 
-/* ========== Inventory Controls ========== */
-.inventory-controls {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.inventory-controls input[type="text"],
-.inventory-controls select {
-    padding: 0.5rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 0.9rem;
-}
-
-.download-csv-btn {
-    background-color: #007bff;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.download-csv-btn:hover {
-    background-color: #0056b3;
-}
-
-/* ========== Tooltip Styling ========== */
+/* ========== Tooltip ========== */
 .tooltip-wrapper {
     position: relative;
     display: inline-block;
@@ -181,7 +182,7 @@ button {
 
 .tooltip-text {
     visibility: hidden;
-    background-color: #333;
+    background-color: #1e1e2d;
     color: #fff;
     text-align: center;
     padding: 4px 8px;
@@ -193,7 +194,7 @@ button {
     transform: translateX(-50%);
     font-size: 0.75rem;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease;
     white-space: nowrap;
 }
 
@@ -202,7 +203,7 @@ button {
     opacity: 1;
 }
 
-/* ========== Material Icons ========== */
+/* ========== Icons ========== */
 .material-symbols-outlined {
     vertical-align: middle;
     font-size: 20px;

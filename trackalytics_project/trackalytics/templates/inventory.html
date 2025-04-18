@@ -9,52 +9,34 @@
 
 {% block content %}
 <div class="card inventory-form">
-    <h2>Add New Inventory Item</h2>
+    <h2>Add Inventory Item</h2>
+
     <form method="post" id="inventoryForm">
         {% csrf_token %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Item No.</th>
-                    <th>Batch No.</th>
-                    <th>Batch Name</th>
-                    <th>Quantity</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" name="item_name" placeholder="e.g. Tent" required></td>
-                    <td><input type="text" name="item_no" placeholder="e.g. T001" required></td>
-                    <td><input type="text" name="batch_no" placeholder="e.g. 001" required></td>
-                    <td><input type="text" name="batch_name" placeholder="e.g. Summer Batch" required></td>
-                    <td><input type="number" name="quantity" min="1" placeholder="e.g. 10" required></td>
-                    <td><textarea name="description" rows="1" placeholder="Short item description"></textarea></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="action-buttons">
-            <button type="submit">
+        {{ form.as_p }}
+
+        <div class="form-actions">
+            <button type="submit" class="btn primary">
                 <span class="material-symbols-outlined">save</span> Save
             </button>
-            <button type="button" id="clearForm">
+            <button type="button" id="clearForm" class="btn">
                 <span class="material-symbols-outlined">delete</span> Clear
             </button>
         </div>
     </form>
+
     <div id="toast" class="toast">Item saved successfully!</div>
 </div>
 
 <div class="card inventory-list">
     <div class="inventory-controls">
-        <input type="text" id="searchInput" placeholder="Search inventory...">
-        
+        <input type="text" id="searchInput" placeholder="Search by name or barcode">
+
         <label for="sortBy">Sort By:</label>
         <select id="sortBy">
             <option value="item_name">Item Name</option>
             <option value="quantity">Quantity</option>
-            <option value="created">Date</option>
+            <option value="created">Date Added</option>
         </select>
 
         <label for="sortOrder">Order:</label>
@@ -71,28 +53,25 @@
     <h3>Current Inventory</h3>
     <ul id="inventoryItems">
         {% for item in items %}
-            <li class="inventory-item"
-                data-id="{{ item.id }}"
-                data-name="{{ item.item_name|lower }}"
-                data-quantity="{{ item.quantity }}"
-                data-created="{{ item.created_at|date:'YmdHis' }}">
+        <li class="inventory-item"
+            data-id="{{ item.id }}"
+            data-name="{{ item.item_name|lower }}"
+            data-barcode="{{ item.barcode }}"
+            data-quantity="{{ item.quantity }}"
+            data-created="{{ item.created_at|date:'YmdHis' }}">
 
-                <div class="item-name">{{ item.item_name }}</div>
-                <div class="item-info">
-                    No: {{ item.item_no }} | Batch: {{ item.batch_no }} ({{ item.batch_name }}) | Qty: {{ item.quantity }}<br>
-                    <em>{{ item.description }}</em>
-                </div>
-                <div class="action-buttons">
-                    <div class="tooltip-wrapper">
-                        <button class="edit-btn">
-                            <span class="material-symbols-outlined">edit</span>
-                        </button>
-                        <span class="tooltip-text">Edit Item</span>
-                    </div>
-                </div>
-            </li>
+            <div class="item-name">{{ item.item_code }} — {{ item.item_name }}</div>
+            <div class="item-info">
+                {% if item.category_type %}Category: {{ item.category_type }} |{% endif %}
+                Qty: {{ item.quantity }} |
+                {% if item.price %}Price: ${{ item.price }} |{% endif %}
+                {% if item.expiration_date %}Expires: {{ item.expiration_date }} |{% endif %}
+                {% if item.barcode %}Barcode: {{ item.barcode }}{% endif %}<br>
+                <em>{{ item.notes }}</em>
+            </div>
+        </li>
         {% empty %}
-            <p>No inventory items yet.</p>
+        <p>No inventory items found.</p>
         {% endfor %}
     </ul>
 </div>

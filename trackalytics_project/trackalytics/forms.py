@@ -1,6 +1,12 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 from .models import CustomUser, InventoryItem, Reservation
+import re
+
+# ─────────────────────────────────────────────
+#              Custom User Signup Form
+# ─────────────────────────────────────────────
 
 class SignUpForm(UserCreationForm):
     full_name = forms.CharField(
@@ -26,16 +32,64 @@ class SignUpForm(UserCreationForm):
             user.save()
         return user
 
+
+# ─────────────────────────────────────────────
+#              Barcode Validator
+# ─────────────────────────────────────────────
+
+def validate_barcode(value):
+    if value and not re.match(r'^\d{8,13}$', value):
+        raise ValidationError("Barcode must be 8–13 digits (numbers only).")
+
+
+# ─────────────────────────────────────────────
+#              Inventory Item Form
+# ─────────────────────────────────────────────
+
 class InventoryForm(forms.ModelForm):
     class Meta:
         model = InventoryItem
-        fields = ['item_name', 'item_no', 'batch_no', 'batch_name', 'quantity', 'description']
+        exclude = ['item_code', 'created_at']
         widgets = {
-            'item_name': forms.TextInput(attrs={'placeholder': 'e.g. Tent'}),
-            'item_no': forms.TextInput(attrs={'placeholder': 'T001'}),
-            'description': forms.Textarea(attrs={'rows': 2}),
+            'notes': forms.Textarea(attrs={'rows': 2}),
+        }
+        labels = {
+            'item_name': 'Item Name',
+            'barcode': 'Barcode (optional)',
+            'category_type': 'Category',
+            'quantity': 'Quantity in Stock',
+            'vendor_price': 'Vendor Price ($)',
+            'retail_price': 'Retail Price ($)',
+            'notes': 'Additional Notes',
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Default quantity
+        self.fields['quantity'].initial = 0
+
+        # Required fields
+        self.fields['item_name'].required = True
+        self.fields['category_type'].required = True
+
+        # Optional fields loop
+        optional_fields = ['barcode', 'vendor_price', 'retail_price', 'notes']
+        for field in optional_fields:
+            self.fields[field].required = False
+
+        # Add barcode validator
+        self.fields['barcode'].validators.append(validate_barcode)
+
+        # Help texts (optional UX)
+        self.fields['barcode'].help_text = "8–13 digit barcode (leave blank if not applicable)"
+        self.fields['vendor_price'].help_text = "Internal cost (optional)"
+        self.fields['retail_price'].help_text = "Selling price (optional)"
+
+
+# ─────────────────────────────────────────────
+#              Reservation Form
+# ─────────────────────────────────────────────
 
 class ReservationForm(forms.ModelForm):
     class Meta:

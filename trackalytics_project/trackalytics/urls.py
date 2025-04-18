@@ -8,10 +8,21 @@ urlpatterns = [
     path('', views.portal_redirect, name='portal'),
     path('dashboard/', views.main_dashboard, name='main_dashboard'),
     path('kpi-dashboard/', views.kpi_dashboard, name='kpi_dashboard'),
+
+    # Inventory
     path('inventory/', views.inventory, name='inventory'),
     path('inventory/update/<int:item_id>/', views.update_inventory, name='update_inventory'),
+    path('inventory/delete/<int:item_id>/', views.delete_inventory, name='delete_inventory'),
+
+    # Reservations
     path('reservation/', views.reservation, name='reservation'),
+    path('update-reservations/', views.update_reservations, name='update_reservations'),
+
+    # Roles & Permissions
     path('roles/', views.roles, name='roles'),
+    path('update-permissions/', views.update_permissions, name='update_permissions'),
+
+    # Logs & Settings
     path('activitylog/', views.activity_log, name='activity_log'),
     path('settings/', views.settings, name='settings'),
     path('reports/', views.reports, name='reports'),
@@ -22,11 +33,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('access-denied/', views.access_denied, name='access_denied'),
 
-    # AJAX endpoints
-    path('update-reservations/', views.update_reservations, name='update_reservations'),
-    path('update-permissions/', views.update_permissions, name='update_permissions'),
-
-    # Password reset flow
+    # Password Reset
     path('password_reset/', auth_views.PasswordResetView.as_view(
         template_name='password_reset_form.html',
         email_template_name='password_reset_email.html',

@@ -12,13 +12,13 @@ cd /workspaces/CPSC-4910/trackalytics_project || {
   exit 1
 }
 
-# Install Django
-echo -e "\033[1;34m📦 Installing Django and dependencies...\033[0m"
-pip install django || {
-  echo -e "\033[1;31m❌ Failed to install Django.\033[0m"
+# Install dependencies
+echo -e "\033[1;34m📦 Installing Dependencies...\033[0m"
+pip install -r requirements.txt || {
+  echo -e "\033[1;31m❌ Failed to install dependencies.\033[0m"
   exit 1
 }
-echo "✅ Django installed."
+echo "✅ Dependencies installed."
 echo "========================================="
 
 # Clean old DB and migrations
@@ -32,7 +32,7 @@ if [ -d "$MIGRATIONS_DIR" ]; then
   find "$MIGRATIONS_DIR" -type f -name "*.py" ! -name "__init__.py" -delete
   find "$MIGRATIONS_DIR" -type f -name "*.pyc" -delete
 else
-  mkdir "$MIGRATIONS_DIR"
+  mkdir -p "$MIGRATIONS_DIR"
   touch "$MIGRATIONS_DIR/__init__.py"
 fi
 
@@ -41,18 +41,34 @@ echo "========================================="
 
 # Run migrations
 echo -e "\033[1;32m⚙️ Creating and applying migrations...\033[0m"
-python manage.py makemigrations trackalytics
+python manage.py makemigrations
 python manage.py migrate
 echo "✅ Migrations complete."
 echo "========================================="
 
-# Prompt user to create superuser
-echo -e "\033[1;36m🔐 Creating Django superuser (you will be prompted)...\033[0m"
-python manage.py createsuperuser
-echo "✅ Superuser created."
+
+# Create superuser automatically
+echo -e "\033[1;36m🔐 Creating Django superuser (auto)...\033[0m"
+python <<EOF
+import os
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "trackalytics_project.settings")
+django.setup()
+
+from trackalytics.models import CustomUser
+
+email = "morrowchristian@icloud.com"
+password = "Dojacat1!"
+
+if not CustomUser.objects.filter(email=email).exists():
+    CustomUser.objects.create_superuser(email=email, password=password)
+    print(f"✅ Superuser created: {email}")
+else:
+    print(f"⚠️ Superuser already exists: {email}")
+EOF
 echo "========================================="
 
-# Verify DB tables
+# Verify DB
 echo -e "\033[1;36m🔍 Verifying database tables...\033[0m"
 python <<EOF
 import sqlite3
@@ -77,8 +93,8 @@ except Exception as e:
 EOF
 echo "========================================="
 
-# Start server
-echo -e "\033[1;35m🚀 Starting Django dev server...\033[0m"
-python manage.py runserver 0.0.0.0:8000
-echo "🎉 Server closed at http://localhost:8000"
+# Start ASGI server with Daphne
+echo -e "\033[1;35m🚀 Starting ASGI server with Daphne...\033[0m"
+daphne -b 0.0.0.0 -p 8000 trackalytics_project.asgi:application
+echo "🎉 Server running at http://localhost:8000"
 echo "=============================================="

@@ -25,14 +25,23 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(InventoryItem)
 class InventoryItemAdmin(admin.ModelAdmin):
-    list_display = ('item_name', 'item_no', 'quantity', 'created_at')
-    search_fields = ('item_name', 'item_no', 'batch_no')
-    list_filter = ('created_at',)
+    list_display = (
+        'item_code',
+        'item_name',
+        'category_type',
+        'quantity',
+        'vendor_price',
+        'retail_price',
+        'created_at',
+    )
+    search_fields = ('item_name', 'item_code', 'barcode')
+    list_filter = ('category_type', 'created_at')
+
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'item', 'campsite', 'status', 'created_at')
-    search_fields = ('name', 'item', 'email')
+    list_display = ('name', 'campsite', 'status', 'created_at')
+    search_fields = ('name', 'email')
     list_filter = ('status', 'created_at')
 
 @admin.register(ActivityLog)
