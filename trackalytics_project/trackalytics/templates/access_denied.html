@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Access Denied{% endblock %}
+
+{% block content %}
+<div class="dashboard-title">
+    <h1 class="dashboard-title-text">Access Denied</h1>
+</div>
+<div class="access-denied">
+    <p>Sorry, you do not have permission to access this page.</p>
+    <a href="{% url 'trackalytics:main_dashboard' %}">Return to Dashboard</a>
+</div>
+{% endblock %}
