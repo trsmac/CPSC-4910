@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Main Dashboard{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-title">
+    <h1 class="dashboard-title-text">Dashboard Overview</h1>
+</div>
+
+<div class="dashboard-main-cards">
+    <div class="dashboard-card">
+        <div class="card-inner">
+            <p class="text-primary">Total Inventory</p>
+            <span class="material-symbols-outlined text-blue">inventory_2</span>
+        </div>
+        <span class="text-primary font-weight-bold">{{ total_inventory }}</span>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="card-inner">
+            <p class="text-primary">Low Stock Items</p>
+            <span class="material-symbols-outlined text-red">e911_emergency</span>
+        </div>
+        <span class="text-primary font-weight-bold">{{ low_stock_items }}</span>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="card-inner">
+            <p class="text-primary">Zero Stock Items</p>
+            <span class="material-symbols-outlined text-yellow">block</span>
+        </div>
+        <span class="text-primary font-weight-bold">{{ zero_stock_items }}</span>
+    </div>
+</div>
+<div class="charts">
+    <div class="chart-card">
+        <p class="chart-title">Top 5 Products</p>
+        <div id="bar-chart"></div>
+    </div>
+
+    <div class="chart-card">
+        <p class="chart-title">Overall Inventory</p>
+        <div id="area-chart"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}
