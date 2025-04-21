@@ -1,0 +1,107 @@
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --success-color: #7ED321;
+    --failure-color: #FF6F61;
+    --warning-color: #F5A623;
+    --info-color: #8B8B8B;
+    --background-color: #F9FAFB;
+    --sidebar-background-color: #FFFFFF;
+    --card-background-color: #FFFFFF;
+    --text-color: #4A4A4A;
+    --text-light-color: #9B9B9B;
+    --card-border-radius: 12px;
+    --card-padding: 24px;
+    --card-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+    --sidebar-width: 260px;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-left: 270px; /* Adjust for sidebar width */
+}
+
+.dashboard-title {
+    text-align: left;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    color: var(--primary-color);
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.dashboard-card {
+    background: var(--card-background-color);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-box-shadow);
+    padding: var(--card-padding);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    min-width: 250px;
+}
+
+.card-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.card-inner p {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.card-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.chart-card {
+    background: var(--card-background-color);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-box-shadow);
+    padding: var(--card-padding);
+    text-align: center;
+    min-width: 300px;
+}
+
+.chart-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .charts {
+        grid-template-columns: 1fr;
+    }
+}

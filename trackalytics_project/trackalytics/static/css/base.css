@@ -1,0 +1,140 @@
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --success-color: #7ED321;
+    --failure-color: #FF6F61;
+    --warning-color: #F5A623;
+    --info-color: #8B8B8B;
+    --background-color: #F9FAFB;
+    --sidebar-background-color: #FFFFFF;
+    --card-background-color: #FFFFFF;
+    --text-color: #4A4A4A;
+    --text-light-color: #9B9B9B;
+    --card-border-radius: 12px;
+    --card-padding: 24px;
+    --card-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+    --sidebar-width: 260px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+aside {
+    width: var(--sidebar-width);
+    background: var(--sidebar-background-color);
+    height: 100vh;
+    position: fixed;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+}
+
+main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.menu,
+.sidebar {
+    background-color: var(--sidebar-background-color); /* or #fff directly */
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #333333;
+    transition: background 0.3s;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.sidebar a span.material-symbols-outlined {
+    font-size: 20px;
+    color: #4A90E2;
+}
+
+.sidebar h3 {
+    margin: 16px 16px 8px;
+    font-size: 14px;
+    color: #888888;
+}
+
+.sidebar-logo {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.sidebar-logo img {
+    
+    max-height: 80px;
+    height: auto;
+    max-width: 100%;
+    max-height: 80px;
+    height: auto;
+    display: block;
+    margin: 0 auto 8px;
+}
+
+.sidebar-logo h2 {
+    font-size: 18px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    aside {
+        width: 60px;
+    }
+
+    main {
+        margin-left: 60px;
+    }
+
+    .sidebar h3,
+    .sidebar a h3 {
+        display: none;
+    }
+
+    .sidebar a {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar a span.material-symbols-outlined {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    .dashboard-title {
+        font-size: 20px;
+    }
+
+    .card-value {
+        font-size: 20px;
+    }
+
+    .chart-title {
+        font-size: 16px;
+    }
+}

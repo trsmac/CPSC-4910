@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block css %}
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="{% static 'css/inventory.css' %}">
+{% endblock %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block content %}
+<div class="inventory-header">
+  <button id="toggleFormBtn" class="btn primary">+ Add Inventory Item</button>
+</div>
+
+<!-- Floating Form Panel -->
+<div id="inventoryFormOverlay" class="form-overlay hidden">
+  <form method="post" id="inventoryForm" class="form-panel" action="{% url 'trackalytics:inventory' %}">
+    {% csrf_token %}
+    <h2>Add Inventory Item</h2>
+    <div class="form-row">
+      <label for="{{ form.item_name.id_for_label }}">Item Name <span class="required">*</span></label>
+      {{ form.item_name }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.barcode.id_for_label }}">Barcode (optional)</label>
+      {{ form.barcode }}
+      {% if form.barcode.help_text %}
+        <small class="form-help">{{ form.barcode.help_text }}</small>
+      {% endif %}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.category_type.id_for_label }}">Category <span class="required">*</span></label>
+      {{ form.category_type }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.quantity.id_for_label }}">Quantity</label>
+      {{ form.quantity }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.vendor_price.id_for_label }}">Vendor Price</label>
+      {{ form.vendor_price }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.retail_price.id_for_label }}">Retail Price</label>
+      {{ form.retail_price }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.notes.id_for_label }}">Additional Notes</label>
+      {{ form.notes }}
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn primary">Save</button>
+      <button type="button" id="clearFormBtn" class="btn secondary">Clear</button>
+      <button type="button" id="cancelForm" class="btn secondary">Cancel</button>
+    </div>
+  </form>
+</div>
+
+<!-- Inventory Controls -->
+<div class="inventory-controls">
+  <input type="text" id="searchInput" placeholder="Search..." class="search-bar">
+  <select id="sortSelect">
+    <option value="">Sort By</option>
+    <option value="item_name">Name</option>
+    <option value="quantity">Quantity</option>
+    <option value="vendor_price">Vendor Price</option>
+    <option value="retail_price">Retail Price</option>
+  </select>
+  <button id="exportBtn" class="btn secondary">Export</button>
+</div>
+
+<!-- Summary Section -->
+<div class="inventory-tools">
+  <div class="inventory-summary">
+    <div class="summary-card">
+      <h4>Total Vendor Value</h4>
+      <p id="totalVendorValue">$ 0.00</p>
+    </div>
+    <div class="summary-card">
+      <h4>Total Retail Value</h4>
+      <p id="totalRetailValue">$ 0.00</p>
+    </div>
+    <div class="summary-card">
+      <h4>Total Products</h4>
+      <p id="totalProducts">0</p>
+    </div>
+  </div>
+</div>
+
+<!-- Inventory Table -->
+<table id="inventoryTable" class="inventory-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Product</th>
+      <th>Qty</th>
+      <th>Vendor</th>
+      <th>Retail Price</th>
+      <th>Category</th>
+      <th>Barcode</th>
+      <th><i class="fa fa-trash" aria-hidden="true"></i> Delete</th>
+      <th>Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr 
+      data-id="{{ item.id }}"
+      data-quantity="{{ item.quantity|default_if_none:0 }}"
+      data-vendor="{{ item.vendor_price|default_if_none:0 }}"
+      data-retail="{{ item.retail_price|default_if_none:0 }}"
+      data-category="{{ item.category_type }}"
+    >
+      <td>{{ forloop.counter }}</td>
+      <td>{{ item.item_name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>$ {{ item.vendor_price|default:"0.00"|floatformat:2 }}</td>
+      <td>$ {{ item.retail_price|default:"0.00"|floatformat:2 }}</td>
+      <td>{{ item.get_category_type_display }}</td>
+      <td>{{ item.barcode|default:"-" }}</td>
+      <td><button class="btn-delete" data-id="{{ item.id }}">🗑</button></td>
+      <td><button class="btn-edit" data-id="{{ item.id }}">✏️</button></td>
+    </tr>
+    {% empty %}
+    <tr class="no-items-row">
+      <td colspan="9">{% trans "No inventory items found." %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+<script src="{% static 'js/inventory.js' %}"></script>
+{% endblock %}

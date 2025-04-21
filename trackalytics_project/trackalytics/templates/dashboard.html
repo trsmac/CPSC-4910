@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="dashboard-title">Dashboard Overview</h1>
+
+<!-- Summary Cards -->
+<section class="dashboard-cards">
+  {% for card in cards %}
+    <div class="dashboard-card">
+      <div class="card-inner">
+        <p>{{ card.label }}</p>
+        <span class="material-symbols-outlined {{ card.color }}">{{ card.icon }}</span>
+      </div>
+      <div class="card-value">{{ card.value }}</div>
+    </div>
+  {% endfor %}
+</section>
+
+<!-- Charts Section -->
+<section class="charts">
+  <div class="chart-card">
+    <h3 class="chart-title">Top 5 Products</h3>
+    <div id="bar-chart" class="chart-container"></div>
+  </div>
+
+  <div class="chart-card">
+    <h3 class="chart-title">Overall Inventory</h3>
+    <div id="area-chart" class="chart-container"></div>
+  </div>
+
+  <div class="chart-card">
+    <h3 class="chart-title">Reservation Trends</h3>
+    <div id="line-chart" class="chart-container"></div>
+  </div>
+
+  <div class="chart-card">
+    <h3 class="chart-title">Inventory Usage</h3>
+    <div id="pie-chart" class="chart-container"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

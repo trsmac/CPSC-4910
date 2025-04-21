@@ -1,0 +1,260 @@
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --success-color: #7ED321;
+    --failure-color: #FF6F61;
+    --warning-color: #F5A623;
+    --info-color: #8B8B8B;
+    --background-color: #F9FAFB;
+    --sidebar-background-color: #FFFFFF;
+    --card-background-color: #FFFFFF;
+    --text-color: #4A4A4A;
+    --text-light-color: #9B9B9B;
+    --card-border-radius: 12px;
+    --card-padding: 24px;
+    --card-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+    --sidebar-width: 260px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    appearance: none;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* Title */
+.dashboard-title {
+    width: 100%;
+    text-align: left;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: 20px;
+}
+
+.dashboard-title-text {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Wrapper */
+.equipment-form-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 150px;
+}
+
+/* Equipment Cards */
+.equipment-selection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    align-items: stretch;
+    width: 60%;
+}
+
+.equipment-card {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 95%;
+    box-sizing: border-box;
+    position: relative;
+    min-height: 150px;
+    height: auto;
+}
+
+.equipment-card img {
+    width: 25%;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 5px;
+}
+
+.equipment-card h3 {
+    font-size: 15px;
+    margin: 4px 0 2px 0;
+}
+
+.equipment-card p {
+    font-size: 13px;
+    color: #555;
+    margin: 0 0 6px 0;
+}
+
+.equipment-card input[type="radio"] {
+    transform: scale(1.5);
+    margin-top: 2px;
+    cursor: pointer;
+    opacity: 1;
+    position: relative;
+    align-self: flex-start;
+    appearance: auto;
+}
+
+.equipment-card .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.equipment-card .checkbox-container span {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #555;
+}
+
+.equipment-card:has(input[type="radio"]:checked) {
+    background-color: #e6f2ff;
+    border: 2px solid #1c72e8;
+}
+
+/* Reservation Panel */
+.reservation-section {
+    width: 300px;
+    margin-left: -20px;
+}
+
+#view-reservations-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #005fe6;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px 8px 0 0;
+}
+
+.reservation-form-card {
+    background-color: #d8e7fb;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+}
+
+.reservation-form-card input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+.reservation-form-card button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1c72e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* Warnings */
+.warning-text {
+    color: red;
+    font-size: 14px;
+}
+
+/* Modal */
+#reservation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
+    border-radius: 10px;
+}
+
+.modal-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.modal-content th,
+.modal-content td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.close-btn {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal {
+    pointer-events: auto;
+}
+
+.modal[style*="display: none"] {
+    pointer-events: none !important;
+}
+
+.modal-save-btn {
+    background-color: var(--success-color);
+    color: white;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.modal-save-btn:hover {
+    background-color: #1E8449;
+}
+
+/* Filters */
+.filter-sort-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#filter-input,
+#sort-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}

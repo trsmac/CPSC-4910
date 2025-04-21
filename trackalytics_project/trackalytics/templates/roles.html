@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Management{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/roles.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="roles-title">Roles & Permissions</h1>
+<div class="roles-card">
+    <div class="roles-list">
+        <h3>Select Role</h3>
+        <ul>
+            <li class="role-item active" data-role="admin">Admin</li>
+            <li class="role-item" data-role="editor">Editor</li>
+            <li class="role-item" data-role="viewer">Viewer</li>
+            <li class="role-item" data-role="assign">Assign User Role's</li>
+        </ul>
+    </div>
+    <div class="roles-content">
+        <div class="role-header">
+            <h3>Admin Role</h3>
+            <button id="editPermissionsBtn">Edit Permissions</button>
+        </div>
+        <p class="role-description">Has access to all organization resources, including dashboards, users, and teams.</p>
+
+        <div id="permissionsModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closePermissionsModal">&times;</span>
+                <h3>Edit Permissions</h3>
+                <div class="permissions">
+                    {% for perm in permissions %}
+                    <label><input type="checkbox" class="perm" value="{{ perm.codename }}" {% if perm in role_permissions %}checked{% endif %}> {{ perm.name }}</label>
+                    {% endfor %}
+                </div>
+                <button id="savePermissions">Save</button>
+            </div>
+        </div>
+
+        <div class="access-lists">
+            <div class="granted"><h4>What this role can access</h4><ul id="granted-list"></ul></div>
+            <div class="denied"><h4>What this role can't access</h4><ul id="denied-list"></ul></div>
+        </div>
+    </div>
+</div>
+
+<div id="assignRoleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="assignClose">&times;</span>
+        <h3>Assign Role to User</h3>
+        <div style="margin-bottom: 15px; text-align: left;">
+            <label for="userSearch"><strong>Search by name</strong></label>
+            <input type="text" id="userSearch" placeholder="e.g. Alice">
+        </div>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th id="sortName">Name</th>
+                    <th id="sortRole">Role</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                {% for user in users %}
+                <tr>
+                    <td><input type="radio" name="selectedUser" value="{{ user.id }}"></td>
+                    <td>{{ user.username }}</td>
+                    <td>
+                        <select class="roleSelector" data-user-id="{{ user.id }}">
+                            <option value="">Unassigned</option>
+                            {% for role in roles %}
+                            <option value="{{ role.name }}" {% if user.groups.all.0.name == role.name %}selected{% endif %}>{{ role.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button id="assignConfirmBtn">Assign</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/role.js' %}"></script>
+{% endblock %}

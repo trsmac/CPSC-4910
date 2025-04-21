@@ -1,0 +1,641 @@
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --success-color: #7ED321;
+    --failure-color: #FF6F61;
+    --warning-color: #F5A623;
+    --info-color: #8B8B8B;
+    --background-color: #F9FAFB;
+    --sidebar-background-color: #FFFFFF;
+    --card-background-color: #FFFFFF;
+    --text-color: #4A4A4A;
+    --text-light-color: #9B9B9B;
+    --card-border-radius: 12px;
+    --card-padding: 24px;
+    --card-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+    --sidebar-width: 260px;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background: var(--background-color);
+    user-select: none;
+    overflow-x: hidden;
+}
+
+/* Layout */
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+aside {
+    height: 100vh;
+    background: var(--card-background-color);
+    border-right: 1px solid var(--tertiary-color);
+}
+
+/* Inventory Layout */
+.inventory-form {
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
+    background: var(--card-background-color);
+    padding: var(--card-padding);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+}
+
+.inventory-form h2 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* Inventory Table */
+.inventory-table {
+width: 100%;
+border-collapse: collapse;
+border-radius: var(--border-radius);
+overflow: hidden;
+}
+
+.inventory-table th,
+.inventory-table td {
+padding: 12px;
+text-align: left;
+border-bottom: 1px solid #ddd;
+}
+
+.inventory-table th {
+background-color: #f9f9f9;
+font-size: 13px;
+text-transform: uppercase;
+color: var(--secondary-color);
+}
+
+#inventoryTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#inventoryTable th,
+#inventoryTable td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+#inventoryTable th {
+    background: #f4f4f4;
+}
+
+#inventoryTable th:first-child,
+#inventoryTable td:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--card-background-color);
+    z-index: 1;
+}
+
+.inventory-tools {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+/* Inventory Topbar */
+.inventory-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  
+.summary-card {
+    flex: 0 0 200px;;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    text-align: center;
+    transition: all 0.3s ease;
+         
+  }
+  
+.summary-card h4 {
+    font-size: 14px;
+    color: var(--secondary-color);
+    margin-bottom: 4px;
+  }
+  
+.summary-card p {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 0;
+  }
+
+.inventory-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+.search-bar {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 200px;
+  }
+/* Form Layout */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.form-row {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-help {
+    font-size: 12px;
+    color: var(--text-light-color);
+    margin-top: 4px;
+}
+
+form p label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: inline-block;
+    color: var(--text-color);
+}
+
+.form-panel {
+    width: 90%;
+    max-width: 400px; /* Adjust for scaling */
+    background: var(--card-background-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Form Inputs */
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background: white;
+    box-sizing: border-box;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(30, 30, 45, 0.2);
+    outline: none;
+}
+
+form p {
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+button {
+    transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+button:disabled {
+    background: var(--text-light-color);
+    cursor: not-allowed;
+}
+
+button:disabled:hover,
+button:disabled:active {
+    background: var(--text-light-color);
+    transform: none;
+    opacity: 1;
+}
+
+/* Action Buttons */
+.btn-delete,
+.btn-edit {
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  color: var(--failure-color);
+}
+
+.btn-edit:hover {
+  color: var(--primary-color);
+}
+.save-icon,
+.clear-icon,
+.search-icon {
+    color: black;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sort-icon {
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sort-icon:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Toast Notification */
+.toast,
+    .custom-toast {
+    background-color: var(--success-color);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1100; /* Ensure it appears above other elements */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toast.error,
+    .custom-toast.error {
+    background-color: var(--failure-color);
+}
+
+.toast.show,
+    .custom-toast.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Tooltip */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background-color: var(--tertiary-color);
+    color: #fff;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 10;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.25s ease, bottom 0.25s ease;
+    pointer-events: none;
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    bottom: 150%;
+}
+
+/* Sort Dropdown */
+.sort-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: var(--card-background-color);
+    border: 1px solid var(--tertiary-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    z-index: 1;
+    right: 0;
+    top: 100%;
+    min-width: 200px;
+    box-shadow: var(--card-box-shadow);
+}
+
+.dropdown-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.dropdown-content select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid var(--tertiary-color);
+    border-radius: var(--border-radius);
+}
+
+.dropdown-content button {
+    width: 100%;
+    padding: 8px;
+    background: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.dropdown-content button:hover {
+    background: #24b15f;
+}
+
+.sort-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .inventory-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+/* New Layout: Split Panel */
+.inventory-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.inventory-header {
+    display: flex;
+    justify-content: flex-end;   /* push button to the right */
+    align-items: flex-start;
+    padding: 1rem 1rem 0 1rem;   /* optional spacing */
+    margin-bottom: 1rem;
+}
+
+.inventory-body {
+    display: flex;
+    gap: 2rem;
+}
+
+.form-panel {
+    width: 350px;
+    background: var(--card-background-color);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+}
+
+.form-panel.hidden {
+    display: none;
+}
+
+.inventory-table-area {
+    flex: 1;
+    background: var(--card-background-color);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+}
+
+/* Overlay styling */
+.form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(30, 30, 45, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 3rem;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.form-overlay.hidden {
+    display: none;
+}
+
+/* Vertical form alignment */
+.form-panel {
+    width: 400px;
+    background: var(--card-background-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Button styles */
+.btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn.secondary {
+    background-color: #f1f1f1;
+    color: var(--text-color);
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.inventory-summary {
+    display: flex;
+    gap: 1rem;
+  }  
+  
+  .summary-card {
+    flex: 1;
+    min-width: 180px;
+    background: var(--card-background-color);
+    padding: 1rem 1.25rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    text-align: center;
+  }
+  
+  .summary-card h4 {
+    font-size: 14px;
+    color: var(--secondary-color);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .summary-card p {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+  }
+  
+  .inventory-table th,
+  .inventory-table td {
+    padding: 10px 14px;
+    font-size: 13.5px;
+  }
+  
+  .inventory-table th {
+    background-color: #f3f4f6;
+    color: #444;
+    font-weight: 600;
+  }
+  
+  .inventory-table td {
+    color: #222;
+  }
+  
+  .inventory-table td button {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+
+  .summary-and-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+@media (max-width: 768px) {
+    .inventory-top-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .summary-and-controls {
+      align-items: stretch;
+    }
+  
+    .inventory-controls {
+      justify-content: flex-start;
+    }
+  
+    .summary-card {
+      width: 100%;
+    }
+  }
+  

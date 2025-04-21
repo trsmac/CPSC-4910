@@ -1,0 +1,266 @@
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --success-color: #7ED321;
+    --failure-color: #FF6F61;
+    --warning-color: #F5A623;
+    --info-color: #8B8B8B;
+    --background-color: #F9FAFB;
+    --sidebar-background-color: #FFFFFF;
+    --card-background-color: #FFFFFF;
+    --text-color: #4A4A4A;
+    --text-light-color: #9B9B9B;
+    --card-border-radius: 12px;
+    --card-padding: 24px;
+    --card-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+    --sidebar-width: 260px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Layout */
+.roles-container {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.roles-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.roles-card {
+    display: flex;
+    background: var(--card-background-color);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-box-shadow);
+    padding: var(--card-padding);
+    gap: 20px;
+}
+
+.roles-list {
+    width: 200px;
+    background: var(--background-color);
+    padding: 15px;
+    border-right: 2px solid var(--tertiary-color);
+}
+
+.roles-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.role-item {
+    padding: 12px;
+    cursor: pointer;
+    background: var(--secondary-color);
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.role-item:hover {
+    background: var(--info-color);
+}
+
+.role-item.active {
+    background: var(--secondary-color);
+}
+
+.roles-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.role-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.role-description {
+    font-size: 14px;
+    font-weight: 500;
+    color: black;
+    margin-bottom: 10px;
+    padding: 5px 0;
+}
+
+.role-header button {
+    background: var(--primary-color);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.role-header button:hover {
+    background: var(--secondary-color);
+}
+
+.access-lists {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.granted, .denied {
+    flex: 1;
+    padding: 15px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.granted {
+    background: #D4EDDA;
+    color: #155724;
+    border-left: 5px solid #28A745;
+}
+
+.denied {
+    background: #F8D7DA;
+    color: #721C24;
+    border-left: 5px solid #DC3545;
+}
+
+.granted ul, .denied ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.granted ul li::before,
+.denied ul li::before {
+    content: "- ";
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    width: 40%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-box-shadow);
+    text-align: center;
+    overflow: visible;
+}
+
+.close {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Permissions Form */
+.permissions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+    padding: 10px;
+}
+
+.permissions label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.permissions input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    appearance: auto;
+}
+
+/* Buttons */
+#savePermissions,
+#assignConfirmBtn {
+    background: var(--success-color);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: block;
+    margin: 20px auto;
+    width: 50%;
+    text-align: center;
+}
+
+#savePermissions:hover,
+#assignConfirmBtn:hover {
+    background: #1E8449;
+    transform: scale(1.05);
+}
+
+#savePermissions:active,
+#assignConfirmBtn:active {
+    transform: scale(0.95);
+}
+
+/* User Table */
+#userTable {
+    width: 100%;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+#userTable th, #userTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#userTable th {
+    background-color: var(--background-color);
+}
+
+#userTable tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Dropdown */
+.styled-dropdown {
+    padding: 8px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid var(--tertiary-color);
+    background-color: white;
+    color: var(--text-color);
+    width: 150px;
+    appearance: none;
+}
+
+.dropdown-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--text-color);
+}
