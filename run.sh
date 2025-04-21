@@ -57,8 +57,8 @@ django.setup()
 
 from trackalytics.models import CustomUser
 
-email = "morrowchristian@icloud.com"
-password = "Dojacat1!"
+email = "admin@admin.com"
+password = "adminpass"
 
 if not CustomUser.objects.filter(email=email).exists():
     CustomUser.objects.create_superuser(email=email, password=password)
